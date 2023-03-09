@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "workspaces": [
+    "silma-front",
+    "silma-back"
+  ],
+  "scripts": {
+    "dev-front": "cd ./silma-front && yarn start",
+    "build-front": "cd ./silma-front && yarn build"
+  }
+}
