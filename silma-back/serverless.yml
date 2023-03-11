@@ -1,0 +1,78 @@
+service: silma-api
+# Create an optimized package for our functions
+package:
+  individually: true
+plugins:
+  - serverless-offline
+  - serverless-deployment-bucket
+  - serverless-bundle
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage}
+  region: ${opt:region}
+  endpointType: REGIONAL
+  deploymentMethod: direct
+  deploymentBucket:
+    name: silma${self:provider.stage}
+  memorySize: 1024
+  timeout: 30
+  environment:
+    DB_HOST: ${self:custom.AURORA.HOST.${opt:stage, self:provider.stage}}
+    DB_PORT: ${self:custom.AURORA.PORT.${opt:stage, self:provider.stage}}
+    DB_NAME: ${self:custom.AURORA.DB_NAME}
+    DB_USERNAME: ${self:custom.AURORA.USERNAME}
+    DB_PASSWORD: ${self:custom.AURORA.PASSWORD}
+    DB_DIALECT: "postgres"
+# Variables here for lisibility
+custom:
+  AURORA:
+    DB_NAME: silma_${opt:stage, self:provider.stage}
+    USERNAME: ${self:custom.secrets.DB_USER}
+    PASSWORD: ${self:custom.secrets.DB_PASSWORD}
+    HOST:
+      local: ${file(./config/config.${opt:stage, self:provider.stage}.json):DB_HOST}
+      dev:
+        Fn::GetAtt: [AuroraRDSCluster, Endpoint.Address]
+      qa:
+        Fn::GetAtt: [AuroraRDSCluster, Endpoint.Address]
+      uat:
+        Fn::GetAtt: [AuroraRDSCluster, Endpoint.Address]
+      prod:
+        Fn::GetAtt: [AuroraRDSCluster, Endpoint.Address]
+    PORT:
+      local: ${file(./config/config.${opt:stage, self:provider.stage}.json):DB_PORT}
+      dev:
+        Fn::GetAtt: [AuroraRDSCluster, Endpoint.Port]
+      qa:
+        Fn::GetAtt: [AuroraRDSCluster, Endpoint.Port]
+      uat:
+        Fn::GetAtt: [AuroraRDSCluster, Endpoint.Port]
+      prod:
+        Fn::GetAtt: [AuroraRDSCluster, Endpoint.Port]
+    VPC_CIDR: 10
+  SQS:
+    NAME: silma-aurora-queue-${opt:stage, self:provider.stage}
+  bundle:
+    ignorePackages:
+      - pg-native
+  secrets: ${file(config/secrets.json)}
+
+functions:
+  createDatabase:
+    handler: services/database/handler.createDatabase
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /createdb
+          method: post
+          cors: true
+resources:
+  - ${file(./resources/database.yml)}

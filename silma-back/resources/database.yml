@@ -1,0 +1,177 @@
+Resources:
+  AsyncQueryQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: ${self:custom.SQS.NAME}
+  # VPC config
+  ServerlessVPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: ${self:custom.AURORA.VPC_CIDR}.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      InstanceTenancy: default
+  # Gateway
+  ServerlessInternetGateway:
+    Type: AWS::EC2::InternetGateway
+    DependsOn: ServerlessVPC
+  ServerlessAttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref ServerlessVPC
+      InternetGatewayId: !Ref ServerlessInternetGateway
+  ServerlessPublicSubnetA:
+    DependsOn: ServerlessVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ServerlessVPC
+      AvailabilityZone: ${self:provider.region}a
+      CidrBlock: ${self:custom.AURORA.VPC_CIDR}.0.0.0/24
+  ServerlessPublicSubnetB:
+    DependsOn: ServerlessVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ServerlessVPC
+      AvailabilityZone: ${self:provider.region}b
+      CidrBlock: ${self:custom.AURORA.VPC_CIDR}.0.1.0/24
+  ServerlessSubnetA:
+    DependsOn: ServerlessVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ServerlessVPC
+      AvailabilityZone: ${self:provider.region}a
+      CidrBlock: ${self:custom.AURORA.VPC_CIDR}.0.2.0/24
+  ServerlessSubnetB:
+    DependsOn: ServerlessVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ServerlessVPC
+      AvailabilityZone: ${self:provider.region}b
+      CidrBlock: ${self:custom.AURORA.VPC_CIDR}.0.3.0/24
+  ServerlessSubnetC:
+    DependsOn: ServerlessVPC
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: ServerlessVPC
+      AvailabilityZone: ${self:provider.region}c
+      CidrBlock: ${self:custom.AURORA.VPC_CIDR}.0.4.0/24
+  # Route tables
+  ServerlessPublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref ServerlessVPC
+  ServerlessPublicRoute1:
+    Type: AWS::EC2::Route
+    DependsOn: ServerlessAttachGateway
+    Properties:
+      RouteTableId: !Ref ServerlessPublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref ServerlessInternetGateway
+  ServerlessPrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref ServerlessVPC
+      Tags:
+        - Key: Name
+          Value: Private
+  ServerlessPrivateRoute1:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref ServerlessPrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref ServerlessNATGateway
+  # NAT Gateway:
+  ServerlessNATGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt ServerlessElasticIPAddress.AllocationId
+      SubnetId: !Ref ServerlessPublicSubnetA
+      Tags:
+        - Key: Name
+          Value: !Sub NAT-${AWS::StackName}
+  ServerlessElasticIPAddress:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: ServerlessVPC
+  # Attach the public subnets to public route tables and attach the private subnets to private route tables:
+  ServerlessPublicSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ServerlessPublicSubnetA
+      RouteTableId: !Ref ServerlessPublicRouteTable
+  ServerlessPublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ServerlessPublicSubnetB
+      RouteTableId: !Ref ServerlessPublicRouteTable
+  ServerlessPrivateSubnetARouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ServerlessSubnetA
+      RouteTableId: !Ref ServerlessPrivateRouteTable
+  ServerlessPrivateSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ServerlessSubnetB
+      RouteTableId: !Ref ServerlessPrivateRouteTable
+  ServerlessPrivateSubnetCRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref ServerlessSubnetC
+      RouteTableId: !Ref ServerlessPrivateRouteTable
+  # Aurora DB config
+  AuroraSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: "Aurora Subnet Group"
+      SubnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+  AuroraRDSClusterParameter:
+    Type: AWS::RDS::DBClusterParameterGroup
+    Properties:
+      Description: Parameter group for the Serverless Aurora RDS DB.
+      Family: aurora-postgresql13
+      Parameters:
+        max_connections: 100
+  AuroraRDSInstanceParameter:
+    Type: AWS::RDS::DBParameterGroup
+    Properties:
+      Description: Parameter group for the Serverless Aurora RDS DB.
+      Family: aurora-postgresql13
+      Parameters:
+        max_connections: 100
+  AuroraRDSCluster:
+    Type: "AWS::RDS::DBCluster"
+    Properties:
+      MasterUsername: ${self:custom.AURORA.USERNAME}
+      MasterUserPassword: ${self:custom.AURORA.PASSWORD}
+      DBSubnetGroupName:
+        Ref: AuroraSubnetGroup
+      Engine: aurora-postgresql
+      EngineVersion: "13"
+      DatabaseName: ${self:custom.AURORA.DB_NAME}
+      BackupRetentionPeriod: 3
+      DBClusterParameterGroupName:
+        Ref: AuroraRDSClusterParameter
+      VpcSecurityGroupIds:
+        - Fn::GetAtt: ServerlessVPC.DefaultSecurityGroup
+  AuroraRDSInstance:
+    Type: "AWS::RDS::DBInstance"
+    Properties:
+      DBInstanceClass: db.t3.medium
+      DBSubnetGroupName:
+        Ref: AuroraSubnetGroup
+      Engine: aurora-postgresql
+      EngineVersion: "13"
+      PubliclyAccessible: true
+      DBParameterGroupName:
+        Ref: AuroraRDSInstanceParameter
+      DBClusterIdentifier:
+        Ref: AuroraRDSCluster
