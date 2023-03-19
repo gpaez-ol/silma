@@ -6,6 +6,9 @@ import {
   UserCreationAttributes,
   UserAttributes,
   EntityAttributes,
+  ProductAttributes,
+  ProductCreationAttributes,
+  ProductModel,
 } from "./models";
 
 // Require and initialize outside of your main handler
@@ -30,11 +33,14 @@ type Connection = {
 };
 
 const User = UserModel(sequelize);
+const Product = ProductModel(sequelize);
 type ModelStructure = {
   User: ModelDefined<UserAttributes, UserCreationAttributes>;
+  Product: ModelDefined<ProductAttributes, ProductCreationAttributes>;
 };
 const Models: ModelStructure = {
   User,
+  Product,
 };
 const connection: Connection = { isConnected: false };
 type GetPromise = (force?: boolean) => Promise<ModelStructure>;
@@ -68,6 +74,7 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   }
   // User Relationships
   createUserRelationships(User);
+  createUserRelationships(Product);
   await sequelize.sync({ force });
   await sequelize.authenticate();
   connection.isConnected = true;
@@ -76,6 +83,15 @@ export const connectToDatabase: GetPromise = async (force = false) => {
     await User.create({
       email: "admin@admin.com",
       type: "admin",
+    });
+    await Product.create({
+      id: "54ef44fd-85cb-4f46-95a4-79502c590ec2",
+      title: "Moby Dick",
+      description: "Este libro es de moby dick un autor muy famoso",
+      price: 150,
+      type: "book",
+      status: "valid",
+      imageUrl: "imageUrl",
     });
   }
   return Models;
