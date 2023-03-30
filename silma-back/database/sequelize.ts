@@ -106,7 +106,6 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   ProductInOrder.belongsTo(InOrder);
   Product.hasMany(ProductInOrder);
   InOrder.hasMany(ProductInOrder);
-
   // End of Super Many-to-Many Relationship
   await sequelize.sync({ force });
   await sequelize.authenticate();
