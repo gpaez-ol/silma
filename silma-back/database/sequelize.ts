@@ -14,6 +14,7 @@ import {
   InOrderModel,
   ProductInOrderAttributes,
   ProductInOrderModel,
+  ProductInOrderCreationAttributes,
 } from "./models";
 
 // Require and initialize outside of your main handler
@@ -47,7 +48,7 @@ type ModelStructure = {
   InOrder: ModelDefined<InOrderAttributes, InOrderCreationAttributes>;
   ProductInOrder: ModelDefined<
     ProductInOrderAttributes,
-    ProductInOrderAttributes
+    ProductInOrderCreationAttributes
   >;
 };
 const Models: ModelStructure = {
@@ -92,12 +93,13 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   createUserRelationships(InOrder);
   // The Super Many-to-Many relationship
   // https://sequelize.org/docs/v6/advanced-association-concepts/advanced-many-to-many/
-  Product.belongsToMany(InOrder, { through: ProductInOrder });
   InOrder.belongsToMany(Product, { through: ProductInOrder });
-  Product.hasMany(ProductInOrder);
-  ProductInOrder.belongsTo(ProductInOrder);
-  InOrder.hasMany(ProductInOrder);
+  Product.belongsToMany(InOrder, { through: ProductInOrder });
+  ProductInOrder.belongsTo(Product);
   ProductInOrder.belongsTo(InOrder);
+  Product.hasMany(ProductInOrder);
+  InOrder.hasMany(ProductInOrder);
+
   // End of Super Many-to-Many Relationship
   await sequelize.sync({ force });
   await sequelize.authenticate();

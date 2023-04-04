@@ -1,10 +1,15 @@
-import { DataTypes, ModelDefined, Optional, Sequelize } from "sequelize";
+import { DataTypes, ModelDefined, Sequelize } from "sequelize";
 import { longText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
+import { ProductAttributes } from "./product.model";
+import { ProductInOrderAttributes } from "./productInOrder.model";
 
 export type InOrderAttributes = {
+  id: string;
   notes: string;
   deliveredAt: Date;
+  products?: ProductAttributes[];
+  productInOrder?: ProductInOrderAttributes[];
 } & EntityAttributes;
 
 export type InOrderCreationAttributes = InOrderAttributes;
@@ -21,10 +26,11 @@ export const InOrderModel: GetModel = (sequelize: Sequelize) => {
         allowNull: false,
         defaultValue: DataTypes.UUIDV4,
       },
-      description: {
+      notes: {
         type: new DataTypes.STRING(longText),
         allowNull: false,
       },
+      deliveredAt: DataTypes.DATE,
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
       deletedAt: {

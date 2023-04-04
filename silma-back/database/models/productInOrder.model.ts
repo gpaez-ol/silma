@@ -1,16 +1,20 @@
-import { DataTypes, Sequelize, ModelDefined } from "sequelize";
+import { DataTypes, Sequelize, ModelDefined, Optional } from "sequelize";
 import { EntityAttributes } from "./base/entity.model";
 
 export type ProductInOrderAttributes = {
-  eventId?: string;
-  positionId?: string;
-  positions: number;
-  hired: number;
+  id?: string;
+  ProductId?: string;
+  InOrderId?: string;
+  amount: number;
 } & EntityAttributes;
 
+export type ProductInOrderCreationAttributes = Optional<
+  ProductInOrderAttributes,
+  "deletedAt"
+>;
 type GetModel = (
   sequelize: Sequelize
-) => ModelDefined<ProductInOrderAttributes, ProductInOrderAttributes>;
+) => ModelDefined<ProductInOrderAttributes, ProductInOrderCreationAttributes>;
 
 export const ProductInOrderModel: GetModel = (sequelize: Sequelize) => {
   const ProductInOrder: ModelDefined<
