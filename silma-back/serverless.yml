@@ -74,5 +74,19 @@ functions:
           path: /createdb
           method: post
           cors: true
+  createInOrder:
+    handler: services/inOrder/handler.createInOrder
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /create-inorder
+          method: post
+          cors: true
 resources:
   - ${file(./resources/database.yml)}
