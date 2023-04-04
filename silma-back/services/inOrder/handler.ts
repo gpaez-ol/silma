@@ -17,8 +17,8 @@ const createInOrderFunction: SilmaAPIFunction = async (
   }
   const db = await connectToDatabase();
   const { InOrder, ProductInOrder } = db;
-  const count = await InOrder.count({ where: { deletedAt: null } });
-  const internalCode = `OE-${count}`;
+  let count = await InOrder.count({ where: { deletedAt: null } });
+  const internalCode = `OE-${++count}`;
   const inOrderDB: InOrderAttributes = {
     createdAt: new Date(),
     orderedAt: data.orderedAt,
