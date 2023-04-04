@@ -35,7 +35,6 @@ export const InOrderModel: GetModel = (sequelize: Sequelize) => {
       },
       orderDate: {
         type: new DataTypes.DATE,
-        allowNull: false,
       },
       arriveDate: {
         type: new DataTypes.DATE
