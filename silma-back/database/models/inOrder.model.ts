@@ -5,7 +5,7 @@ import { ProductAttributes } from "./product.model";
 import { ProductInOrderAttributes } from "./productInOrder.model";
 
 export type InOrderAttributes = {
-  id: string;
+  id?: string;
   notes: string;
   deliveredAt: Date;
   products?: ProductAttributes[];
