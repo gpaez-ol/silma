@@ -8,5 +8,9 @@
     "dev-front": "cd ./silma-front && yarn start",
     "build-front": "cd ./silma-front && yarn build",
     "dev-api": "cd ./silma-back && yarn run dev"
+  },
+  "dependencies": {
+    "typescript": "^5.0.2",
+    "yarn": "^1.22.19"
   }
 }

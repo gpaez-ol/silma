@@ -1,4 +1,4 @@
-import { Sequelize, ModelDefined } from "sequelize";
+import { Sequelize, ModelDefined, Model } from "sequelize";
 import * as pg from "pg";
 import { writeToConsole } from "utils";
 import {
@@ -15,6 +15,9 @@ import {
   ProductInOrderAttributes,
   ProductInOrderModel,
   ProductInOrderCreationAttributes,
+  LocationAttributes,
+  LocationCreationAttributes,
+  LocationModel,
 } from "./models";
 
 // Require and initialize outside of your main handler
@@ -42,6 +45,7 @@ const User = UserModel(sequelize);
 const Product = ProductModel(sequelize);
 const InOrder = InOrderModel(sequelize);
 const ProductInOrder = ProductInOrderModel(sequelize);
+const Location = LocationModel(sequelize);
 type ModelStructure = {
   User: ModelDefined<UserAttributes, UserCreationAttributes>;
   Product: ModelDefined<ProductAttributes, ProductCreationAttributes>;
@@ -50,13 +54,16 @@ type ModelStructure = {
     ProductInOrderAttributes,
     ProductInOrderCreationAttributes
   >;
+  Location: ModelDefined<LocationAttributes, LocationCreationAttributes>;
 };
 const Models: ModelStructure = {
   User,
   Product,
   InOrder,
   ProductInOrder,
+  Location,
 };
+
 const connection: Connection = { isConnected: false };
 type GetPromise = (force?: boolean) => Promise<ModelStructure>;
 // eslint-disable-next-line @typescript-eslint/ban-types
