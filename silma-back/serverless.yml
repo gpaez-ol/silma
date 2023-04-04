@@ -158,7 +158,7 @@ functions:
           path: /inorder-details
           method: get
           cors: true
-  updatedInOrder:
+  updateInOrder:
     handler: services/inOrder/handler.updateInOrder
     vpc:
       securityGroupIds:
