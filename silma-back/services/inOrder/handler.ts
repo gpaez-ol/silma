@@ -2,7 +2,12 @@ import { APIGatewayEvent, APIGatewayProxyHandler } from "aws-lambda";
 import { InOrderAttributes, ProductInOrderAttributes } from "database/models";
 import { connectToDatabase } from "database/sequelize";
 import { SilmaAPIFunction, silmaAPIhandler } from "lib/handler/handler";
-import { InOrderCreate, InOrderCreateSchema, InOrderItem } from "types";
+import {
+  InOrderCreate,
+  InOrderCreateSchema,
+  InOrderItem,
+  ProductInOrderItem,
+} from "types";
 import { badRequest } from "utils";
 
 const createInOrderFunction: SilmaAPIFunction = async (
@@ -21,6 +26,14 @@ const createInOrderFunction: SilmaAPIFunction = async (
     notes: data.notes,
     deletedAt: null,
   };
+  //checks that the product is unique
+  const key = "id";
+  const uniqueProducts = [
+    ...new Map(data.products.map((item) => [item[key], item])).values(),
+  ];
+  if (uniqueProducts.length !== data.products.length) {
+    throw badRequest("Products should be unique");
+  }
   const db = await connectToDatabase();
   const { InOrder, ProductInOrder } = db;
   const newInOrder = await InOrder.create(inOrderDB);
@@ -56,19 +69,38 @@ const getInOrdersFunction: SilmaAPIFunction = async (
   const productInOrders = rawProductInOrders.map((rawInOrder) =>
     rawInOrder.get({ plain: true })
   );
-  const inOrderItems: InOrderItem[] = productInOrders.map((productInOrder) => {
-    return {
-      orderedAt: productInOrder.InOrder.orderedAt,
-      deliveredAt: productInOrder.InOrder.deliveredAt,
-      products: [
-        {
-          amount: productInOrder.amount,
-          id: productInOrder.Product.id,
-          title: productInOrder.Product.title,
-        },
-      ],
-    };
-  });
+
+  const uniqueInOrderProductItems = productInOrders.reduce(
+    (productItems: ProductInOrderItem[], attributes) => {
+      const { InOrderId } = attributes;
+      productItems[InOrderId] = productItems[InOrderId] ?? [];
+      productItems[InOrderId].push({
+        amount: attributes.amount,
+        id: attributes.ProductId,
+        title: attributes.Product.title,
+      });
+      return productItems;
+    },
+    []
+  );
+  const uniqueInOrderIds = new Set();
+  const inOrderItems: InOrderItem[] = productInOrders
+    .filter((productInOrder) => {
+      const isDuplicate = uniqueInOrderIds.has(productInOrder.InOrderId);
+      uniqueInOrderIds.add(productInOrder.InOrderId);
+      if (!isDuplicate) {
+        return true;
+      }
+
+      return false;
+    })
+    .map((productInOrder) => {
+      return {
+        orderedAt: productInOrder.InOrder.orderedAt,
+        deliveredAt: productInOrder.InOrder.deliveredAt,
+        products: uniqueInOrderProductItems[productInOrder.InOrderId],
+      };
+    });
 
   return { data: inOrderItems };
 };
