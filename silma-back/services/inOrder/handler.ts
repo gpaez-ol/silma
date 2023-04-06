@@ -3,8 +3,8 @@ import { InOrderAttributes, ProductInOrderAttributes } from "database/models";
 import { connectToDatabase } from "database/sequelize";
 import { SilmaAPIFunction, silmaAPIhandler } from "lib/handler/handler";
 import { mapInOrderDetails, getInOrderList } from "logic";
-import { InOrderCreate, InOrderCreateSchema } from "types";
 import { badRequest, writeToConsole } from "utils";
+import { InOrderCreate, InOrderCreateSchema } from "types";
 
 const createInOrderFunction: SilmaAPIFunction = async (
   event: APIGatewayEvent
