@@ -22,14 +22,15 @@ export type InOrderCreate = {
 };
 
 export type InOrderItem = {
+  id: string;
   orderedAt: Date;
   deliveredAt?: Date;
   products: ProductInOrderItem[];
 };
-export type InOrderDetails = { products: ProductInOrderDetails[] } & Omit<
-  InOrderItem,
-  "products"
->;
+export type InOrderDetails = {
+  products: ProductInOrderDetails[];
+  notes?: string;
+} & Omit<InOrderItem, "products" | "id">;
 
 export const InOrderCreateSchema = Joi.object<InOrderCreate>({
   notes: Joi.string().optional().max(longText).label("Notes"),
