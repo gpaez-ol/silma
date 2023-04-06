@@ -1,10 +1,14 @@
 import { DataTypes, Sequelize, ModelDefined, Optional } from "sequelize";
 import { EntityAttributes } from "./base/entity.model";
+import { InOrderAttributes } from "./inOrder.model";
+import { ProductAttributes } from "./product.model";
 
 export type ProductInOrderAttributes = {
   id?: string;
   ProductId?: string;
   InOrderId?: string;
+  InOrder?: InOrderAttributes;
+  Product?: ProductAttributes;
   amount: number;
 } & EntityAttributes;
 
