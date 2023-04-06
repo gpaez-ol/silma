@@ -7,6 +7,7 @@ import { ProductInOrderAttributes } from "./productInOrder.model";
 export type InOrderAttributes = {
   id?: string;
   notes: string;
+  orderedAt: Date;
   deliveredAt: Date;
   products?: ProductAttributes[];
   productInOrder?: ProductInOrderAttributes[];
@@ -28,6 +29,10 @@ export const InOrderModel: GetModel = (sequelize: Sequelize) => {
       },
       notes: {
         type: new DataTypes.STRING(longText),
+        allowNull: false,
+      },
+      orderedAt: {
+        type: DataTypes.DATE,
         allowNull: false,
       },
       deliveredAt: DataTypes.DATE,
