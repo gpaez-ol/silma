@@ -85,7 +85,7 @@ functions:
         - Ref: ServerlessSubnetC
     events:
       - http:
-          path: /create-inorder
+          path: /inorder
           method: post
           cors: true
   getInOrders:
@@ -100,6 +100,20 @@ functions:
     events:
       - http:
           path: /inorder
+          method: get
+          cors: true
+  getInOrderDetails:
+    handler: services/inOrder/handler.getInOrderDetails
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /inorder-details
           method: get
           cors: true
 resources:
