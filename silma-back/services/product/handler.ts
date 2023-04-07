@@ -17,11 +17,12 @@ const createProductFunction: SilmaAPIFunction = async(
     const prodDB: ProductAttributes = {
         createdAt: new Date(),
         title: data.title,
-        author: data.author,
+        description: data.synopsis,
+        //author: data.author,
         type: data.type,
-        synopsis: data.synopsis,
-        salesPrice: data.salesPrice,
-        authorPrice: data.authorPrice,
+        //synopsis: data.synopsis,
+        price: data.salesPrice,
+        /*authorPrice: data.authorPrice,
         gender: data.gender,
         language: data.language,
         format: data.format,
@@ -33,9 +34,10 @@ const createProductFunction: SilmaAPIFunction = async(
         isbn: data.isbn,
         quantity: data.quantity,
         publicationYear: data.publicationYear,
-        edition: data.edition,
+        edition: data.edition,*/
         imageUrl: data.imageUrl,
-        status: data.status
+        status: data.status,
+        deletedAt: null
     };
 
     const db = await connectToDatabase();
@@ -48,3 +50,40 @@ const createProductFunction: SilmaAPIFunction = async(
 export const createProduct: APIGatewayProxyHandler = silmaAPIhandler(
     createProductFunction
 );
+
+const getProductArticlesFunction: SilmaAPIFunction = async(
+    event: APIGatewayEvent
+) => {
+    const db = await connectToDatabase();
+    const { Product } = db;
+    const products = Product.findAll({where:{
+        type: 'article',
+        deletedAt: null
+    }});
+
+    return {data: products};
+};
+
+export const getProductArticles: APIGatewayProxyHandler = silmaAPIhandler(
+    getProductArticlesFunction
+);
+
+//Repetir para Libro
+const getProductBooksFunction: SilmaAPIFunction = async(
+    event: APIGatewayEvent
+) => {
+    const db = await connectToDatabase();
+    const { Product } = db;
+    const products = Product.findAll({where:{
+        type: 'book',
+        deletedAt: null
+    }});
+
+    return {data: products};
+};
+
+export const getProductBooks: APIGatewayProxyHandler = silmaAPIhandler(
+    getProductBooksFunction
+);
+
+//raws y mapeo
