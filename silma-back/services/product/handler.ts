@@ -57,25 +57,18 @@ const getProductArticlesFunction: SilmaAPIFunction = async(
 ) => {
     const db = await connectToDatabase();
     const { Product } = db;
-    /*const products = Product.findAll({where:{
-            type: 'article',
-            deletedAt: null
-        }});
-
-        return {data: products};
-    */
     
     const rawProductArticle = await Product.findAll({
         include:[
             {model: Product, attributes: [
-                "id",
+            /*    "id",
                 "title",
                 "description",
                 "quantity",
                 "salesPrice",
                 "internalCode",
                 "imageUrl",
-                "status"
+                "status"*/
             ]}
         ],
         where: {deletedAt: null}
@@ -100,18 +93,11 @@ const getProductBooksFunction: SilmaAPIFunction = async(
 ) => {
     const db = await connectToDatabase();
     const { Product } = db;
-    /*const products = Product.findAll({where:{
-            type: 'book',
-            deletedAt: null
-        }});
-
-        return {data: products};
-    */
     
     const rawProductBook = await Product.findAll({
         include:[
             {model: Product, attributes: [
-                "id",
+            /*    "id",
                 "title",
                 "author",
                 "synopsis",
@@ -130,7 +116,7 @@ const getProductBooksFunction: SilmaAPIFunction = async(
                 "publicationYear",
                 "edition",
                 "imageUrl",
-                "status"
+                "status"*/
             ]}
         ],
         where: {deletedAt: null}
