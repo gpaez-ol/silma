@@ -3,8 +3,8 @@ import { EntityAttributes } from "./base/entity.model";
 
 export type LocationAttributes = {
     id: number;
-    isBodega: boolean;
-    isPiso: boolean;
+    titulo: string;
+    descripcion: string;
 } & EntityAttributes;
 
 export type LocationCreationAttributes = LocationAttributes;
@@ -21,16 +21,12 @@ export const LocationModel: GetModel = (sequelize: Sequelize) => {
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
         },
-        isBodega: {
-            type: DataTypes.BOOLEAN,
+        titulo: {
+            type: DataTypes.STRING,
             allowNull: false
         },
-        isPiso: {
-            type: DataTypes.BOOLEAN,
-            allowNull: false
-        },
-        updatedAt: {
-            type: new DataTypes.DATE(),
+        descripcion: {
+            type: DataTypes.STRING,
             allowNull: false
         }
     });
