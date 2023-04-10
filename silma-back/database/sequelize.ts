@@ -98,6 +98,7 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   createUserRelationships(User);
   createUserRelationships(Product);
   createUserRelationships(InOrder);
+  createUserRelationships(Location);
   // The Super Many-to-Many relationship
   // https://sequelize.org/docs/v6/advanced-association-concepts/advanced-many-to-many/
   InOrder.belongsToMany(Product, { through: ProductInOrder });
@@ -106,6 +107,8 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   ProductInOrder.belongsTo(InOrder);
   Product.hasMany(ProductInOrder);
   InOrder.hasMany(ProductInOrder);
+  Location.hasMany(ProductInOrder);
+  ProductInOrder.belongsTo(Location);
 
   // End of Super Many-to-Many Relationship
   await sequelize.sync({ force });
