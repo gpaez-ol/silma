@@ -2,6 +2,7 @@ import Joi from 'joi';
 import { longText } from 'utils'; 
 
 export type LocationCreate = {
+    id: number;
     titulo: string;
     descripcion: string;
 };

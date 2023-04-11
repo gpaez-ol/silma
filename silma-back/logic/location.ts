@@ -1,6 +1,5 @@
 import { LocationAttributes } from "database/models";
-import { writeToConsole } from "utils";
-import { LocationCreateSchema, LocationItem } from "types";
+import { LocationItem } from "types";
 
 export const getLocationsList = (locations: LocationAttributes[]): LocationItem[] => {
     const storages: LocationItem[] = locations.map((locations) => {
