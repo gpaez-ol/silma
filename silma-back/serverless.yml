@@ -72,8 +72,36 @@ functions:
     events:
       - http:
           path: /createdb
-          method: post
+          method: get
           cors: true
+  getProductArticles:
+    handler: services/product/handler.getProductArticles
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /product-articles
+          method: get
+          cors: true    
+  getProductBooks:
+    handler: services/product/handler.getProductBooks
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /product-books
+          method: get
+          cors: true  
   createInOrder:
     handler: services/inOrder/handler.createInOrder
     vpc:
