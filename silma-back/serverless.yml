@@ -74,6 +74,20 @@ functions:
           path: /createdb
           method: get
           cors: true
+  createProduct:
+    handler: services/product/handler.createProduct
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /product
+          method: post
+          cors: true  
   getProductArticles:
     handler: services/product/handler.getProductArticles
     vpc:
