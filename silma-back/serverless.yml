@@ -87,7 +87,7 @@ functions:
       - http:
           path: /product
           method: post
-          cors: true  
+          cors: true
   getProductArticles:
     handler: services/product/handler.getProductArticles
     vpc:
@@ -101,7 +101,7 @@ functions:
       - http:
           path: /product-articles
           method: get
-          cors: true    
+          cors: true
   getProductBooks:
     handler: services/product/handler.getProductBooks
     vpc:
@@ -115,7 +115,7 @@ functions:
       - http:
           path: /product-books
           method: get
-          cors: true  
+          cors: true
   createInOrder:
     handler: services/inOrder/handler.createInOrder
     vpc:
@@ -157,6 +157,20 @@ functions:
       - http:
           path: /inorder-details
           method: get
+          cors: true
+  updatedInOrder:
+    handler: services/inOrder/handler.updateInOrder
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /inorder
+          method: put
           cors: true
 resources:
   - ${file(./resources/database.yml)}

@@ -10,7 +10,7 @@ export type InOrderAttributes = {
   orderedAt: Date;
   deliveredAt: Date;
   products?: ProductAttributes[];
-  productInOrder?: ProductInOrderAttributes[];
+  ProductInOrders?: ProductInOrderAttributes[];
 } & EntityAttributes;
 
 export type InOrderCreationAttributes = InOrderAttributes;
