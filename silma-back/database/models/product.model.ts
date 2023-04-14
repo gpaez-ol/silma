@@ -4,7 +4,7 @@ import { longText, shortText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
 
 export type ProductAttributes = {
-  id: string;
+  id?: string;
   title: string;
   author: string;
   type: ProductType;
