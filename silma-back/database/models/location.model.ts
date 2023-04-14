@@ -2,7 +2,7 @@ import { DataTypes, ModelDefined, Sequelize } from "sequelize";
 import { EntityAttributes } from "./base/entity.model";
 
 export type LocationAttributes = {
-    id: number;
+    id?: number;
     titulo: string;
     descripcion: string;
 } & EntityAttributes;
