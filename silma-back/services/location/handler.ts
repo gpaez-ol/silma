@@ -10,13 +10,12 @@ const createLocationFunction: SilmaAPIFunction = async (
     event: APIGatewayEvent
 ) => {
     const data: LocationCreate = JSON.parse(event.body);
-    const error = LocationCreateSchema.validate(data);
+    const { error } = LocationCreateSchema.validate(data);
     if (error) {
         throw badRequest("Wrong data format");
     }
     
     const locationDB: LocationAttributes = {
-        id: data.id,
         titulo: data.titulo,
         descripcion: data.descripcion,
         createdAt: new Date(),

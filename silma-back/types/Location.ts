@@ -2,7 +2,6 @@ import Joi from 'joi';
 import { longText } from 'utils'; 
 
 export type LocationCreate = {
-    id: number;
     titulo: string;
     descripcion: string;
 };
@@ -14,7 +13,7 @@ export type LocationItem = {
 };
 
 export const LocationCreateSchema = Joi.object<LocationCreate>({
-    titulo: Joi.string().optional().max(longText).label("Location title"),
-    descripcion: Joi.string().optional().max(longText).label("Location description")
+    titulo: Joi.string().required().max(longText).label("Location title"),
+    descripcion: Joi.string().required().max(longText).label("Location description")
 });
 
