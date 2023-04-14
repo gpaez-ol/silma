@@ -16,7 +16,7 @@ type GetModel = (
 
 export const UserModel: GetModel = (sequelize: Sequelize) => {
   const Model: ModelDefined<UserAttributes, UserCreationAttributes> =
-    sequelize.define("user", {
+    sequelize.define("User", {
       email: {
         primaryKey: true,
         type: DataTypes.STRING(shortText),

@@ -6,6 +6,15 @@ import {
   UserCreationAttributes,
   UserAttributes,
   EntityAttributes,
+  ProductAttributes,
+  ProductCreationAttributes,
+  ProductModel,
+  InOrderAttributes,
+  InOrderCreationAttributes,
+  InOrderModel,
+  ProductInOrderAttributes,
+  ProductInOrderModel,
+  ProductInOrderCreationAttributes,
 } from "./models";
 
 // Require and initialize outside of your main handler
@@ -30,11 +39,23 @@ type Connection = {
 };
 
 const User = UserModel(sequelize);
+const Product = ProductModel(sequelize);
+const InOrder = InOrderModel(sequelize);
+const ProductInOrder = ProductInOrderModel(sequelize);
 type ModelStructure = {
   User: ModelDefined<UserAttributes, UserCreationAttributes>;
+  Product: ModelDefined<ProductAttributes, ProductCreationAttributes>;
+  InOrder: ModelDefined<InOrderAttributes, InOrderCreationAttributes>;
+  ProductInOrder: ModelDefined<
+    ProductInOrderAttributes,
+    ProductInOrderCreationAttributes
+  >;
 };
 const Models: ModelStructure = {
   User,
+  Product,
+  InOrder,
+  ProductInOrder,
 };
 const connection: Connection = { isConnected: false };
 type GetPromise = (force?: boolean) => Promise<ModelStructure>;
@@ -68,6 +89,18 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   }
   // User Relationships
   createUserRelationships(User);
+  createUserRelationships(Product);
+  createUserRelationships(InOrder);
+  // The Super Many-to-Many relationship
+  // https://sequelize.org/docs/v6/advanced-association-concepts/advanced-many-to-many/
+  InOrder.belongsToMany(Product, { through: ProductInOrder });
+  Product.belongsToMany(InOrder, { through: ProductInOrder });
+  ProductInOrder.belongsTo(Product);
+  ProductInOrder.belongsTo(InOrder);
+  Product.hasMany(ProductInOrder);
+  InOrder.hasMany(ProductInOrder);
+
+  // End of Super Many-to-Many Relationship
   await sequelize.sync({ force });
   await sequelize.authenticate();
   connection.isConnected = true;
@@ -76,6 +109,24 @@ export const connectToDatabase: GetPromise = async (force = false) => {
     await User.create({
       email: "admin@admin.com",
       type: "admin",
+    });
+    await Product.create({
+      id: "54ef44fd-85cb-4f46-95a4-79502c590ec2",
+      title: "Moby Dick",
+      description: "Este libro es de moby dick un autor muy famoso",
+      price: 150,
+      type: "book",
+      status: "valid",
+      imageUrl: "imageUrl",
+    });
+    await Product.create({
+      id: "54ef44fd-85cb-4f46-95a4-79502c590ec3",
+      title: "Dracula",
+      description: "Un vampiro viaja por el mundo",
+      price: 150,
+      type: "book",
+      status: "valid",
+      imageUrl: "imageUrl",
     });
   }
   return Models;
