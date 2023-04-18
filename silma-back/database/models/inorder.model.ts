@@ -1,21 +1,19 @@
-import { DataTypes, ModelDefined, Optional, Sequelize } from "sequelize";
-import { shortText } from "utils";
+import { DataTypes, ModelDefined, Sequelize } from "sequelize";
+import { longText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
+import { ProductAttributes } from "./product.model";
+import { ProductInOrderAttributes } from "./productInOrder.model";
 
 export type InOrderAttributes = {
-  id: string;
-  internalCode: string;
-  orderDate: Date;
-  arriveDate: Date;
+  id?: string;
+  notes: string;
+  orderedAt: Date;
+  deliveredAt: Date;
+  products?: ProductAttributes[];
+  ProductInOrders?: ProductInOrderAttributes[];
 } & EntityAttributes;
-//- Orden de entrada (ingresos): fecha que se pidió, fecha en que llega el material, 
-//con el código interno llame la info: tipo de producto (libro, sticker, etc),
-// titulo, cantidad de lo que entra, bodega (cantidad)(casa de Lorena), piso (aurora)
-export type InOrderCreationAttributes = Optional<
-  InOrderAttributes,
-  "createdBy"
->;
 
+export type InOrderCreationAttributes = InOrderAttributes;
 type GetModel = (
   sequelize: Sequelize
 ) => ModelDefined<InOrderAttributes, InOrderCreationAttributes>;
@@ -29,18 +27,21 @@ export const InOrderModel: GetModel = (sequelize: Sequelize) => {
         allowNull: false,
         defaultValue: DataTypes.UUIDV4,
       },
-      internalCode: {
-        type: new DataTypes.STRING(shortText),
+      notes: {
+        type: new DataTypes.STRING(longText),
         allowNull: false,
       },
-      orderDate: {
-        type: new DataTypes.DATE,
+      orderedAt: {
+        type: DataTypes.DATE,
+        allowNull: false,
       },
-      arriveDate: {
-        type: new DataTypes.DATE
-      },
+      deliveredAt: DataTypes.DATE,
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
+      deletedAt: {
+        type: new DataTypes.DATE(),
+        allowNull: true,
+      },
     });
   return Model;
 };
