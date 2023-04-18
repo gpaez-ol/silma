@@ -24,7 +24,7 @@ export type ProductBookItem = {
     numberPages: number,
     suggestedAges: string,
     weight: number,
-    dimensions: string,
+    dimensions: number,
     internalCode: string,
     isbn: string,
     publicationYear: string,
