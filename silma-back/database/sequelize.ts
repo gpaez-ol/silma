@@ -9,6 +9,12 @@ import {
   ProductAttributes,
   ProductCreationAttributes,
   ProductModel,
+  InOrderAttributes,
+  InOrderCreationAttributes,
+  InOrderModel,
+  ProductInOrderAttributes,
+  ProductInOrderModel,
+  ProductInOrderCreationAttributes,
 } from "./models";
 
 // Require and initialize outside of your main handler
@@ -34,13 +40,22 @@ type Connection = {
 
 const User = UserModel(sequelize);
 const Product = ProductModel(sequelize);
+const InOrder = InOrderModel(sequelize);
+const ProductInOrder = ProductInOrderModel(sequelize);
 type ModelStructure = {
   User: ModelDefined<UserAttributes, UserCreationAttributes>;
   Product: ModelDefined<ProductAttributes, ProductCreationAttributes>;
+  InOrder: ModelDefined<InOrderAttributes, InOrderCreationAttributes>;
+  ProductInOrder: ModelDefined<
+    ProductInOrderAttributes,
+    ProductInOrderCreationAttributes
+  >;
 };
 const Models: ModelStructure = {
   User,
   Product,
+  InOrder,
+  ProductInOrder,
 };
 const connection: Connection = { isConnected: false };
 type GetPromise = (force?: boolean) => Promise<ModelStructure>;
@@ -75,6 +90,17 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   // User Relationships
   createUserRelationships(User);
   createUserRelationships(Product);
+  createUserRelationships(InOrder);
+  // The Super Many-to-Many relationship
+  // https://sequelize.org/docs/v6/advanced-association-concepts/advanced-many-to-many/
+  InOrder.belongsToMany(Product, { through: ProductInOrder });
+  Product.belongsToMany(InOrder, { through: ProductInOrder });
+  ProductInOrder.belongsTo(Product);
+  ProductInOrder.belongsTo(InOrder);
+  Product.hasMany(ProductInOrder);
+  InOrder.hasMany(ProductInOrder);
+
+  // End of Super Many-to-Many Relationship
   await sequelize.sync({ force });
   await sequelize.authenticate();
   connection.isConnected = true;
@@ -87,10 +113,24 @@ export const connectToDatabase: GetPromise = async (force = false) => {
     await Product.create({
       id: "54ef44fd-85cb-4f46-95a4-79502c590ec2",
       title: "Moby Dick",
-      description: "Este libro es de moby dick un autor muy famoso",
-      price: 150,
+      author: "Herman Melville",
       type: "book",
-      status: "valid",
+      synopsis: "moby dick es un libro de una ballena",
+      salesPrice: 150.5,
+      authorPrice: 100.2,
+      gender: "aventura", //drop down menu with a maximum of 3 genders
+      language: "español",
+      format: "ebook",
+      numberPages: 400,
+      suggestedAges: "12-19",
+      weight: 20.2,
+      dimensions: "4.2, 2.2, 5",
+      isbn: "1111111111111", //solo numeros de 13 digitos
+      internalCode: "ASD123",
+      quantity: 8,
+      publicationYear: 2022,
+      edition: "2",
+      status: "activo",
       imageUrl: "imageUrl",
     });
   }
