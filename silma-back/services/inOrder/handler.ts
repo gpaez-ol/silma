@@ -4,7 +4,7 @@ import { connectToDatabase } from "database/sequelize";
 import { SilmaAPIFunction, silmaAPIhandler } from "lib/handler/handler";
 import { mapInOrderDetails, getInOrderList } from "logic";
 import { InOrderCreate, InOrderCreateSchema } from "types";
-import { badRequest } from "utils";
+import { badRequest, writeToConsole } from "utils";
 
 const createInOrderFunction: SilmaAPIFunction = async (
   event: APIGatewayEvent
@@ -12,7 +12,8 @@ const createInOrderFunction: SilmaAPIFunction = async (
   const data: InOrderCreate = JSON.parse(event.body);
   const { error } = InOrderCreateSchema.validate(data);
   if (error) {
-    throw badRequest("Data was wrongly formatted");
+    writeToConsole(error.message);
+    throw badRequest(error.message);
   }
 
   const inOrderDB: InOrderAttributes = {

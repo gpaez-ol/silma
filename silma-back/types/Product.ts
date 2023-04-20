@@ -27,7 +27,7 @@ export type ProductBookItem = {
   dimensions: string;
   internalCode: string;
   isbn: string;
-  publicationYear: string;
+  publicationYear: number;
   edition: string;
   imageUrl: string;
   status: ProductStatus;
