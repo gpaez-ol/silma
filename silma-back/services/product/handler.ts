@@ -6,62 +6,64 @@ import { ProductCreate, ProductCreateSchema } from "types";
 import { getArticlesList, getBooksList } from "logic/product";
 import { badRequest } from "utils";
 
-const createProductFunction: SilmaAPIFunction = async(
-    event: APIGatewayEvent
+const createProductFunction: SilmaAPIFunction = async (
+  event: APIGatewayEvent
 ) => {
-    const data: ProductCreate = JSON.parse(event.body);
-    const error = ProductCreateSchema.validate(data);
-    if (error){
-        throw badRequest("Wrong data format");
-    }
+  const data: ProductCreate = JSON.parse(event.body);
+  const error = ProductCreateSchema.validate(data);
+  if (error) {
+    throw badRequest("Wrong data format");
+  }
 
-    const prodDB: ProductAttributes = {
-        createdAt: new Date(),
-        title: data.title,
-        //description: data.synopsis,
-        author: data.author,
-        type: data.type,
-        synopsis: data.synopsis,
-        price: data.salesPrice,
-        authorPrice: data.authorPrice,
-        gender: data.gender,
-        language: data.language,
-        format: data.format,
-        numberPages: data.numberPages,
-        suggestedAges: data.suggestedAges,
-        weight: data.weight,
-        dimensions: data.dimensions,
-        internalCode: data.internalCode,
-        isbn: data.isbn,
-        quantity: data.quantity,
-        publicationYear: data.publicationYear,
-        edition: data.edition,
-        imageUrl: data.imageUrl,
-        status: data.status,
-        deletedAt: null
-    };
+  const prodDB: ProductAttributes = {
+    createdAt: new Date(),
+    title: data.title,
+    //description: data.synopsis,
+    author: data.author,
+    type: data.type,
+    synopsis: data.synopsis,
+    salesPrice: data.salesPrice,
+    authorPrice: data.authorPrice,
+    gender: data.gender,
+    language: data.language,
+    format: data.format,
+    numberPages: data.numberPages,
+    suggestedAges: data.suggestedAges,
+    weight: data.weight,
+    dimensions: data.dimensions,
+    internalCode: data.internalCode,
+    isbn: data.isbn,
+    quantity: data.quantity,
+    publicationYear: data.publicationYear,
+    edition: data.edition,
+    imageUrl: data.imageUrl,
+    status: data.status,
+    deletedAt: null,
+  };
 
-    const db = await connectToDatabase();
-    const { Product } = db;
-    const newProduct = await Product.create(prodDB);
-    
-    return {data: newProduct};
+  const db = await connectToDatabase();
+  const { Product } = db;
+  const newProduct = await Product.create(prodDB);
+
+  return { data: newProduct };
 };
 
 export const createProduct: APIGatewayProxyHandler = silmaAPIhandler(
-    createProductFunction
+  createProductFunction
 );
 
-const getProductArticlesFunction: SilmaAPIFunction = async(
-    event: APIGatewayEvent
+const getProductArticlesFunction: SilmaAPIFunction = async (
+  event: APIGatewayEvent
 ) => {
-    const db = await connectToDatabase();
-    const { Product } = db;
-    
-    const rawProductArticle = await Product.findAll({
-        include:[
-            {model: Product, attributes: [
-            /*    "id",
+  const db = await connectToDatabase();
+  const { Product } = db;
+
+  const rawProductArticle = await Product.findAll({
+    include: [
+      {
+        model: Product,
+        attributes: [
+          /*    "id",
                 "title",
                 "description",
                 "quantity",
@@ -69,35 +71,38 @@ const getProductArticlesFunction: SilmaAPIFunction = async(
                 "internalCode",
                 "imageUrl",
                 "status"*/
-            ]}
         ],
-        where: {deletedAt: null}
-    });
-    
-    const productArticles = rawProductArticle.map((rawProduct)=>
-        rawProduct.get({plain: true})
-    );
-    
-    const articleList = getArticlesList(productArticles)
+      },
+    ],
+    where: { deletedAt: null },
+  });
 
-    return {data: articleList}
+  const productArticles = rawProductArticle.map((rawProduct) =>
+    rawProduct.get({ plain: true })
+  );
+
+  const articleList = getArticlesList(productArticles);
+
+  return { data: articleList };
 };
 
 export const getProductArticles: APIGatewayProxyHandler = silmaAPIhandler(
-    getProductArticlesFunction
+  getProductArticlesFunction
 );
 
 //Repetir para Libro
-const getProductBooksFunction: SilmaAPIFunction = async(
-    event: APIGatewayEvent
+const getProductBooksFunction: SilmaAPIFunction = async (
+  event: APIGatewayEvent
 ) => {
-    const db = await connectToDatabase();
-    const { Product } = db;
-    
-    const rawProductBook = await Product.findAll({
-        include:[
-            {model: Product, attributes: [
-            /*    "id",
+  const db = await connectToDatabase();
+  const { Product } = db;
+
+  const rawProductBook = await Product.findAll({
+    include: [
+      {
+        model: Product,
+        attributes: [
+          /*    "id",
                 "title",
                 "author",
                 "synopsis",
@@ -117,20 +122,21 @@ const getProductBooksFunction: SilmaAPIFunction = async(
                 "edition",
                 "imageUrl",
                 "status"*/
-            ]}
         ],
-        where: {deletedAt: null}
-    });
-    
-    const productBooks = rawProductBook.map((rawProduct)=>
-        rawProduct.get({plain: true})
-    );
-    
-    const bookList = getBooksList(productBooks)
+      },
+    ],
+    where: { deletedAt: null },
+  });
 
-    return {data: bookList}    
+  const productBooks = rawProductBook.map((rawProduct) =>
+    rawProduct.get({ plain: true })
+  );
+
+  const bookList = getBooksList(productBooks);
+
+  return { data: bookList };
 };
 
 export const getProductBooks: APIGatewayProxyHandler = silmaAPIhandler(
-    getProductBooksFunction
+  getProductBooksFunction
 );
