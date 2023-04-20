@@ -15,13 +15,17 @@ const createInOrderFunction: SilmaAPIFunction = async (
     writeToConsole(error.message);
     throw badRequest(error.message);
   }
-
+  const db = await connectToDatabase();
+  const { InOrder, ProductInOrder } = db;
+  const count = await InOrder.count({ where: { deletedAt: null } });
+  const internalCode = `OE-${count}`;
   const inOrderDB: InOrderAttributes = {
     createdAt: new Date(),
     orderedAt: data.orderedAt,
     deliveredAt: data.deliveredAt ?? null,
     notes: data.notes,
     deletedAt: null,
+    internalCode: internalCode,
   };
   //checks that the product is unique
   const key = "id";
@@ -31,8 +35,6 @@ const createInOrderFunction: SilmaAPIFunction = async (
   if (uniqueProducts.length !== data.products.length) {
     throw badRequest("Products should be unique");
   }
-  const db = await connectToDatabase();
-  const { InOrder, ProductInOrder } = db;
   const newInOrder = await InOrder.create(inOrderDB);
   const productOrderDb: ProductInOrderAttributes[] = data.products.map(
     (product) => {
@@ -76,6 +78,7 @@ const updateInOrderFunction: SilmaAPIFunction = async (
     notes: data.notes,
     deletedAt: oldInOrder.deliveredAt,
     ProductInOrders: oldInOrder.ProductInOrders,
+    internalCode: oldInOrder.internalCode,
   };
   newInOrder.ProductInOrders = newInOrder.ProductInOrders.map(
     (productInOrder) => {

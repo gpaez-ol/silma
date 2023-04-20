@@ -1,5 +1,5 @@
 import { DataTypes, ModelDefined, Sequelize } from "sequelize";
-import { longText } from "utils";
+import { longText, shortText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
 import { ProductAttributes } from "./product.model";
 import { ProductInOrderAttributes } from "./productInOrder.model";
@@ -7,6 +7,7 @@ import { ProductInOrderAttributes } from "./productInOrder.model";
 export type InOrderAttributes = {
   id?: string;
   notes: string;
+  internalCode: string;
   orderedAt: Date;
   deliveredAt: Date;
   products?: ProductAttributes[];
@@ -29,6 +30,10 @@ export const InOrderModel: GetModel = (sequelize: Sequelize) => {
       },
       notes: {
         type: new DataTypes.STRING(longText),
+        allowNull: false,
+      },
+      internalCode: {
+        type: new DataTypes.STRING(shortText),
         allowNull: false,
       },
       orderedAt: {
