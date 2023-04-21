@@ -108,6 +108,7 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   if (force == true) {
     await User.create({
       email: "admin@admin.com",
+      password: "$2a$10$EHOF4vG0mk93BQjuFWe1XedxwbHBGRIM7JGI5X6CNW2NWMbF2EugK",
       type: "admin",
     });
     await Product.create({
