@@ -172,5 +172,19 @@ functions:
           path: /inorder
           method: put
           cors: true
+  login:
+    handler: services/user/handler.login
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /login
+          method: put
+          cors: true
 resources:
   - ${file(./resources/database.yml)}
