@@ -1,5 +1,4 @@
 import { ProductAttributes } from "database/models";
-import { writeToConsole } from "utils";
 import { ProductArticleItem, ProductBookItem } from "types";
 
 //Get articulos
