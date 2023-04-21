@@ -1,5 +1,4 @@
 import Joi from "joi";
-import { longText } from "utils";
 
 export type ProductArticleItem = {
   title: string;
