@@ -40,9 +40,9 @@ export type ProductCreate = {
   quantity: number;
   salesPrice: number;
   authorPrice?: number;
-  gender: ProductGender;
-  language: ProductLanguage;
-  format: ProductFormat;
+  gender?: ProductGender;
+  language?: ProductLanguage;
+  format?: ProductFormat;
   numberPages?: number;
   suggestedAges?: string;
   weight?: number;
@@ -69,7 +69,7 @@ export const ProductCreateSchema = Joi.object<ProductCreate>({
   edition: Joi.string().optional(),
 });
 
-export const productTypes = ["book", "sticker", "stickerPack"] as const;
+export const productTypes = ["book", "article"] as const;
 export type ProductType = typeof productTypes[number];
 
 export const productStatus = ["activo", "inactivo"] as const;
