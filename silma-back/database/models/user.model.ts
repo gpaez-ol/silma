@@ -1,10 +1,11 @@
 import { DataTypes, ModelDefined, Optional, Sequelize } from "sequelize";
 import { UserType, userTypes } from "types";
-import { shortText } from "utils";
+import { longText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
 
 export type UserAttributes = {
   email: string;
+  password: string;
   type: UserType;
 } & EntityAttributes;
 
@@ -19,7 +20,11 @@ export const UserModel: GetModel = (sequelize: Sequelize) => {
     sequelize.define("User", {
       email: {
         primaryKey: true,
-        type: DataTypes.STRING(shortText),
+        type: DataTypes.STRING(longText),
+        allowNull: false,
+      },
+      password: {
+        type: DataTypes.STRING(longText),
         allowNull: false,
       },
       type: {
