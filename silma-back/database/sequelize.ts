@@ -118,7 +118,7 @@ export const connectToDatabase: GetPromise = async (force = false) => {
       synopsis: "moby dick es un libro de una ballena",
       salesPrice: 150.5,
       authorPrice: 100.2,
-      gender: "aventura", //drop down menu with a maximum of 3 genders
+      genre: "aventura", //drop down menu with a maximum of 3 genders
       language: "español",
       format: "ebook",
       numberPages: 400,

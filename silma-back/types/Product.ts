@@ -17,7 +17,7 @@ export type ProductBookItem = {
   quantity: number;
   salesPrice: number;
   authorPrice: number;
-  gender: ProductGender;
+  genre: ProductGenre;
   language: ProductLanguage;
   format: ProductFormat;
   numberPages: number;
@@ -40,7 +40,7 @@ export type ProductCreate = {
   quantity: number;
   salesPrice: number;
   authorPrice?: number;
-  gender?: ProductGender;
+  genre?: ProductGenre;
   language?: ProductLanguage;
   format?: ProductFormat;
   numberPages?: number;
@@ -58,9 +58,15 @@ export type ProductCreate = {
 export const ProductCreateSchema = Joi.object<ProductCreate>({
   quantity: Joi.number().min(0),
   salesPrice: Joi.number().min(0),
+  title:Joi.string(),
+  type: Joi.string(),
+  synopsis: Joi.string(),
+  imageUrl: Joi.string(),
+  internalCode: Joi.string(),
+  status: Joi.string(),
   //Atributos de libro opcionales
   authorPrice: Joi.number().optional().min(0),
-  numberPages: Joi.number().optional().min(10),
+  numberPages: Joi.number().optional().min(0),
   weight: Joi.number().optional().min(1),
   dimensions: Joi.string().optional(),
   suggestedAges: Joi.string().optional(),
@@ -69,7 +75,7 @@ export const ProductCreateSchema = Joi.object<ProductCreate>({
   edition: Joi.string().optional(),
   author: Joi.string().optional(),
   format: Joi.string().optional(),
-  gender: Joi.string().optional(),
+  genre: Joi.string().optional(),
   language: Joi.string().optional(),
 });
 
@@ -79,7 +85,7 @@ export type ProductType = typeof productTypes[number];
 export const productStatus = ["activo", "inactivo"] as const;
 export type ProductStatus = typeof productStatus[number];
 
-export const productGender = [
+export const productGenre = [
   "fantasía",
   "magia",
   "aventura",
@@ -87,7 +93,7 @@ export const productGender = [
   "sobrenatural",
   "romance",
 ] as const;
-export type ProductGender = typeof productGender[number];
+export type ProductGenre = typeof productGenre[number];
 
 export const productLanguage = ["español", "inglés"] as const;
 export type ProductLanguage = typeof productLanguage[number];

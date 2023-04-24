@@ -10,11 +10,12 @@ const createProductFunction: SilmaAPIFunction = async (
   event: APIGatewayEvent
 ) => {
   const data: ProductCreate = JSON.parse(event.body);
-  /*const error = ProductCreateSchema.validate(data);
+  const {error} = ProductCreateSchema.validate(data);
   if (error) {
+    //console.log(error)
     throw badRequest("Wrong data format");
-  }*/
-
+  }
+  
   const prodDB: ProductAttributes = {
     createdAt: new Date(),
     title: data.title,
@@ -23,7 +24,7 @@ const createProductFunction: SilmaAPIFunction = async (
     synopsis: data.synopsis,
     salesPrice: data.salesPrice,
     authorPrice: data.authorPrice,
-    gender: data.gender,
+    genre: data.genre,
     language: data.language,
     format: data.format,
     numberPages: data.numberPages,
@@ -88,7 +89,7 @@ const getProductBooksFunction: SilmaAPIFunction = async () => {
           "quantity",
           "salesPrice",
           "authorPrice",
-          "gender",
+          "genre",
           "language",
           "format",
           "numberPages",
