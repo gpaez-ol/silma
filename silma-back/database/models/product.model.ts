@@ -205,6 +205,7 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
+      deletedAt: DataTypes.DATE
     });
   return Model;
 };
