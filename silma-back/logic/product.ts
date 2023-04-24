@@ -33,7 +33,7 @@ export const getBooksList = (
       quantity: products.quantity,
       salesPrice: products.salesPrice,
       authorPrice: products.authorPrice,
-      gender: products.gender,
+      genre: products.genre,
       language: products.language,
       format: products.format,
       numberPages: products.numberPages,

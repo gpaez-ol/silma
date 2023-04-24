@@ -2,8 +2,8 @@ import { DataTypes, ModelDefined, Optional, Sequelize } from "sequelize";
 import {
   productFormat,
   ProductFormat,
-  productGender,
-  ProductGender,
+  productGenre,
+  ProductGenre,
   productLanguage,
   ProductLanguage,
   ProductStatus,
@@ -22,7 +22,7 @@ export type ProductAttributes = {
   synopsis: string;
   salesPrice: number;
   authorPrice: number;
-  gender: ProductGender;
+  genre: ProductGenre;
   language: ProductLanguage;
   format: ProductFormat;
   numberPages: number;
@@ -101,12 +101,12 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
           },
         },
       },
-      gender: {
+      genre: {
         type: DataTypes.STRING,
         allowNull: false,
         validate: {
           customValidator: (value) => {
-            if (!productGender.includes(value)) {
+            if (!productGenre.includes(value)) {
               throw new Error("No es una opción válida");
             }
           },
