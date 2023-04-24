@@ -10,10 +10,10 @@ const createProductFunction: SilmaAPIFunction = async (
   event: APIGatewayEvent
 ) => {
   const data: ProductCreate = JSON.parse(event.body);
-  const error = ProductCreateSchema.validate(data);
+  /*const error = ProductCreateSchema.validate(data);
   if (error) {
     throw badRequest("Wrong data format");
-  }
+  }*/
 
   const prodDB: ProductAttributes = {
     createdAt: new Date(),
@@ -55,9 +55,6 @@ const getProductArticlesFunction: SilmaAPIFunction = async () => {
   const db = await connectToDatabase();
   const { Product } = db;
   const rawProductArticle = await Product.findAll({
-    include: [
-      {
-        model: Product,
         attributes: [
           "type",
           "title",
@@ -68,8 +65,6 @@ const getProductArticlesFunction: SilmaAPIFunction = async () => {
           "imageUrl",
           "status"
         ],
-      },
-    ],
     where: { deletedAt: null, type: "article"},
   });
   const productArticles = rawProductArticle.map((rawProduct) =>
@@ -85,9 +80,6 @@ const getProductBooksFunction: SilmaAPIFunction = async () => {
   const db = await connectToDatabase();
   const { Product } = db;
   const rawProductBook = await Product.findAll({
-    include: [
-      {
-        model: Product,
         attributes: [
           "type",
           "title",
@@ -110,8 +102,6 @@ const getProductBooksFunction: SilmaAPIFunction = async () => {
           "imageUrl",
           "status"
         ],
-      },
-    ],
     where: { deletedAt: null, type: "book"},
   });
   const productBooks = rawProductBook.map((rawProduct) =>

@@ -34,7 +34,7 @@ export type ProductBookItem = {
 
 export type ProductCreate = {
   title: string;
-  author: string;
+  author?: string;
   type: ProductType;
   synopsis: string;
   quantity: number;
@@ -67,6 +67,10 @@ export const ProductCreateSchema = Joi.object<ProductCreate>({
   isbn: Joi.string().optional(),
   publicationYear: Joi.number().optional(),
   edition: Joi.string().optional(),
+  author: Joi.string().optional(),
+  format: Joi.string().optional(),
+  gender: Joi.string().optional(),
+  language: Joi.string().optional(),
 });
 
 export const productTypes = ["book", "article"] as const;
