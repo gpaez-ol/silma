@@ -16,8 +16,8 @@ const createLocationFunction: SilmaAPIFunction = async (
     }
     
     const locationDB: LocationAttributes = {
-        titulo: data.titulo,
-        descripcion: data.descripcion,
+        title: data.title,
+        description: data.description,
         createdAt: new Date(),
         deletedAt: null
     };
@@ -38,9 +38,7 @@ const getLocationFunction: SilmaAPIFunction = async () => {
     const { Location } = db;
 
     const rawLocations = await Location.findAll({
-        include: [
-            { model: Location, attributes: ["id", "titulo", "descripcion"] }
-        ],
+        attributes: ["id", "title", "description"],
         where: { deletedAt: null }
     });
 

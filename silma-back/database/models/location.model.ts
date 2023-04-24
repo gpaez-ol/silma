@@ -3,8 +3,8 @@ import { EntityAttributes } from "./base/entity.model";
 
 export type LocationAttributes = {
     id?: number;
-    titulo: string;
-    descripcion: string;
+    title: string;
+    description: string;
 } & EntityAttributes;
 
 export type LocationCreationAttributes = LocationAttributes;
@@ -21,13 +21,17 @@ export const LocationModel: GetModel = (sequelize: Sequelize) => {
             allowNull: false,
             defaultValue: DataTypes.UUIDV4
         },
-        titulo: {
+        title: {
             type: DataTypes.STRING,
             allowNull: false
         },
-        descripcion: {
+        description: {
             type: DataTypes.STRING,
             allowNull: false
+        },
+        deletedAt: {
+            type: new DataTypes.DATE(),
+            allowNull: true
         }
     });
     return Model;
