@@ -12,7 +12,6 @@ const createProductFunction: SilmaAPIFunction = async (
   const data: ProductCreate = JSON.parse(event.body);
   const {error} = ProductCreateSchema.validate(data);
   if (error) {
-    //console.log(error)
     throw badRequest("Wrong data format");
   }
   
