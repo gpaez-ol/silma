@@ -65,18 +65,18 @@ export const ProductCreateSchema = Joi.object<ProductCreate>({
   internalCode: Joi.string(),
   status: Joi.string(),
   //Atributos de libro opcionales
-  authorPrice: Joi.number().optional().min(0),
-  numberPages: Joi.number().optional().min(0),
-  weight: Joi.number().optional().min(1),
-  dimensions: Joi.string().optional(),
-  suggestedAges: Joi.string().optional(),
-  isbn: Joi.string().optional(),
-  publicationYear: Joi.number().optional(),
-  edition: Joi.string().optional(),
-  author: Joi.string().optional(),
-  format: Joi.string().optional(),
-  genre: Joi.string().optional(),
-  language: Joi.string().optional(),
+  authorPrice: Joi.number().optional().allow(null).min(0),
+  numberPages: Joi.number().optional().allow(null).min(0),
+  weight: Joi.number().optional().allow(null).min(1),
+  dimensions: Joi.string().optional().allow(null),
+  suggestedAges: Joi.string().optional().allow(null),
+  isbn: Joi.string().optional().allow(null),
+  publicationYear: Joi.number().optional().allow(null),
+  edition: Joi.string().optional().allow(null),
+  author: Joi.string().optional().allow(null),
+  format: Joi.string().optional().allow(null),
+  genre: Joi.string().optional().allow(null),
+  language: Joi.string().optional().allow(null),
 });
 
 export const productTypes = ["book", "article"] as const;
@@ -91,12 +91,13 @@ export const productGenre = [
   "aventura",
   "suspenso",
   "sobrenatural",
-  "romance",
+  "romance", 
+  null
 ] as const;
 export type ProductGenre = typeof productGenre[number];
 
-export const productLanguage = ["español", "inglés"] as const;
+export const productLanguage = ["español", "inglés", null] as const;
 export type ProductLanguage = typeof productLanguage[number];
 
-export const productFormat = ["pasta blanda", "pasta dura", "ebook"] as const;
+export const productFormat = ["pasta blanda", "pasta dura", "ebook", null] as const;
 export type ProductFormat = typeof productFormat[number];

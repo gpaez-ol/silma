@@ -62,7 +62,6 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       author: {
         type: new DataTypes.STRING(shortText),
-        allowNull: false,
       },
       type: {
         type: DataTypes.STRING,
@@ -92,7 +91,6 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       authorPrice: {
         type: DataTypes.DOUBLE,
-        allowNull: false,
         validate: {
           customValidator: (value) => {
             if (value < 0) {
@@ -103,7 +101,6 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       genre: {
         type: DataTypes.STRING,
-        allowNull: false,
         validate: {
           customValidator: (value) => {
             if (!productGenre.includes(value)) {
@@ -114,7 +111,6 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       language: {
         type: DataTypes.STRING,
-        allowNull: false,
         validate: {
           customValidator: (value) => {
             if (!productLanguage.includes(value)) {
@@ -125,7 +121,6 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       format: {
         type: DataTypes.STRING,
-        allowNull: false,
         validate: {
           customValidator: (value) => {
             if (!productFormat.includes(value)) {
@@ -136,7 +131,6 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       numberPages: {
         type: DataTypes.DOUBLE,
-        allowNull: false,
         validate: {
           customValidator: (value) => {
             if (value < 0) {
@@ -147,11 +141,9 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       suggestedAges: {
         type: new DataTypes.STRING(shortText),
-        allowNull: false,
       },
       weight: {
         type: new DataTypes.DOUBLE(),
-        allowNull: false,
         validate: {
           customValidator: (value) => {
             if (value < 0) {
@@ -162,11 +154,9 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       dimensions: {
         type: new DataTypes.STRING(shortText),
-        allowNull: false,
       },
       isbn: {
         type: DataTypes.STRING,
-        allowNull: false,
         validate: {
           is: /^[0-9]{13}$/, // Regular expression for 13 digits from 0 to 9
         },
@@ -181,11 +171,9 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       publicationYear: {
         type: new DataTypes.DOUBLE(),
-        allowNull: false,
       },
       edition: {
         type: new DataTypes.STRING(shortText),
-        allowNull: false,
       },
       status: {
         type: DataTypes.STRING,
