@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 //MaterialUI
 import { makeStyles } from "@material-ui/core/styles";
@@ -63,7 +64,7 @@ export default function Login(classes: any) {
                         </IconButton>
                     </div>
                     <div>
-                        <WhiteButton>Iniciar sesión</WhiteButton>
+                        <Link to='/products'><WhiteButton>Iniciar sesión</WhiteButton> </Link>
                     </div>
                    {/* <div className={classes.line}>
                         <p> <Button sx={{ color:'#202843', fontWeight: 'bold'}} className={classes.link}> Crear cuenta nueva </Button></p>
