@@ -11,7 +11,7 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import Logo from '../img/SilmaBlanco.png';
+import Logo from "../img/SilmaBlanco.png";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -19,7 +19,7 @@ const pages = ["Productos", "Ordenes", "Surtido Interno"];
 const settings = ["Cerrar Sesión"];
 
 function ResponsiveAppBar(classes: any) {
-    classes = useStyles();
+  classes = useStyles();
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -43,14 +43,19 @@ function ResponsiveAppBar(classes: any) {
     setAnchorElUser(null);
   };
 
-  const logoButton = <Link to='/' style={{ textDecoration: 'none' }}>  <img src={Logo} style={{ padding: 10 }} width="110px"></img> </Link>
+  const logoButton = (
+    <Link to="/" style={{ textDecoration: "none" }}>
+      {" "}
+      <img src={Logo} style={{ padding: 10 }} width="110px"></img>{" "}
+    </Link>
+  );
 
   return (
     <AppBar position={"static"} className={classes.bar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-        <Box sx={{ display: { xs: 'none', md: 'flex' } }}> {logoButton}</Box>
-         {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />*/}
+          <Box sx={{ display: { xs: "none", md: "flex" } }}> {logoButton}</Box>
+          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />*/}
           {/*<Typography
             variant="h6"
             noWrap
@@ -103,12 +108,34 @@ function ResponsiveAppBar(classes: any) {
                   <Typography textAlign = "center">{page}</Typography>
                 </MenuItem>
               ))}*/}
-              <Link to='/product-books'><MenuItem><Typography className={classes.title}>Productos</Typography></MenuItem></Link>
-              <Link to='/storage'><MenuItem><Typography className={classes.title}>Surtido Interno</Typography></MenuItem></Link>
-              <Link to='/inorder'><MenuItem><Typography className={classes.title}>Ordenes</Typography></MenuItem></Link>
+              <Link to="/product-books">
+                <MenuItem>
+                  <Typography className={classes.title}>Productos</Typography>
+                </MenuItem>
+              </Link>
+              <Link to="/products">
+                <MenuItem>
+                  <Typography className={classes.title}>Productos</Typography>
+                </MenuItem>
+              </Link>
+              <Link to="/storage">
+                <MenuItem>
+                  <Typography className={classes.title}>
+                    Surtido Interno
+                  </Typography>
+                </MenuItem>
+              </Link>
+              <Link to="/inorder">
+                <MenuItem>
+                  <Typography className={classes.title}>Ordenes</Typography>
+                </MenuItem>
+              </Link>
             </Menu>
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}> {logoButton}</Box>
+          <Box sx={{ display: { xs: "flex", md: "none" }, mr: 1 }}>
+            {" "}
+            {logoButton}
+          </Box>
           {/*<AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />*/}
           {/*<Typography
             variant="h5"
@@ -138,9 +165,28 @@ function ResponsiveAppBar(classes: any) {
                 {page}
               </Button>
             ))}*/}
-            <Link to='/product-books'><MenuItem><Typography className={classes.title}>Productos</Typography></MenuItem></Link>
-              <Link to='/storage'><MenuItem><Typography className={classes.title}>Surtido Interno</Typography></MenuItem></Link>
-              <Link to='/inorder'><MenuItem><Typography className={classes.title}>Ordenes</Typography></MenuItem></Link>
+            <Link to="/product-books">
+              <MenuItem>
+                <Typography className={classes.title}>Productos</Typography>
+              </MenuItem>
+            </Link>
+            <Link to="/products">
+              <MenuItem>
+                <Typography className={classes.title}>Productos</Typography>
+              </MenuItem>
+            </Link>
+            <Link to="/storage">
+              <MenuItem>
+                <Typography className={classes.title}>
+                  Surtido Interno
+                </Typography>
+              </MenuItem>
+            </Link>
+            <Link to="/inorder">
+              <MenuItem>
+                <Typography className={classes.title}>Ordenes</Typography>
+              </MenuItem>
+            </Link>
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -166,9 +212,10 @@ function ResponsiveAppBar(classes: any) {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <Link to='/login' ><MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
+                <Link to="/login">
+                  <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
                 </Link>
               ))}
             </Menu>
@@ -180,11 +227,12 @@ function ResponsiveAppBar(classes: any) {
 }
 export default ResponsiveAppBar;
 
-const useStyles = makeStyles(() =>({
-    bar: {
-        backgroundImage: 'linear-gradient(to bottom, rgba(16, 95, 158,1)0%, rgba(16, 95, 158,1)50%, rgba(16, 95, 158,1)100%)',
-      },
-      title:{
-        color:'white'
-      }
-  }))
+const useStyles = makeStyles(() => ({
+  bar: {
+    backgroundImage:
+      "linear-gradient(to bottom, rgba(16, 95, 158,1)0%, rgba(16, 95, 158,1)50%, rgba(16, 95, 158,1)100%)",
+  },
+  title: {
+    color: "white",
+  },
+}));
