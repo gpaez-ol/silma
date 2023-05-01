@@ -113,11 +113,6 @@ function ResponsiveAppBar(classes: any) {
                   <Typography className={classes.title}>Productos</Typography>
                 </MenuItem>
               </Link>
-              <Link to="/products">
-                <MenuItem>
-                  <Typography className={classes.title}>Productos</Typography>
-                </MenuItem>
-              </Link>
               <Link to="/storage">
                 <MenuItem>
                   <Typography className={classes.title}>
@@ -166,11 +161,6 @@ function ResponsiveAppBar(classes: any) {
               </Button>
             ))}*/}
             <Link to="/product-books">
-              <MenuItem>
-                <Typography className={classes.title}>Productos</Typography>
-              </MenuItem>
-            </Link>
-            <Link to="/products">
               <MenuItem>
                 <Typography className={classes.title}>Productos</Typography>
               </MenuItem>
