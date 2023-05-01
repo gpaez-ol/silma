@@ -17,48 +17,39 @@ export default function App(classes: any) {
 
   const {productList} = values;
 
-  const mountBookList = async (e: React.MouseEvent) => {
+  const mountArticleList = async (e: React.MouseEvent) => {
     e.preventDefault();
     try{
-      axios.get(API_url + 'product-books').then( res => {
-        const books = res.data;
-        console.log(books);
-        setValues({productList: books});
-        navigate('/product-books');
+      axios.get(API_url + 'product-articles').then( res => {
+        const articles = res.data;
+        console.log(articles);
+        setValues({productList: articles});
       });
     }catch(err){
       console.log("Loading error")
     }
   }
 
-  const mountArticles = () =>{
-    navigate('/product-articles');
+  const mountBooks = () => {
+    navigate('/product-books');
   }
+
   return (
     <>
     <div>
       <h2 className = {classes.title}>Productos</h2>
     </div>
     <div className = {classes.buttonContainer}>
-      <WhiteButton onClick={mountBookList}>Libros</WhiteButton>
-      <WhiteButton onClick={mountArticles}>Artículos</WhiteButton>
+      <WhiteButton onClick={mountBooks}>Libros</WhiteButton>
+      <WhiteButton onClick={mountArticleList}>Artículos</WhiteButton>
     </div>
     <MDBTable align='middle'>
       <MDBTableHead light>
        <tr>
           <th scope='col'>Código interno</th>
-          <th scope='col'>Libro</th>
+          <th scope='col'>Articulo</th>
           <th scope='col'>Cantidad</th>
           <th scope='col'>Precio de venta</th>
-          <th scope='col'>Precio de autor</th>
-          <th scope='col'>Genero</th>
-          <th scope='col'>Formato</th>
-          <th scope='col'>Idioma</th>
-          <th scope='col'>Edición</th>
-          <th scope='col'>Número de páginas</th>
-          <th scope='col'>Edades sugeridad</th>
-          <th scope='col'>Dimensiones</th>
-          <th scope='col'>ISBN</th>
           <th scope='col'>Editar</th>
         </tr>
       </MDBTableHead>
@@ -81,15 +72,6 @@ export default function App(classes: any) {
           </td>
           <td> 10 </td>
           <td> $500 </td>
-          <td> $400 </td>
-          <td>Fantasía</td>
-          <td>Pasta blanda</td>
-          <td>Español</td>
-          <td>1</td>
-          <td>800</td>
-          <td>18+</td>
-          <td>10x15</td>
-          <td>1234567891234</td>
           <td>
             <MDBBtn color='link' rounded size='sm'>
               Edit
@@ -114,15 +96,6 @@ export default function App(classes: any) {
           </td>
           <td> 15 </td>
           <td> $600 </td>
-          <td> $500 </td>
-          <td>Aventura</td>
-          <td>E-book</td>
-          <td>Inglés</td>
-          <td>4</td>
-          <td>1000</td>
-          <td>14+</td>
-          <td>10x15</td>
-          <td>1234567891234</td>
           <td>
             <MDBBtn color='link' rounded size='sm'>
               Edit
@@ -147,15 +120,6 @@ export default function App(classes: any) {
           </td>
           <td> 5 </td>
           <td> $700 </td>
-          <td> $600 </td>
-          <td>Magia</td>
-          <td>Pasta dura</td>
-          <td>Español</td>
-          <td>2</td>
-          <td>400</td>
-          <td>10+</td>
-          <td>10x15</td>
-          <td>1234567891234</td>
           <td>
             <MDBBtn color='link' rounded size='sm'>
               Edit
