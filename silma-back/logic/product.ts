@@ -50,3 +50,24 @@ export const getBooksList = (
   });
   return books;
 };
+
+/**
+ * This  function builds an internal code using the author's name and item number.
+ * @param {string} authorName - A string representing the name of the author of a particular item.
+ * @param {number} itemNumber - The itemNumber parameter is a number that represents the unique
+ * identifier of an item.
+ * @returns The function `buildInternalCode` returns a string that is a combination of the capital
+ * letters in the `authorName` parameter and the `itemNumber` parameter, separated by a hyphen.
+ */
+export const buildInternalCode = (
+  itemNumber: number,
+  authorName: string | null
+): string => {
+  // TODO: Add validation for authors that have similar Names in order for the internal code to be created correctly
+  const capitalLetters =
+    authorName === null
+      ? "ART"
+      : authorName.replace(/[a-z]/g, "").replace(/\s/g, "");
+  const internalCode = `${capitalLetters}-${itemNumber}`;
+  return internalCode;
+};
