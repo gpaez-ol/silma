@@ -144,15 +144,6 @@ export const connectToDatabase: GetPromise = async (force = false) => {
       status: "activo",
       imageUrl: "imageUrl",
     });
-    await Product.create({
-      id: "54ef44fd-85cb-4f46-95a4-79502c590ec3",
-      title: "Dracula",
-      description: "Un vampiro viaja por el mundo",
-      price: 150,
-      type: "book",
-      status: "valid",
-      imageUrl: "imageUrl",
-    });
   }
   return Models;
 };
