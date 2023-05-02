@@ -12,7 +12,27 @@ export default function App(classes: any) {
   const API_url = "http://localhost:3000/local/";
 
   const [values, setValues] = useState({
-    productList: []
+    productList: [{
+      internalCode:'',
+      title:'',
+      author:'',
+      synopsis:'',
+      salesPrice:0,
+      authorPrice:0,
+      genre:'',
+      language:'',
+      format:'',
+      numberPages:0,
+      suggestedAges:'',
+      weight:0,
+      dimensions:'',
+      isbn:'',
+      quantity:'',
+      publicationYear:'',
+      edition:'',
+      imageUrl:'',
+      status:''
+    }]
   });
 
   const {productList} = values;
@@ -63,6 +83,41 @@ export default function App(classes: any) {
         </tr>
       </MDBTableHead>
       <MDBTableBody>
+        {values.productList.map(product => (
+          <tr>
+            <td>{product.internalCode}</td>
+            <td>
+              <div className='d-flex align-items-center'>
+                <img
+                  src={product.imageUrl}
+                  alt=''
+                  style={{ width: '45px', height: '45px' }}
+                  className='rounded-circle'
+                />
+                <div className='ms-3'>
+                  <p className='fw-bold mb-1'>{product.title}<MDBBadge color='success' pill>{product.status}</MDBBadge> </p>
+                  <p className='text-muted mb-0'>{product.author} - {product.publicationYear} </p>
+                </div>
+              </div>
+            </td>
+            <td> {product.quantity}</td>
+            <td> {product.salesPrice} </td>
+            <td> {product.authorPrice} </td>
+            <td> {product.genre} </td>
+            <td> {product.format} </td>
+            <td> {product.language} </td>
+            <td> {product.edition} </td>
+            <td> {product.numberPages} </td>
+            <td> {product.suggestedAges} </td>
+            <td> {product.dimensions} </td>
+            <td> {product.isbn} </td>
+            <td>
+              <MDBBtn color='link' rounded size='sm'>
+                Edit
+              </MDBBtn>
+            </td>
+          </tr>
+        ))}
         <tr>
           <td>A1234</td>
           <td>
