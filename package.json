@@ -8,5 +8,8 @@
     "dev-front": "cd ./silma-front && yarn start",
     "build-front": "cd ./silma-front && yarn build",
     "dev-api": "cd ./silma-back && yarn run dev"
+  },
+  "dependencies": {
+    "mdb-react-ui-kit": "^6.0.0"
   }
 }
