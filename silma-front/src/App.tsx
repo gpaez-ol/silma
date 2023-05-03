@@ -10,6 +10,8 @@ import Products from "./pages/Products";
 import Storage from "./pages/Storage";
 import InOrder from "./pages/InOrder";
 import Navbar from "./components/Navbar";
+import ProductArt from './pages/ProductArt';
+
 
 function App() {
   return (
@@ -27,18 +29,18 @@ function App() {
         theme="dark"
       />
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route
-          element={
+        <Route path="/login" element={<Login/>} />
+        <Route element={
             <>
               <Navbar />
               <Outlet />
             </>
           }
         >
-          <Route path="/products" element={<Products />} />
-          <Route path="/storage" element={<Storage />} />
-          <Route path="/inorder" element={<InOrder />} />
+        <Route path="/product-books" element={<Products/>} />
+        <Route path="/product-articles" element={<ProductArt/>} />
+        <Route path="/storage" element={<Storage/>} />
+        <Route path="/inorder" element={<InOrder/>} />
         </Route>
       </Routes>
     </Router>

@@ -103,7 +103,7 @@ function ResponsiveAppBar(classes: any) {
                   <Typography textAlign = "center">{page}</Typography>
                 </MenuItem>
               ))}*/}
-              <Link to='/products'><MenuItem><Typography className={classes.title}>Productos</Typography></MenuItem></Link>
+              <Link to='/product-books'><MenuItem><Typography className={classes.title}>Productos</Typography></MenuItem></Link>
               <Link to='/storage'><MenuItem><Typography className={classes.title}>Surtido Interno</Typography></MenuItem></Link>
               <Link to='/inorder'><MenuItem><Typography className={classes.title}>Ordenes</Typography></MenuItem></Link>
             </Menu>
@@ -138,7 +138,7 @@ function ResponsiveAppBar(classes: any) {
                 {page}
               </Button>
             ))}*/}
-            <Link to='/products'><MenuItem><Typography className={classes.title}>Productos</Typography></MenuItem></Link>
+            <Link to='/product-books'><MenuItem><Typography className={classes.title}>Productos</Typography></MenuItem></Link>
               <Link to='/storage'><MenuItem><Typography className={classes.title}>Surtido Interno</Typography></MenuItem></Link>
               <Link to='/inorder'><MenuItem><Typography className={classes.title}>Ordenes</Typography></MenuItem></Link>
           </Box>
