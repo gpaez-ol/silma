@@ -17,25 +17,27 @@ import { EntityAttributes } from "./base/entity.model";
 export type ProductAttributes = {
   id?: string;
   title: string;
-  author: string;
   type: ProductType;
   synopsis: string;
   salesPrice: number;
-  authorPrice: number;
-  genre: ProductGenre;
-  language: ProductLanguage;
-  format: ProductFormat;
-  numberPages: number;
-  suggestedAges: string;
-  weight: number;
-  dimensions: string;
-  isbn: string;
   internalCode: string;
   quantity: number;
-  publicationYear: number;
-  edition: string;
   imageUrl: string;
   status: ProductStatus;
+
+  // Atributos de libro opcionales
+  authorPrice?: number;
+  numberPages?: number;
+  weight?: number;
+  dimensions?: string;
+  suggestedAges?: string;
+  isbn?: string;
+  publicationYear?: number;
+  edition?: string;
+  author?: string;
+  format?: ProductFormat;
+  genre?: ProductGenre;
+  language?: ProductLanguage;
 } & EntityAttributes;
 
 export type ProductCreationAttributes = Optional<
@@ -133,8 +135,10 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
         type: DataTypes.DOUBLE,
         validate: {
           customValidator: (value) => {
-            if (value < 0) {
-              throw new Error("El numero de paginas no puede ser negativo");
+            if (value < 1) {
+              throw new Error(
+                "El numero de paginas no puede ser negativo ni 0"
+              );
             }
           },
         },
@@ -193,7 +197,7 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
-      deletedAt: DataTypes.DATE
+      deletedAt: DataTypes.DATE,
     });
   return Model;
 };

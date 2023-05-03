@@ -34,39 +34,36 @@ export type ProductBookItem = {
 
 export type ProductCreate = {
   title: string;
-  author?: string;
   type: ProductType;
   synopsis: string;
   quantity: number;
   salesPrice: number;
+  imageUrl: string;
+  // Atributos de libro opcionales
   authorPrice?: number;
-  genre?: ProductGenre;
-  language?: ProductLanguage;
-  format?: ProductFormat;
   numberPages?: number;
-  suggestedAges?: string;
   weight?: number;
   dimensions?: string;
-  internalCode: string;
+  suggestedAges?: string;
   isbn?: string;
   publicationYear?: number;
   edition?: string;
-  imageUrl: string;
-  status: ProductStatus;
+  author?: string;
+  format?: ProductFormat;
+  genre?: ProductGenre;
+  language?: ProductLanguage;
 };
 
 export const ProductCreateSchema = Joi.object<ProductCreate>({
   quantity: Joi.number().min(0),
   salesPrice: Joi.number().min(0),
-  title:Joi.string(),
+  title: Joi.string(),
   type: Joi.string(),
   synopsis: Joi.string(),
   imageUrl: Joi.string(),
-  internalCode: Joi.string(),
-  status: Joi.string(),
   //Atributos de libro opcionales
   authorPrice: Joi.number().optional().allow(null).min(0),
-  numberPages: Joi.number().optional().allow(null).min(0),
+  numberPages: Joi.number().optional().allow(null).min(1),
   weight: Joi.number().optional().allow(null).min(1),
   dimensions: Joi.string().optional().allow(null),
   suggestedAges: Joi.string().optional().allow(null),
@@ -80,10 +77,10 @@ export const ProductCreateSchema = Joi.object<ProductCreate>({
 });
 
 export const productTypes = ["book", "article"] as const;
-export type ProductType = typeof productTypes[number];
+export type ProductType = (typeof productTypes)[number];
 
 export const productStatus = ["activo", "inactivo"] as const;
-export type ProductStatus = typeof productStatus[number];
+export type ProductStatus = (typeof productStatus)[number];
 
 export const productGenre = [
   "fantasía",
@@ -91,13 +88,18 @@ export const productGenre = [
   "aventura",
   "suspenso",
   "sobrenatural",
-  "romance", 
-  null
+  "romance",
+  null,
 ] as const;
-export type ProductGenre = typeof productGenre[number];
+export type ProductGenre = (typeof productGenre)[number];
 
 export const productLanguage = ["español", "inglés", null] as const;
-export type ProductLanguage = typeof productLanguage[number];
+export type ProductLanguage = (typeof productLanguage)[number];
 
-export const productFormat = ["pasta blanda", "pasta dura", "ebook", null] as const;
-export type ProductFormat = typeof productFormat[number];
+export const productFormat = [
+  "pasta blanda",
+  "pasta dura",
+  "ebook",
+  null,
+] as const;
+export type ProductFormat = (typeof productFormat)[number];

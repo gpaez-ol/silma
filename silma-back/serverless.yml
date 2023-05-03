@@ -130,6 +130,34 @@ functions:
           path: /inorder
           method: post
           cors: true
+  createLocation:
+    handler: services/location/handler.createLocation
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /location
+          method: post
+          cors: true
+  getLocation:
+    handler: services/location/handler.getLocation
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /location
+          method: get
+          cors: true
   getInOrders:
     handler: services/inOrder/handler.getInOrders
     vpc:
@@ -158,7 +186,7 @@ functions:
           path: /inorder-details
           method: get
           cors: true
-  updatedInOrder:
+  updateInOrder:
     handler: services/inOrder/handler.updateInOrder
     vpc:
       securityGroupIds:

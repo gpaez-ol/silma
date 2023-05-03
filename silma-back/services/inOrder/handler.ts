@@ -3,8 +3,8 @@ import { InOrderAttributes, ProductInOrderAttributes } from "database/models";
 import { connectToDatabase } from "database/sequelize";
 import { SilmaAPIFunction, silmaAPIhandler } from "lib/handler/handler";
 import { mapInOrderDetails, getInOrderList } from "logic";
-import { InOrderCreate, InOrderCreateSchema } from "types";
 import { badRequest, writeToConsole } from "utils";
+import { InOrderCreate, InOrderCreateSchema } from "types";
 
 const createInOrderFunction: SilmaAPIFunction = async (
   event: APIGatewayEvent
@@ -17,8 +17,8 @@ const createInOrderFunction: SilmaAPIFunction = async (
   }
   const db = await connectToDatabase();
   const { InOrder, ProductInOrder } = db;
-  const count = await InOrder.count({ where: { deletedAt: null } });
-  const internalCode = `OE-${count}`;
+  let count = await InOrder.count({ where: { deletedAt: null } });
+  const internalCode = `OE-${++count}`;
   const inOrderDB: InOrderAttributes = {
     createdAt: new Date(),
     orderedAt: data.orderedAt,
