@@ -23,16 +23,18 @@ export default function App(classes: any) {
     }]
   });
 
-  const {productList} = values;
-
   const mountArticleList = async (e: React.MouseEvent) => {
     e.preventDefault();
     try{
-      axios.get(API_url + 'product-articles').then( res => {
+      /*axios.get(API_url + 'product-articles').then( res => {
         const articles = res.data;
         console.log(articles);
         setValues({productList: articles});
-      });
+      });*/
+      const articles = await axios.get(API_url + 'product-articles');
+      console.log(articles.data);
+      setValues({productList: articles.data});
+      navigate('/product-articles');
     }catch(err){
       console.log("Loading error")
     }
@@ -62,8 +64,8 @@ export default function App(classes: any) {
         </tr>
       </MDBTableHead>
       <MDBTableBody>
-        {values.productList.map(product => (
-          <tr>
+        {values.productList.map((product, index) => (
+          <tr key={index}>
             <td> {product.internalCode} </td>
             <td>
               <div className='d-flex align-items-center'>
