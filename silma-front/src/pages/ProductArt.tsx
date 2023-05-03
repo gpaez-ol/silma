@@ -56,6 +56,17 @@ export default function App(classes: any) {
     };
   }, []);
 
+  useEffect(() => {
+    let ignore = false;
+
+    if (!ignore) {
+      mountArticleList();
+    }
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   return (
     <>
       <div>
