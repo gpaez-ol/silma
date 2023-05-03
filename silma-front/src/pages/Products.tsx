@@ -35,17 +35,20 @@ export default function App(classes: any) {
     }]
   });
 
-  const {productList} = values;
-
-  const mountBookList = async (e: React.MouseEvent) => {
-    e.preventDefault();
+  const mountBookList = async () => {
     try{
-      axios.get(API_url + 'product-books').then( res => {
+      /*
+        axios.get(API_url + 'product-books').then( res => {
         const books = res.data;
         console.log(books);
         setValues({productList: books});
         navigate('/product-books');
-      });
+        });
+      */
+      const books = await axios.get(API_url + 'product-books');
+      console.log(books.data);
+      setValues({productList: books.data});
+      navigate('/product-books');
     }catch(err){
       console.log("Loading error")
     }
@@ -54,6 +57,14 @@ export default function App(classes: any) {
   const mountArticles = () =>{
     navigate('/product-articles');
   }
+
+  /*useEffect(()=>{
+    window.addEventListener('load',mountBookList);
+    return()=>{
+      window.removeEventListener('load',mountBookList);
+    }
+  });*/
+
   return (
     <>
     <div>
@@ -83,8 +94,8 @@ export default function App(classes: any) {
         </tr>
       </MDBTableHead>
       <MDBTableBody>
-        {values.productList.map(product => (
-          <tr>
+        {values.productList.map((product, index) => (
+          <tr key={index}>
             <td>{product.internalCode}</td>
             <td>
               <div className='d-flex align-items-center'>
