@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import './Products.css';
@@ -23,26 +23,29 @@ export default function App(classes: any) {
     }]
   });
 
-  const mountArticleList = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    try{
-      /*axios.get(API_url + 'product-articles').then( res => {
-        const articles = res.data;
-        console.log(articles);
-        setValues({productList: articles});
-      });*/
-      const articles = await axios.get(API_url + 'product-articles');
-      console.log(articles.data);
-      setValues({productList: articles.data});
+  const mountArticleList = async () => {
+    try {
+      const { data } = await axios.get(API_url + 'product-articles');
+      const dataUnstructured = data.data; 
+      setValues({productList: dataUnstructured});
       navigate('/product-articles');
-    }catch(err){
-      console.log("Loading error")
+    } catch (error) {
+      console.log(error);
     }
   }
 
   const mountBooks = () => {
     navigate('/product-books');
   }
+
+  useEffect(() => {
+    let ignore = false;
+    
+    if (!ignore) {
+      mountArticleList();
+    } 
+    return () => { ignore = true; }
+  }, []);
 
   return (
     <>
