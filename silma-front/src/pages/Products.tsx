@@ -45,10 +45,10 @@ export default function App(classes: any) {
         navigate('/product-books');
         });
       */
-      const books = await axios.get(API_url + 'product-books');
-      console.log(books.data);
-      setValues({productList: books.data});
-      navigate('/product-books');
+      const { data } = await axios.get(API_url + 'product-books');
+      const dataUnstructured = data.data; 
+      setValues({productList: dataUnstructured});
+      //navigate('/product-books');
     }catch(err){
       console.log("Loading error")
     }
