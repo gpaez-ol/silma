@@ -1,15 +1,20 @@
 import React, {useState} from 'react';
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import './Products.css';
+import './AddProduct.css'
 import { WhiteButton } from '../components/ButtonProduct';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
 
 export default function App(classes: any) {
   classes = useStyles();
   const navigate = useNavigate();
   const API_url = "http://localhost:3000/local/";
+
+  const [basicModal, setBasicModal] = useState(false);
+  const toggleShow = () => setBasicModal(!basicModal);
 
   const [values, setValues] = useState({
     productList: [{
@@ -65,11 +70,155 @@ export default function App(classes: any) {
     }
   });*/
 
+  const [internalCode, seInternalCode] = useState('');
+  const [title, setTitle] = useState('');
+  const [field, setField] = useState<string[]>([]);
+  const [items , setItems] = useState<string[]>([]);
+    
   return (
     <>
     <div>
       <h2 className = {classes.title}>Productos</h2>
     </div>
+
+    <>
+      <MDBBtn className= {classes.formContainer}  onClick={toggleShow}>+</MDBBtn>
+      <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
+        <MDBModalDialog size='lg'>
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Agregar Libro</MDBModalTitle>
+              <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
+            </MDBModalHeader>
+
+            <MDBModalBody>
+            <Form>
+                <Form.Group className="mb-3" controlId="formGridPassword">
+                  <Form.Label>Título</Form.Label>
+                  <Form.Control type="text" /*placeholder="Moby Dick"*/ required/>
+                </Form.Group>
+
+              <Row className="mb-3">
+                <Form.Group as={Col} controlId="formGridAddress1">
+                  <Form.Label>Autor</Form.Label>
+                  <Form.Control type="text" /*placeholder="Herman Melville"*/ required/>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formGridAddress1">
+                  <Form.Label>Año</Form.Label>
+                  <Form.Control type="text" /*placeholder="1900"*/ required/>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formGridAddress1">
+                  <Form.Label>Edicion</Form.Label>
+                  <Form.Control type="text" /*placeholder="1"*/ required/>
+                </Form.Group>
+              </Row>
+
+              <Row className="mb-3">
+
+                <Form.Group as={Col} controlId="formGridState">
+                  <Form.Label>Precio Venta</Form.Label>
+                  <Form.Control type="text" /*placeholder="600"*//>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formGridZip">
+                  <Form.Label>Precio Autor</Form.Label>
+                  <Form.Control type="text" /*placeholder="500"*//>
+                </Form.Group>
+              </Row>
+
+              <Row className="mb-3">
+                <Form.Group as={Col} controlId="formGridCity">
+                  <Form.Label>Genero</Form.Label>
+                  <Form.Select defaultValue="Selecciona...">
+                    <option> </option>
+                    <option>Fantasía</option>
+                    <option>Magia</option>
+                    <option>Aventura</option>
+                    <option>Suspenso</option>
+                    <option>Sobrenatural</option>
+                    <option>Romance</option>
+                  </Form.Select>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formGridState">
+                  <Form.Label>Formato</Form.Label>
+                  <Form.Control type="text" /*placeholder="600"*//>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formGridZip">
+                  <Form.Label>Idioma</Form.Label>
+                  <Form.Control type="text" /*placeholder="500"*//>
+                </Form.Group>
+              </Row>
+
+              <Row className="mb-3">
+                <Form.Group as={Col} controlId="formGridCity">
+                  <Form.Label>Número de paginas</Form.Label>
+                  <Form.Control type="text" /*placeholder="800"*//>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formGridState">
+                  <Form.Label>Edades sugeridas</Form.Label>
+                  <Form.Control type="text" /*placeholder="18+"*//>
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formGridZip">
+                  <Form.Label>Dimensiones</Form.Label>
+                  <Form.Control type="text" /*placeholder="10x15"*//>
+                </Form.Group>
+              </Row>
+              
+              <Form.Group className="mb-3" controlId="formGridAddress2">
+                <Form.Label>ISBN</Form.Label>
+                <Form.Control /*placeholder="1234567891234" *//>
+              </Form.Group>
+
+              <Form.Group controlId="formImage" className="mb-3">
+                <Form.Label>Imagen</Form.Label>
+                <Form.Control type="file" />
+              </Form.Group>
+
+            </Form>
+            {/*<Form>
+              <FormGroup controlId="formInternalCode">
+                <Form.Label>Código Interno</Form.Label>
+                <Form.Control type="text" value={internalCode} onChange={(e) => seInternalCode(e.target.value)} />
+              </FormGroup>
+              <Form.Group controlId="formImage" className="mb-3">
+                <Form.Label>Imagen</Form.Label>
+                <Form.Control type="file" />
+              </Form.Group>
+              <FormGroup controlId="formTitle">
+                <Form.Label>Título</Form.Label>
+                <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+              </FormGroup>
+
+              <Form.Select defaultValue="Selecciona...">
+                    <option>Fantasía</option>
+                    <option>Magia</option>
+                    <option>Aventura</option>
+                    <option>Suspenso</option>
+                    <option>Sobrenatural</option>
+                    <option>Romance</option>
+                  </Form.Select>
+              
+  </Form> */}
+
+            </MDBModalBody>
+
+            <MDBModalFooter>
+              <MDBBtn color='secondary' onClick={toggleShow}>
+                Cerrar
+              </MDBBtn>
+              <MDBBtn>Guardar Cambios</MDBBtn>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
+    </>
+
     <div className = {classes.buttonContainer}>
       <WhiteButton onClick={mountBookList}>Libros</WhiteButton>
       <WhiteButton onClick={mountArticles}>Artículos</WhiteButton>
@@ -241,8 +390,8 @@ const useStyles = makeStyles(() =>({
     //fontWeight: 'bold',
     paddingTop: '25px',
     paddingBottom: '25px',
-    color:'black',
-    fontfamily: 'Bebas Neue'
+    color:'rgba(223,31,38,1)0%',
+    fontfamily: 'Bebas Neue',
   },
   buttonContainer:{
     justifyContent: 'space-evenly',
@@ -251,10 +400,23 @@ const useStyles = makeStyles(() =>({
     width: '30%',
     margin: 'auto',
     paddingBottom: '25px',
+    color:'rgba(223,31,38,1)0%',
+    fontfamily: 'Bebas Neue',
   },
   tableHead:{
     backgroundImage: 'linear-gradient(to bottom, rgba(223,31,38,1)0%, rgba(223,31,38,1)50%, rgba(223,31,38,1)100%)',
     color: "#202843",
     fontWeight: "bolder",
+  },
+  formContainer: {
+    position: "absolute",
+    left: "95%",
+    top: "12%",
+    margin: "auto",
+    padding: "10px",
+    width: "3%",
+    maxWidth: "200px",
+    background: "rgba(16,95,158,1)100%",
+    //fontWeight: 'bold',
   }
 }))
