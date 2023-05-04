@@ -103,20 +103,10 @@ export default function App(classes: any) {
                 <div className='ms-3'>
                   <p className='fw-bold mb-1'>
                     {product.title} 
-                    {product.status === 'activo'? <MDBBadge color='success' pill>Activo</MDBBadge> : <MDBBadge color='danger' pill>Inactivo</MDBBadge>} 
+                    {product.status === 'activo'? <MDBBadge color='success' pill>Activo</MDBBadge> : <MDBBadge color='danger' pill>Inactivo</MDBBadge>}
                   </p>
+                  <p className='text-muted mb-0'>{product.author} - {product.publicationYear} </p> 
                 </div>
-              </div>
-              <div>
-                <MDBPopover btnChildren='Ver más' placement='right'>
-                  <MDBPopoverHeader>
-                   <p> {product.title} </p>
-                   <p className='text-muted mb-0'>{product.author} - {product.publicationYear} </p> 
-                  </MDBPopoverHeader>
-                  <MDBPopoverBody>
-                    <p> Descripción: {product.synopsis}</p>
-                  </MDBPopoverBody>
-                </MDBPopover>
               </div>
             </td>
             <td> {product.quantity} </td>

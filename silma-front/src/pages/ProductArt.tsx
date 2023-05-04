@@ -83,16 +83,6 @@ export default function App(classes: any) {
                     {product.status === 'activo'? <MDBBadge color='success' pill>Activo</MDBBadge> : <MDBBadge color='danger' pill>Inactivo</MDBBadge>} 
                   </p>
                 </div>
-                <div>
-                  <MDBPopover btnChildren='Ver más' placement='right'>
-                    <MDBPopoverHeader>
-                      <p> {product.title} </p>
-                    </MDBPopoverHeader>
-                    <MDBPopoverBody>
-                      <p> Descripción: {product.synopsis}</p>
-                    </MDBPopoverBody>
-                  </MDBPopover>
-                </div>
               </div>
             </td>
             <td> {product.quantity} </td>
