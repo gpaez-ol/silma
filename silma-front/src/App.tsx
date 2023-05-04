@@ -11,6 +11,16 @@ import InOrder from "./pages/InOrder";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { createMuiTheme, createTheme, ThemeProvider } from '@mui/material';
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      //'Franklin Gothic Medium Cond',
+      'Bebas Neue',
+      'sans-serif',
+    ].join(','),
+  },});
 
 function App() {
   return (
@@ -27,6 +37,7 @@ function App() {
         pauseOnHover
         theme="dark"
       />
+      <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route
@@ -43,6 +54,7 @@ function App() {
           <Route path="/inorder" element={<InOrder />} />
         </Route>
       </Routes>
+      </ThemeProvider>
     </Router>
   );
 }
