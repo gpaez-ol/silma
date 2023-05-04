@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBPopover, MDBPopoverBody, MDBPopoverHeader  } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import './Products.css';
 import { WhiteButton } from '../components/ButtonProduct';
@@ -83,6 +83,16 @@ export default function App(classes: any) {
                     {product.status === 'activo'? <MDBBadge color='success' pill>Activo</MDBBadge> : <MDBBadge color='danger' pill>Inactivo</MDBBadge>} 
                   </p>
                 </div>
+                <div>
+                  <MDBPopover btnChildren='Ver más' placement='right'>
+                    <MDBPopoverHeader>
+                      <p> {product.title} </p>
+                    </MDBPopoverHeader>
+                    <MDBPopoverBody>
+                      <p> Descripción: {product.synopsis}</p>
+                    </MDBPopoverBody>
+                  </MDBPopover>
+                </div>
               </div>
             </td>
             <td> {product.quantity} </td>
@@ -94,78 +104,6 @@ export default function App(classes: any) {
             </td>
           </tr>
         ))}
-        <tr>
-          <td>A1234</td>
-          <td>
-            <div className='d-flex align-items-center'>
-              <img
-                src='https://m.media-amazon.com/images/I/61ZMLiTYxDL.jpg'
-                alt=''
-                style={{ width: '45px', height: '45px' }}
-                className='rounded-circle'
-              />
-              <div className='ms-3'>
-                <p className='fw-bold mb-1'>Dracula  <MDBBadge color='success' pill> Disponible </MDBBadge> </p>
-                <p className='text-muted mb-0'>Bram Stoker - 1897 </p>
-              </div>
-            </div>
-          </td>
-          <td> 10 </td>
-          <td> $500 </td>
-          <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
-          </td>
-        </tr>
-        <tr>
-          <td>B1234</td>
-          <td>
-            <div className='d-flex align-items-center'>
-              <img
-                src='https://m.media-amazon.com/images/I/71Qe2yIBFmL.jpg'
-                alt=''
-                style={{ width: '45px', height: '45px' }}
-                className='rounded-circle'
-              />
-              <div className='ms-3'>
-                <p className='fw-bold mb-1'>Moby Dick  <MDBBadge color='danger' pill> Agotado </MDBBadge> </p>
-                <p className='text-muted mb-0'>Herman Melvill - 1900</p>
-              </div>
-            </div>
-          </td>
-          <td> 15 </td>
-          <td> $600 </td>
-          <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
-          </td>
-        </tr>
-        <tr>
-          <td>C1234</td>
-          <td>
-            <div className='d-flex align-items-center'>
-              <img
-                src='https://imagessl2.casadellibro.com/a/l/t5/92/9788419087492.jpg'
-                alt=''
-                style={{ width: '45px', height: '45px' }}
-                className='rounded-circle'
-              />
-              <div className='ms-3'>
-                <p className='fw-bold mb-1'>El principito  <MDBBadge color='success' pill> Disponible </MDBBadge>  </p>
-                <p className='fw-normal mb-1'>Antoine de Saint-Exupéry - 1943</p>
-              </div>
-            </div>
-          </td>
-          <td> 5 </td>
-          <td> $700 </td>
-          <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
-          </td>
-        </tr>
       </MDBTableBody>
     </MDBTable>
     </>
