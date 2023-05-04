@@ -93,23 +93,23 @@ export default function App(classes: any) {
 
             <MDBModalBody>
             <Form>
-                <Form.Group className="mb-3" controlId="formGridPassword">
+                <Form.Group className="mb-3" controlId="formTitle">
                   <Form.Label>Título</Form.Label>
                   <Form.Control type="text" /*placeholder="Moby Dick"*/ required/>
                 </Form.Group>
 
               <Row className="mb-3">
-                <Form.Group as={Col} controlId="formGridAddress1">
+                <Form.Group as={Col} controlId="formAuthor">
                   <Form.Label>Autor</Form.Label>
                   <Form.Control type="text" /*placeholder="Herman Melville"*/ required/>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridAddress1">
+                <Form.Group as={Col} controlId="formYear">
                   <Form.Label>Año</Form.Label>
                   <Form.Control type="text" /*placeholder="1900"*/ required/>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridAddress1">
+                <Form.Group as={Col} controlId="formEdition">
                   <Form.Label>Edicion</Form.Label>
                   <Form.Control type="text" /*placeholder="1"*/ required/>
                 </Form.Group>
@@ -117,19 +117,19 @@ export default function App(classes: any) {
 
               <Row className="mb-3">
 
-                <Form.Group as={Col} controlId="formGridState">
+                <Form.Group as={Col} controlId="formSellPrice">
                   <Form.Label>Precio Venta</Form.Label>
                   <Form.Control type="text" /*placeholder="600"*//>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridZip">
+                <Form.Group as={Col} controlId="formSellAuthor">
                   <Form.Label>Precio Autor</Form.Label>
                   <Form.Control type="text" /*placeholder="500"*//>
                 </Form.Group>
               </Row>
 
               <Row className="mb-3">
-                <Form.Group as={Col} controlId="formGridCity">
+                <Form.Group as={Col} controlId="formGendre">
                   <Form.Label>Genero</Form.Label>
                   <Form.Select defaultValue="Selecciona...">
                     <option> </option>
@@ -142,35 +142,35 @@ export default function App(classes: any) {
                   </Form.Select>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridState">
+                <Form.Group as={Col} controlId="formFormat">
                   <Form.Label>Formato</Form.Label>
                   <Form.Control type="text" /*placeholder="600"*//>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridZip">
+                <Form.Group as={Col} controlId="formLanguage">
                   <Form.Label>Idioma</Form.Label>
                   <Form.Control type="text" /*placeholder="500"*//>
                 </Form.Group>
               </Row>
 
               <Row className="mb-3">
-                <Form.Group as={Col} controlId="formGridCity">
+                <Form.Group as={Col} controlId="formPageNum">
                   <Form.Label>Número de paginas</Form.Label>
                   <Form.Control type="text" /*placeholder="800"*//>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridState">
+                <Form.Group as={Col} controlId="formAges">
                   <Form.Label>Edades sugeridas</Form.Label>
                   <Form.Control type="text" /*placeholder="18+"*//>
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridZip">
+                <Form.Group as={Col} controlId="formDimensions">
                   <Form.Label>Dimensiones</Form.Label>
                   <Form.Control type="text" /*placeholder="10x15"*//>
                 </Form.Group>
               </Row>
               
-              <Form.Group className="mb-3" controlId="formGridAddress2">
+              <Form.Group className="mb-3" controlId="formISBN">
                 <Form.Label>ISBN</Form.Label>
                 <Form.Control /*placeholder="1234567891234" *//>
               </Form.Group>
