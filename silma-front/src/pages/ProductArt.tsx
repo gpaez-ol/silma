@@ -1,15 +1,20 @@
 import React, {useState} from 'react';
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import './Products.css';
+import './AddProduct.css'
 import { WhiteButton } from '../components/ButtonProduct';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
 
 export default function App(classes: any) {
   classes = useStyles();
   const navigate = useNavigate();
   const API_url = "http://localhost:3000/local/";
+
+  const [basicModal, setBasicModal] = useState(false);
+  const toggleShow = () => setBasicModal(!basicModal);
 
   const [values, setValues] = useState({
     productList: [{
@@ -43,12 +48,63 @@ export default function App(classes: any) {
   const mountBooks = () => {
     navigate('/product-books');
   }
+  const [internalCode, seInternalCode] = useState('');
+  const [title, setTitle] = useState('');
+  const [field, setField] = useState<string[]>([]);
+  const [items , setItems] = useState<string[]>([]);
 
   return (
     <>
     <div>
       <h2 className = {classes.title}>Productos</h2>
     </div>
+
+    <>
+      <MDBBtn className= {classes.formContainer}  onClick={toggleShow}>+</MDBBtn>
+      <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
+        <MDBModalDialog size='lg'>
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Agregar Artículo</MDBModalTitle>
+              <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
+            </MDBModalHeader>
+
+            <MDBModalBody>
+            <Form>
+              <Form.Group className="mb-3" controlId="formTitle">
+                <Form.Label>Título</Form.Label>
+                <Form.Control type="text" /*placeholder="Moby Dick"*/ required/>
+              </Form.Group>
+
+              <Form.Group className="mb-3" controlId="formAuthor">
+                <Form.Label>Autor</Form.Label>
+                <Form.Control type="text" /*placeholder="Moby Dick"*/ required/>
+              </Form.Group>
+              
+              <Form.Group className="mb-3" controlId="formSellPrice">
+                <Form.Label>Precio venta</Form.Label>
+                <Form.Control type="text" /*placeholder="Moby Dick"*/ required/>
+              </Form.Group>
+
+              <Form.Group controlId="formImage" className="mb-3">
+                <Form.Label>Imagen</Form.Label>
+                <Form.Control type="file" />
+              </Form.Group>
+
+            </Form>
+            </MDBModalBody>
+
+            <MDBModalFooter>
+              <MDBBtn color='secondary' onClick={toggleShow}>
+                Cerrar
+              </MDBBtn>
+              <MDBBtn>Guardar Cambios</MDBBtn>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
+    </>
+
     <div className = {classes.buttonContainer}>
       <WhiteButton onClick={mountBooks}>Libros</WhiteButton>
       <WhiteButton onClick={mountArticleList}>Artículos</WhiteButton>
@@ -189,5 +245,16 @@ const useStyles = makeStyles(() =>({
     backgroundImage: 'linear-gradient(to bottom, rgba(223,31,38,1)0%, rgba(223,31,38,1)50%, rgba(223,31,38,1)100%)',
     color: "#202843",
     fontWeight: "bolder",
+  },
+  formContainer: {
+    position: "absolute",
+    left: "95%",
+    top: "12%",
+    margin: "auto",
+    padding: "10px",
+    width: "3%",
+    maxWidth: "200px",
+    background: "rgba(16,95,158,1)100%",
+    //fontWeight: 'bold',
   }
 }))
