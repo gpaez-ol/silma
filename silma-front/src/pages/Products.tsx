@@ -13,6 +13,7 @@ export default function App(classes: any) {
   const navigate = useNavigate();
   const API_url = "http://localhost:3000/local/";
 
+
   const [basicModal, setBasicModal] = useState(false);
   const toggleShow = () => setBasicModal(!basicModal);
 
@@ -70,11 +71,64 @@ export default function App(classes: any) {
     }
   });*/
 
-  const [internalCode, seInternalCode] = useState('');
-  const [title, setTitle] = useState('');
-  const [field, setField] = useState<string[]>([]);
-  const [items , setItems] = useState<string[]>([]);
+  const handleChange = (name: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    //console.log(e.target.value);
+    setValues({ ...values, [name]: e.target.value });
+  };
+
+
+  const handleSubmit = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    setBasicModal(!basicModal);
+    console.log(values.productList[0].author);
+    try {
+      const { data } = await axios.post(API_url + 'product-books', {
+        title: values.productList[0].title,
+        author: values.productList[0].author,
+        synopsis: values.productList[0].synopsis,
+        salesPrice: values.productList[0].salesPrice,
+        authorPrice: values.productList[0].authorPrice,
+        genre: 'fantasia',
+        language: values.productList[0].language,
+        format: values.productList[0].format,
+        numberPages: values.productList[0].numberPages,
+        suggestedAges:values.productList[0].suggestedAges,
+        weight: values.productList[0].weight,
+        dimensions: values.productList[0].dimensions,
+        isbn: values.productList[0].isbn,
+        quantity: values.productList[0].quantity,
+        publicationYear: values.productList[0].publicationYear,
+        edition: values.productList[0].edition,
+        imageUrl: values.productList[0].imageUrl,
+        status: 'activo'
+      });
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  
+    //e.preventDefault();
     
+    /*
+    try {
+        const { data } = await axios.post(API_url + 'product-books', {
+            title,
+            author
+        });
+
+        console.log(data);
+
+        //setValues({ email: '', password: '', showPassword: false});
+        console.log("Login succesfully!");
+        navigate('/');
+
+    } catch (err) {
+        console.log("Login fail!");
+    }
+  }*/
+
   return (
     <>
     <div>
@@ -95,23 +149,23 @@ export default function App(classes: any) {
             <Form>
                 <Form.Group className="mb-3" controlId="formGridPassword">
                   <Form.Label>Título</Form.Label>
-                  <Form.Control type="text" /*placeholder="Moby Dick"*/ required/>
+                  <Form.Control type="text" /*placeholder="Moby Dick"*/ required onChange={handleChange("title")}/>
                 </Form.Group>
 
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formGridAddress1">
                   <Form.Label>Autor</Form.Label>
-                  <Form.Control type="text" /*placeholder="Herman Melville"*/ required/>
+                  <Form.Control type="text" /*placeholder="Herman Melville"*/ required onChange={handleChange("author")}/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridAddress1">
                   <Form.Label>Año</Form.Label>
-                  <Form.Control type="text" /*placeholder="1900"*/ required/>
+                  <Form.Control type="text" /*placeholder="1900"*/ required onChange={handleChange("publicationYear")}/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridAddress1">
                   <Form.Label>Edicion</Form.Label>
-                  <Form.Control type="text" /*placeholder="1"*/ required/>
+                  <Form.Control type="text" /*placeholder="1"*/ required onChange={handleChange("edition")}/>
                 </Form.Group>
               </Row>
 
@@ -119,12 +173,12 @@ export default function App(classes: any) {
 
                 <Form.Group as={Col} controlId="formGridState">
                   <Form.Label>Precio Venta</Form.Label>
-                  <Form.Control type="text" /*placeholder="600"*//>
+                  <Form.Control type="text" /*placeholder="600"*/ onChange={handleChange("salesPrice")}/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridZip">
                   <Form.Label>Precio Autor</Form.Label>
-                  <Form.Control type="text" /*placeholder="500"*//>
+                  <Form.Control type="text" /*placeholder="500"*/ onChange={handleChange("authorPrice")}/>
                 </Form.Group>
               </Row>
 
@@ -144,40 +198,40 @@ export default function App(classes: any) {
 
                 <Form.Group as={Col} controlId="formGridState">
                   <Form.Label>Formato</Form.Label>
-                  <Form.Control type="text" /*placeholder="600"*//>
+                  <Form.Control type="text" /*placeholder="600"*/ onChange={handleChange("format")}/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridZip">
                   <Form.Label>Idioma</Form.Label>
-                  <Form.Control type="text" /*placeholder="500"*//>
+                  <Form.Control type="text" /*placeholder="500"*/ onChange={handleChange("language")}/>
                 </Form.Group>
               </Row>
 
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formGridCity">
                   <Form.Label>Número de paginas</Form.Label>
-                  <Form.Control type="text" /*placeholder="800"*//>
+                  <Form.Control type="text" /*placeholder="800"*/ onChange={handleChange("numberPages")}/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridState">
                   <Form.Label>Edades sugeridas</Form.Label>
-                  <Form.Control type="text" /*placeholder="18+"*//>
+                  <Form.Control type="text" /*placeholder="18+"*/ onChange={handleChange("suggestedAges")}/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridZip">
                   <Form.Label>Dimensiones</Form.Label>
-                  <Form.Control type="text" /*placeholder="10x15"*//>
+                  <Form.Control type="text" /*placeholder="10x15"*/ onChange={handleChange("dimensions")}/>
                 </Form.Group>
               </Row>
               
               <Form.Group className="mb-3" controlId="formGridAddress2">
                 <Form.Label>ISBN</Form.Label>
-                <Form.Control /*placeholder="1234567891234" *//>
+                <Form.Control /*placeholder="1234567891234" */ onChange={handleChange("isbn")}/>
               </Form.Group>
 
               <Form.Group controlId="formImage" className="mb-3">
                 <Form.Label>Imagen</Form.Label>
-                <Form.Control type="file" />
+                <Form.Control type="file" onChange={handleChange("imageUrl")} />
               </Form.Group>
 
             </Form>
@@ -212,7 +266,7 @@ export default function App(classes: any) {
               <MDBBtn color='secondary' onClick={toggleShow}>
                 Cerrar
               </MDBBtn>
-              <MDBBtn>Guardar Cambios</MDBBtn>
+              <MDBBtn onClick={handleSubmit}>Guardar Cambios</MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>
