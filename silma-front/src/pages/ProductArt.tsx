@@ -78,12 +78,15 @@ export default function App(classes: any) {
                   className='rounded-circle'
                 />
                 <div className='ms-3'>
-                  <p className='fw-bold mb-1'>{product.title}  <MDBBadge color='success' pill> {product.status} </MDBBadge> </p>
+                  <p className='fw-bold mb-1'>
+                    {product.title} 
+                    {product.status === 'activo'? <MDBBadge color='success' pill>Activo</MDBBadge> : <MDBBadge color='danger' pill>Inactivo</MDBBadge>} 
+                  </p>
                 </div>
               </div>
             </td>
             <td> {product.quantity} </td>
-            <td> {product.salesPrice} </td>
+            <td> ${product.salesPrice} </td>
             <td>
               <MDBBtn color='link' rounded size='sm'>
                 Edit

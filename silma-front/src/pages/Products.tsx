@@ -58,7 +58,7 @@ export default function App(classes: any) {
     ignore = true;
     return () => { ignore = true; }
   }, []);
-  
+
 
   return (
     <>
@@ -69,7 +69,7 @@ export default function App(classes: any) {
       <WhiteButton onClick={mountBookList}>Libros</WhiteButton>
       <WhiteButton onClick={mountArticles}>Artículos</WhiteButton>
     </div>
-    <MDBTable align='middle'>
+    <MDBTable responsive align='middle'>
       <MDBTableHead light>
        <tr>
           <th scope='col'>Código interno</th>
@@ -101,14 +101,17 @@ export default function App(classes: any) {
                   className='rounded-circle'
                 />
                 <div className='ms-3'>
-                  <p className='fw-bold mb-1'>{product.title}<MDBBadge color='success' pill>{product.status}</MDBBadge> </p>
+                  <p className='fw-bold mb-1'>
+                    {product.title} 
+                    {product.status === 'activo'? <MDBBadge color='success' pill>Activo</MDBBadge> : <MDBBadge color='danger' pill>Inactivo</MDBBadge>} 
+                  </p>
                   <p className='text-muted mb-0'>{product.author} - {product.publicationYear} </p>
                 </div>
               </div>
             </td>
             <td> {product.quantity}</td>
-            <td> {product.salesPrice} </td>
-            <td> {product.authorPrice} </td>
+            <td> ${product.salesPrice} </td>
+            <td> ${product.authorPrice} </td>
             <td> {product.genre} </td>
             <td> {product.format} </td>
             <td> {product.language} </td>
