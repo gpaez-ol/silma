@@ -40,7 +40,6 @@ export default function App(classes: any) {
       const { data } = await axios.get(API_url + 'product-books');
       const dataUnstructured = data.data; 
       setValues({productList: dataUnstructured});
-      navigate('/product-books');
     } catch (error){
       console.log(error);
     }
@@ -55,8 +54,8 @@ export default function App(classes: any) {
     
     if (!ignore) {
       mountBookList();
-      
     } 
+    ignore = true;
     return () => { ignore = true; }
   }, []);
   

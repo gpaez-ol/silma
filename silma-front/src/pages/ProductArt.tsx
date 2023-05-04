@@ -28,7 +28,6 @@ export default function App(classes: any) {
       const { data } = await axios.get(API_url + 'product-articles');
       const dataUnstructured = data.data; 
       setValues({productList: dataUnstructured});
-      navigate('/product-articles');
     } catch (error) {
       console.log(error);
     }
