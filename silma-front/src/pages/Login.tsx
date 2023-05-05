@@ -70,7 +70,7 @@ export default function Login(classes: any) {
             </IconButton>
           </div>
           <div>
-            <Link to="/products">
+            <Link to="/product-books">
               <WhiteButton>Iniciar sesión</WhiteButton>{" "}
             </Link>
           </div>
