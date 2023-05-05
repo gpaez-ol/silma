@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, FormEventHandler, ChangeEventHandler } from 'react';
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import './Products.css';
@@ -7,6 +7,8 @@ import { WhiteButton } from '../components/ButtonProduct';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
+
 
 export default function App(classes: any) {
   classes = useStyles();
@@ -39,6 +41,48 @@ export default function App(classes: any) {
       status:''
     }]
   });
+
+  const postData = async (formData: any) => {
+    try {
+      const { data } = await axios.post(API_url + 'product', {
+        title: formData.title,
+        author: formData.author,
+        synopsis: 'placeholder',
+        salesPrice: formData.salesPrice,
+        authorPrice: formData.authorPrice,
+        genre: (formData.genre).toLowerCase(),
+        language: formData.language,
+        format: formData.format,
+        numberPages: formData.numberPages,
+        suggestedAges:formData.suggestedAges,
+        weight: formData.weight,
+        dimensions: formData.dimensions,
+        isbn: formData.isbn,
+        quantity: 0,
+        publicationYear: formData.publicationYear,
+        edition: formData.edition,
+        imageUrl: 'imageURL',
+        type: 'book'
+      });
+
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      return;
+    }
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
+    postData(data);
+  };
 
   const mountBookList = async () => {
     try{
@@ -92,26 +136,26 @@ export default function App(classes: any) {
             </MDBModalHeader>
 
             <MDBModalBody>
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formTitle">
                   <Form.Label>Título</Form.Label>
-                  <Form.Control type="text" /*placeholder="Moby Dick"*/ required/>
+                  <Form.Control name='title' type="text" /*placeholder="Moby Dick"*/ required />
                 </Form.Group>
 
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formAuthor">
                   <Form.Label>Autor</Form.Label>
-                  <Form.Control type="text" /*placeholder="Herman Melville"*/ required/>
+                  <Form.Control name='author'type="text" /*placeholder="Herman Melville"*/ required />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formYear">
                   <Form.Label>Año</Form.Label>
-                  <Form.Control type="text" /*placeholder="1900"*/ required/>
+                  <Form.Control name='publicationYear' type="text" /*placeholder="1900"*/ required/>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formEdition">
                   <Form.Label>Edicion</Form.Label>
-                  <Form.Control type="text" /*placeholder="1"*/ required/>
+                  <Form.Control name='edition' type="text" /*placeholder="1"*/ required/>
                 </Form.Group>
               </Row>
 
@@ -119,19 +163,19 @@ export default function App(classes: any) {
 
                 <Form.Group as={Col} controlId="formSellPrice">
                   <Form.Label>Precio Venta</Form.Label>
-                  <Form.Control type="text" /*placeholder="600"*//>
+                  <Form.Control name='salesPrice' type="text" /*placeholder="600"*//>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formSellAuthor">
                   <Form.Label>Precio Autor</Form.Label>
-                  <Form.Control type="text" /*placeholder="500"*//>
+                  <Form.Control name='authorPrice' type="text" /*placeholder="500"*//>
                 </Form.Group>
               </Row>
 
               <Row className="mb-3">
-                <Form.Group as={Col} controlId="formGendre">
+                <Form.Group as={Col} controlId="formGenre">
                   <Form.Label>Genero</Form.Label>
-                  <Form.Select defaultValue="Selecciona...">
+                  <Form.Select defaultValue="Selecciona..." name='genre'>
                     <option> </option>
                     <option>Fantasía</option>
                     <option>Magia</option>
@@ -144,42 +188,42 @@ export default function App(classes: any) {
 
                 <Form.Group as={Col} controlId="formFormat">
                   <Form.Label>Formato</Form.Label>
-                  <Form.Control type="text" /*placeholder="600"*//>
+                  <Form.Control name='format' type="text" /*placeholder="600"*//>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formLanguage">
                   <Form.Label>Idioma</Form.Label>
-                  <Form.Control type="text" /*placeholder="500"*//>
+                  <Form.Control name='language' type="text" /*placeholder="500"*//>
                 </Form.Group>
               </Row>
 
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formPageNum">
                   <Form.Label>Número de paginas</Form.Label>
-                  <Form.Control type="text" /*placeholder="800"*//>
+                  <Form.Control name='numberPages' type="text" /*placeholder="800"*//>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formAges">
                   <Form.Label>Edades sugeridas</Form.Label>
-                  <Form.Control type="text" /*placeholder="18+"*//>
+                  <Form.Control name='suggestedAges' type="text" /*placeholder="18+"*//>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formDimensions">
                   <Form.Label>Dimensiones</Form.Label>
-                  <Form.Control type="text" /*placeholder="10x15"*//>
+                  <Form.Control name='dimensions' type="text" /*placeholder="10x15"*//>
                 </Form.Group>
               </Row>
               
               <Form.Group className="mb-3" controlId="formISBN">
                 <Form.Label>ISBN</Form.Label>
-                <Form.Control /*placeholder="1234567891234" *//>
+                <Form.Control name='isbn' /*placeholder="1234567891234" *//>
               </Form.Group>
 
               <Form.Group controlId="formImage" className="mb-3">
                 <Form.Label>Imagen</Form.Label>
-                <Form.Control type="file" />
+                <Form.Control name='imageUrl' type="file" />
               </Form.Group>
-
+              <Button type='submit'>Guardar Cambios</Button>
             </Form>
             {/*<Form>
               <FormGroup controlId="formInternalCode">
@@ -212,7 +256,6 @@ export default function App(classes: any) {
               <MDBBtn color='secondary' onClick={toggleShow}>
                 Cerrar
               </MDBBtn>
-              <MDBBtn>Guardar Cambios</MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>
