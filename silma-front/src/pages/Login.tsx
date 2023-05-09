@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 //MaterialUI
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import Button from "@mui/material/Button";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 //Components
 import { WhiteButton } from "../components/Button";
@@ -15,14 +16,43 @@ import Logo from "../img/Logo.png";
 export default function Login(classes: any) {
   classes = useStyles();
 
+  const API_URL = "http://localhost:3000/local/";
+
   //State
   const [values, setValues] = useState({
     email: "",
     password: "",
     showPassword: false,
-    loading: false,
-    error: "",
   });
+
+  const { email, password, showPassword } = values;
+
+    const handleChange = (name: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValues({ ...values, [name]: e.target.value });
+    };
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        try {
+            const { data } = await axios.put(API_URL + 'login', {
+                email,
+                password
+            });
+
+            console.log(data);
+
+            setValues({ email: '', password: '', showPassword: false});
+            toast.success("Login succesfully!");
+            console.log("Login succesfully!");
+            navigate('/product-books');
+
+        } catch (err) {
+            console.log("Login fail!");
+            toast.error("Login fail!");
+        }
+    }
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -40,9 +70,9 @@ export default function Login(classes: any) {
           <div style={{ display: "flex" }}>
             <input
               type="text"
-              placeholder="Usuario"
-              value={values.email}
-              onChange={(e) => setValues({ ...values, email: e.target.value })}
+              placeholder="Correo electrónico"
+              value={email}
+              onChange={handleChange("email")}
               className={classes.userInput}
             />
           </div>
@@ -51,10 +81,8 @@ export default function Login(classes: any) {
             <input
               type={values.showPassword ? "text" : "password"}
               placeholder="Contraseña"
-              value={values.password}
-              onChange={(e) =>
-                setValues({ ...values, password: e.target.value })
-              }
+              onChange={handleChange("password")}
+              value={password}
               className={classes.passwordInput}
             />
             <IconButton
@@ -70,13 +98,8 @@ export default function Login(classes: any) {
             </IconButton>
           </div>
           <div>
-            <Link to="/product-books">
-              <WhiteButton>Iniciar sesión</WhiteButton>{" "}
-            </Link>
+            <WhiteButton onClick={handleSubmit}>Iniciar sesión</WhiteButton>
           </div>
-          {/* <div className={classes.line}>
-                        <p> <Button sx={{ color:'#202843', fontWeight: 'bold'}} className={classes.link}> Crear cuenta nueva </Button></p>
-                    </div>*/}
         </div>
       </div>
       <div className={classes.footerBlue}></div>
