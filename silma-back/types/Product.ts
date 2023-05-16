@@ -36,7 +36,6 @@ export type ProductCreate = {
   title: string;
   type: ProductType;
   synopsis: string;
-  quantity: number;
   salesPrice: number;
   imageUrl: string;
   // Atributos de libro opcionales
@@ -55,7 +54,6 @@ export type ProductCreate = {
 };
 
 export const ProductCreateSchema = Joi.object<ProductCreate>({
-  quantity: Joi.number().min(0),
   salesPrice: Joi.number().min(0),
   title: Joi.string(),
   type: Joi.string(),

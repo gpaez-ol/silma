@@ -10,7 +10,9 @@ export const getArticlesList = (
       id: products.id,
       title: products.title,
       description: products.synopsis,
-      quantity: products.quantity,
+      quantity: products.ProductInOrders.reduce((prevValue, product) => {
+        return prevValue + product.amount;
+      }, 0),
       salesPrice: products.salesPrice,
       internalCode: products.internalCode,
       imageUrl: products.imageUrl,
@@ -30,7 +32,9 @@ export const getBooksList = (
       title: products.title,
       author: products.author,
       synopsis: products.synopsis,
-      quantity: products.quantity,
+      quantity: products.ProductInOrders.reduce((prevValue, product) => {
+        return prevValue + product.amount;
+      }, 0),
       salesPrice: products.salesPrice,
       authorPrice: products.authorPrice,
       genre: products.genre,
