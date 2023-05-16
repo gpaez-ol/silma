@@ -41,8 +41,6 @@ export default function Login(classes: any) {
                 password
             });
 
-            console.log(data);
-
             setValues({ email: '', password: '', showPassword: false});
             toast.success("Login succesfully!");
             console.log("Login succesfully!");
