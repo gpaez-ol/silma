@@ -138,7 +138,6 @@ export const connectToDatabase: GetPromise = async (force = false) => {
       dimensions: "4.2, 2.2, 5",
       isbn: "1111111111111", //solo numeros de 13 digitos
       internalCode: "ASD123",
-      quantity: 8,
       publicationYear: 2022,
       edition: "2",
       status: "activo",

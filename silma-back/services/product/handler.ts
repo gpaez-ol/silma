@@ -35,7 +35,6 @@ const createProductFunction: SilmaAPIFunction = async (
     synopsis: data.synopsis,
     salesPrice: data.salesPrice,
     internalCode: internalCode,
-    quantity: data.quantity,
     imageUrl: data.imageUrl,
     status: "activo",
     deletedAt: null,
@@ -64,18 +63,18 @@ export const createProduct: APIGatewayProxyHandler = silmaAPIhandler(
 
 const getProductArticlesFunction: SilmaAPIFunction = async () => {
   const db = await connectToDatabase();
-  const { Product } = db;
+  const { Product, ProductInOrder } = db;
   const rawProductArticle = await Product.findAll({
     attributes: [
       "type",
       "title",
       "synopsis",
-      "quantity",
       "salesPrice",
       "internalCode",
       "imageUrl",
       "status",
     ],
+    include: [{ model: ProductInOrder, attributes: ["amount"] }],
     where: { deletedAt: null, type: "article" },
   });
   const productArticles = rawProductArticle.map((rawProduct) =>
@@ -89,14 +88,13 @@ const getProductArticlesFunction: SilmaAPIFunction = async () => {
 //Repetir para Libro
 const getProductBooksFunction: SilmaAPIFunction = async () => {
   const db = await connectToDatabase();
-  const { Product } = db;
+  const { Product, ProductInOrder } = db;
   const rawProductBook = await Product.findAll({
     attributes: [
       "type",
       "title",
       "author",
       "synopsis",
-      "quantity",
       "salesPrice",
       "authorPrice",
       "genre",
@@ -113,6 +111,7 @@ const getProductBooksFunction: SilmaAPIFunction = async () => {
       "imageUrl",
       "status",
     ],
+    include: [{ model: ProductInOrder, attributes: ["amount"] }],
     where: { deletedAt: null, type: "book" },
   });
   const productBooks = rawProductBook.map((rawProduct) =>
