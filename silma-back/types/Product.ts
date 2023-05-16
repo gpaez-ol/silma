@@ -10,6 +10,14 @@ export type ProductArticleItem = {
   status: ProductStatus;
 };
 
+export type ProductSelectItem = {
+  id: string;
+  title: string;
+  internalCode: string;
+  imageUrl: string;
+  type: ProductType;
+};
+
 export type ProductBookItem = {
   title: string;
   author: string;

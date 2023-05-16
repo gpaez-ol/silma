@@ -1,5 +1,5 @@
 import { ProductAttributes } from "database/models";
-import { ProductArticleItem, ProductBookItem } from "types";
+import { ProductArticleItem, ProductBookItem, ProductSelectItem } from "types";
 
 //Get articulos
 export const getArticlesList = (
@@ -49,6 +49,30 @@ export const getBooksList = (
     };
   });
   return books;
+};
+
+/**
+ * This function takes an array of product attributes and returns a new array of product select items
+ * with specific properties.
+ * @param {ProductAttributes[]} products - An array of objects representing product attributes. Each
+ * object should have the following properties:
+ * @returns The function `getProductsSelectList` is returning an array of `ProductSelectItem` objects,
+ * which are created by mapping over an array of `ProductAttributes` objects and extracting specific
+ * properties from them.
+ */
+export const getProductsSelectList = (
+  products: ProductAttributes[]
+): ProductSelectItem[] => {
+  const productList: ProductSelectItem[] = products.map((products) => {
+    return {
+      id: products.id,
+      title: products.title,
+      internalCode: products.internalCode,
+      imageUrl: products.imageUrl,
+      type: products.type,
+    };
+  });
+  return productList;
 };
 
 /**
