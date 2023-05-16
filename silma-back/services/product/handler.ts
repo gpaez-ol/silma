@@ -7,6 +7,7 @@ import {
   buildInternalCode,
   getArticlesList,
   getBooksList,
+  getProductsSelectList,
 } from "logic/product";
 import { badRequest } from "utils";
 
@@ -122,9 +123,28 @@ const getProductBooksFunction: SilmaAPIFunction = async () => {
   return { data: bookList };
 };
 
+const getProductsSelectFunction: SilmaAPIFunction = async () => {
+  const db = await connectToDatabase();
+  const { Product } = db;
+  const rawProducts = await Product.findAll({
+    attributes: ["id", "type", "title", "internalCode", "imageUrl"],
+    where: { deletedAt: null, status: "activo" },
+  });
+  const products = rawProducts.map((rawProduct) =>
+    rawProduct.get({ plain: true })
+  );
+  const productList = getProductsSelectList(products);
+
+  return { data: productList };
+};
+
 export const getProductArticles: APIGatewayProxyHandler = silmaAPIhandler(
   getProductArticlesFunction
 );
 export const getProductBooks: APIGatewayProxyHandler = silmaAPIhandler(
   getProductBooksFunction
+);
+
+export const getProductsSelect: APIGatewayProxyHandler = silmaAPIhandler(
+  getProductsSelectFunction
 );
