@@ -102,6 +102,21 @@ functions:
           path: /product-books
           method: get
           cors: true
+  getProductsSelect:
+    handler: services/product/handler.getProductsSelect
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /product-select
+          method: get
+          cors: true
+
   createProduct:
     handler: services/product/handler.createProduct
     vpc:
