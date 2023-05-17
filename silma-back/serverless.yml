@@ -131,6 +131,20 @@ functions:
           path: /product
           method: post
           cors: true
+  updateProduct:
+    handler: services/product/handler.updateProduct
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /product
+          method: put
+          cors: true
   createInOrder:
     handler: services/inOrder/handler.createInOrder
     vpc:

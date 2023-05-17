@@ -10,6 +10,7 @@ import {
   getProductsSelectList,
 } from "logic/product";
 import { badRequest } from "utils";
+import { json } from "sequelize";
 
 const createProductFunction: SilmaAPIFunction = async (
   event: APIGatewayEvent
@@ -138,6 +139,54 @@ const getProductsSelectFunction: SilmaAPIFunction = async () => {
   return { data: productList };
 };
 
+const updateProductFunction: SilmaAPIFunction = async(
+  event: APIGatewayEvent
+) => {
+  const {id} = event.queryStringParameters
+  const data: ProductCreate = JSON.parse(event.body)
+  const { error } = ProductCreateSchema.validate(data)
+  if (error) {
+    throw badRequest("Data was wrongly formatted");
+  }
+
+  const db = await connectToDatabase();
+  const { Product } = db
+  const oldProductRaw = await Product.findByPk(id)
+  if(oldProductRaw === null || oldProductRaw === undefined){
+    throw badRequest("This Product doesn´t exist")
+  }
+  
+  const oldProduct = oldProductRaw.get({plain:true})
+  const newProduct: ProductAttributes = {
+    id: oldProduct.id,
+    title: data.title ?? oldProduct.title,
+    type: oldProduct.type,
+    synopsis: data.synopsis ?? oldProduct.synopsis,
+    salesPrice: data.salesPrice ?? oldProduct.salesPrice,
+    internalCode: oldProduct.internalCode,
+    imageUrl: data.imageUrl ?? oldProduct.imageUrl,
+    status: oldProduct.status,
+    deletedAt: oldProduct.deletedAt,
+    createdAt: oldProduct.createdAt,
+    // Atributos opcionales de libro
+    authorPrice: data.authorPrice ?? oldProduct.authorPrice,
+    numberPages: data.numberPages ?? oldProduct.numberPages,
+    weight: data.weight ?? oldProduct.weight,
+    dimensions: data.dimensions ?? oldProduct.dimensions,
+    suggestedAges: data.suggestedAges ?? oldProduct.suggestedAges,
+    isbn: data.isbn ?? oldProduct.isbn,
+    publicationYear: data.publicationYear ?? oldProduct.publicationYear,
+    edition: data.edition ?? oldProduct.edition,
+    author: data.author ?? oldProduct.author,
+    format: data.format ?? oldProduct.format,
+    genre: data.genre ?? oldProduct.genre,
+    language: data.language ?? oldProduct.language,
+  }
+
+  const updatedProduct = await oldProductRaw.update(newProduct)
+  return {data: updatedProduct}
+}
+
 export const getProductArticles: APIGatewayProxyHandler = silmaAPIhandler(
   getProductArticlesFunction
 );
@@ -147,4 +196,7 @@ export const getProductBooks: APIGatewayProxyHandler = silmaAPIhandler(
 
 export const getProductsSelect: APIGatewayProxyHandler = silmaAPIhandler(
   getProductsSelectFunction
+);
+export const updateProduct: APIGatewayProxyHandler = silmaAPIhandler(
+  updateProductFunction
 );
