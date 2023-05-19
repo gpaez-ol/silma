@@ -10,7 +10,6 @@ import {
   getProductsSelectList,
 } from "logic/product";
 import { badRequest } from "utils";
-import { json } from "sequelize";
 
 const createProductFunction: SilmaAPIFunction = async (
   event: APIGatewayEvent
@@ -58,10 +57,6 @@ const createProductFunction: SilmaAPIFunction = async (
 
   return { data: newProduct };
 };
-
-export const createProduct: APIGatewayProxyHandler = silmaAPIhandler(
-  createProductFunction
-);
 
 const getProductArticlesFunction: SilmaAPIFunction = async () => {
   const db = await connectToDatabase();
@@ -142,12 +137,16 @@ const getProductsSelectFunction: SilmaAPIFunction = async () => {
 const updateProductFunction: SilmaAPIFunction = async(
   event: APIGatewayEvent
 ) => {
-  const {id} = event.queryStringParameters
-  const data: ProductCreate = JSON.parse(event.body)
-  const { error } = ProductCreateSchema.validate(data)
+  const data = JSON.parse(event.body)
+  const {id} = data
+  //const data: ProductCreate = JSON.parse(event.body)
+  //const {id} = data.
+  console.log(data)
+  /*const { error } = ProductCreateSchema.validate(data)
   if (error) {
+    console.log(error)
     throw badRequest("Data was wrongly formatted");
-  }
+  }*/
 
   const db = await connectToDatabase();
   const { Product } = db
@@ -187,6 +186,9 @@ const updateProductFunction: SilmaAPIFunction = async(
   return {data: updatedProduct}
 }
 
+export const createProduct: APIGatewayProxyHandler = silmaAPIhandler(
+  createProductFunction
+);
 export const getProductArticles: APIGatewayProxyHandler = silmaAPIhandler(
   getProductArticlesFunction
 );
