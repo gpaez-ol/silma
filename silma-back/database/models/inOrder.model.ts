@@ -3,6 +3,7 @@ import { longText, shortText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
 import { ProductAttributes } from "./product.model";
 import { ProductInOrderAttributes } from "./productInOrder.model";
+import { LocationAttributes } from "./location.model";
 
 export type InOrderAttributes = {
   id?: string;
@@ -12,6 +13,8 @@ export type InOrderAttributes = {
   deliveredAt: Date;
   products?: ProductAttributes[];
   ProductInOrders?: ProductInOrderAttributes[];
+  Location?: LocationAttributes;
+  LocationId?: string;
 } & EntityAttributes;
 
 export type InOrderCreationAttributes = InOrderAttributes;

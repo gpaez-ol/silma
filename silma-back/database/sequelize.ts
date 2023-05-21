@@ -110,6 +110,10 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   Location.hasMany(ProductInOrder);
   ProductInOrder.belongsTo(Location);
 
+  // Location-InOrder Relationships
+  Location.hasMany(InOrder);
+  InOrder.belongsTo(Location);
+
   // End of Super Many-to-Many Relationship
   await sequelize.sync({ force });
   await sequelize.authenticate();
@@ -142,6 +146,11 @@ export const connectToDatabase: GetPromise = async (force = false) => {
       edition: "2",
       status: "activo",
       imageUrl: "imageUrl",
+    });
+    await Location.create({
+      id: "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e",
+      title: "Almacen",
+      description: "Ubicacion base de llegadas",
     });
   }
   return Models;
