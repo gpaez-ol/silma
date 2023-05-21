@@ -1,9 +1,11 @@
 import Joi from "joi";
+import { ProductEntryType } from "types";
 import { longText } from "utils";
 
 export type ProductInOrder = {
   id: string;
   amount: number;
+  entryType: ProductEntryType;
 };
 export type ProductInOrderItem = {
   title: string;
