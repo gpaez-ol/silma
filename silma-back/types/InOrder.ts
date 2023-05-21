@@ -29,6 +29,7 @@ export type InOrderItem = {
   orderedAt: Date;
   deliveredAt?: Date;
   products: ProductInOrderItem[];
+  totalAmount: number;
 };
 export type InOrderDetails = {
   products: ProductInOrderDetails[];
