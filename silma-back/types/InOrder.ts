@@ -19,6 +19,7 @@ export type InOrderCreate = {
   deliveredAt?: Date;
   products: ProductInOrder[];
   notes?: string;
+  locationId?: string;
 };
 
 export type InOrderItem = {
@@ -37,4 +38,5 @@ export const InOrderCreateSchema = Joi.object<InOrderCreate>({
   orderedAt: Joi.date().required().label("Ordered At"),
   deliveredAt: Joi.date().optional().label("Delivery Date"),
   products: Joi.array().min(1).items(Joi.any()).label("Products"),
+  locationId: Joi.string().optional().label("Location"),
 });
