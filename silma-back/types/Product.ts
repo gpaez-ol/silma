@@ -109,3 +109,6 @@ export const productFormat = [
   null,
 ] as const;
 export type ProductFormat = (typeof productFormat)[number];
+
+export const productEntryType = ["reimpresion", "resurtido", "devolucion"];
+export type ProductEntryType = (typeof productEntryType)[number];
