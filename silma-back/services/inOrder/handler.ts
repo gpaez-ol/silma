@@ -2,7 +2,7 @@ import { APIGatewayEvent, APIGatewayProxyHandler } from "aws-lambda";
 import { InOrderAttributes, ProductInOrderAttributes } from "database/models";
 import { connectToDatabase } from "database/sequelize";
 import { SilmaAPIFunction, silmaAPIhandler } from "lib/handler/handler";
-import { mapInOrderDetails, getInOrderList } from "logic";
+import { getInOrderList } from "logic";
 import { badRequest, writeToConsole } from "utils";
 import { InOrderCreate, InOrderCreateSchema } from "types";
 
@@ -133,13 +133,14 @@ const updateInOrderFunction: SilmaAPIFunction = async (
   const updatedInOrder = await oldInOrderRaw.update(newInOrder);
   return { data: updatedInOrder };
 };
+
 const getInOrdersFunction: SilmaAPIFunction = async () => {
   const db = await connectToDatabase();
   const { InOrder, ProductInOrder, Product } = db;
   const rawProductInOrders = await ProductInOrder.findAll({
     include: [
-      { model: InOrder, attributes: ["id", "orderedAt", "deliveredAt"] },
-      { model: Product, attributes: ["id", "title"] },
+      { model: InOrder, attributes: ["id", "orderedAt", "deliveredAt", "notes", "internalCode"] },
+      { model: Product, attributes: ["id", "title", "author", "internalCode", "type", "status", "imageUrl"] },
     ],
     where: { deletedAt: null },
     group: ["InOrder.id", "ProductInOrder.id", "Product.id"],
@@ -153,41 +154,12 @@ const getInOrdersFunction: SilmaAPIFunction = async () => {
   return { data: inOrderList };
 };
 
-const getInOrderDetailsFunction: SilmaAPIFunction = async (
-  event: APIGatewayEvent
-) => {
-  const { inOrderId } = event.queryStringParameters;
-  const db = await connectToDatabase();
-  const { InOrder, ProductInOrder, Product } = db;
-  const rawProductInOrders = await ProductInOrder.findAll({
-    include: [
-      {
-        model: InOrder,
-        attributes: ["id", "orderedAt", "deliveredAt", "notes"],
-      },
-      { model: Product, attributes: ["id", "title", "description"] },
-    ],
-    where: { deletedAt: null, InOrderId: inOrderId },
-    group: ["InOrder.id", "ProductInOrder.id", "Product.id"],
-    order: [["createdAt", "ASC"]],
-  });
-  const productInOrders = rawProductInOrders.map((rawInOrder) =>
-    rawInOrder.get({ plain: true })
-  );
-
-  const inOrderDetails = mapInOrderDetails(productInOrders);
-  return { data: inOrderDetails };
-};
-
 export const createInOrder: APIGatewayProxyHandler = silmaAPIhandler(
   createInOrderFunction
 );
 export const updateInOrder: APIGatewayProxyHandler = silmaAPIhandler(
   updateInOrderFunction
 );
-export const getInOrders: APIGatewayProxyHandler =
-  silmaAPIhandler(getInOrdersFunction);
-
-export const getInOrderDetails: APIGatewayProxyHandler = silmaAPIhandler(
-  getInOrderDetailsFunction
+export const getInOrders: APIGatewayProxyHandler = silmaAPIhandler(
+  getInOrdersFunction
 );
