@@ -41,6 +41,7 @@ const createInOrderFunction: SilmaAPIFunction = async (
     (product) => {
       return {
         amount: product.amount,
+        entryType: product.entryType,
         ProductId: product.id,
         InOrderId: newInOrder.get().id,
         createdAt: new Date(),
@@ -48,7 +49,7 @@ const createInOrderFunction: SilmaAPIFunction = async (
       };
     }
   );
-  await ProductInOrder.bulkCreate(productOrderDb);
+  await ProductInOrder.bulkCreate(productOrderDb, { validate: true });
   // TODO: map to the version needed
   return { data: newInOrder };
 };
@@ -89,6 +90,7 @@ const updateInOrderFunction: SilmaAPIFunction = async (
       if (product !== null && product !== undefined) {
         return {
           amount: product.amount,
+          entryType: product.entryType,
           ProductId: newInOrder.id,
           InOrderId: oldInOrder.id,
           createdAt: productInOrder.createdAt,
@@ -97,6 +99,7 @@ const updateInOrderFunction: SilmaAPIFunction = async (
       } else {
         return {
           amount: productInOrder.amount,
+          entryType: productInOrder.entryType,
           ProductId: productInOrder.ProductId,
           InOrderId: productInOrder.InOrderId,
           createdAt: productInOrder.createdAt,
@@ -118,6 +121,7 @@ const updateInOrderFunction: SilmaAPIFunction = async (
     .map((product) => {
       return {
         amount: product.amount,
+        entryType: product.entryType,
         ProductId: product.id,
         InOrderId: newInOrder.id,
         createdAt: new Date(),
