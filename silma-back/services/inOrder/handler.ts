@@ -26,6 +26,7 @@ const createInOrderFunction: SilmaAPIFunction = async (
     notes: data.notes,
     deletedAt: null,
     internalCode: internalCode,
+    LocationId: data.locationId ?? "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e",
   };
   //checks that the product is unique
   const key = "id";
