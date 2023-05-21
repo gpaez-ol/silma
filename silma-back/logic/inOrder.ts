@@ -1,8 +1,5 @@
 import { ProductInOrderAttributes } from "database/models";
-import {
-  InOrderItem,
-  ProductInOrderItem,
-} from "types";
+import { InOrderItem, ProductInOrderItem } from "types";
 
 const getUniqueProductItems = (productInOrders: ProductInOrderAttributes[]) => {
   const uniqueInOrderProductItems = productInOrders.reduce(
@@ -49,6 +46,10 @@ export const getInOrderList = (
         notes: productInOrder.InOrder.notes,
         internalCode: productInOrder.InOrder.internalCode,
         products: uniqueInOrderProductItems[productInOrder.InOrderId],
+        totalAmount: productInOrders.reduce(
+          (sum, currentProduct) => sum + currentProduct.amount,
+          0
+        ),
       };
     });
   return inOrderItems;
