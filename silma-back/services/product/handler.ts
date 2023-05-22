@@ -2,7 +2,7 @@ import { APIGatewayEvent, APIGatewayProxyHandler } from "aws-lambda";
 import { ProductAttributes } from "database/models";
 import { connectToDatabase } from "database/sequelize";
 import { SilmaAPIFunction, silmaAPIhandler } from "lib/handler/handler";
-import { ProductCreate, ProductCreateSchema } from "types";
+import { ProductCreate, ProductCreateSchema, ProductUpdate, ProductUpdateSchema } from "types";
 import {
   buildInternalCode,
   getArticlesList,
@@ -137,16 +137,14 @@ const getProductsSelectFunction: SilmaAPIFunction = async () => {
 const updateProductFunction: SilmaAPIFunction = async(
   event: APIGatewayEvent
 ) => {
-  const data = JSON.parse(event.body)
+  const data: ProductUpdate = JSON.parse(event.body)
   const {id} = data
-  //const data: ProductCreate = JSON.parse(event.body)
-  //const {id} = data.
   console.log(data)
-  /*const { error } = ProductCreateSchema.validate(data)
+  const { error } = ProductUpdateSchema.validate(data)
   if (error) {
     console.log(error)
     throw badRequest("Data was wrongly formatted");
-  }*/
+  }
 
   const db = await connectToDatabase();
   const { Product } = db
