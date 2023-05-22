@@ -136,14 +136,17 @@ const updateInOrderFunction: SilmaAPIFunction = async (
 
 const getInOrdersFunction: SilmaAPIFunction = async () => {
   const db = await connectToDatabase();
-  const { InOrder, ProductInOrder, Product } = db;
+  const { InOrder, ProductInOrder, Product, Location } = db;
   const rawProductInOrders = await ProductInOrder.findAll({
     include: [
-      { model: InOrder, attributes: ["id", "orderedAt", "deliveredAt", "notes", "internalCode"] },
+      { model: InOrder, 
+        attributes: ["id", "orderedAt", "deliveredAt", "notes", "internalCode"], 
+        include:[Location], 
+      },
       { model: Product, attributes: ["id", "title", "author", "internalCode", "type", "status", "imageUrl"] },
     ],
     where: { deletedAt: null },
-    group: ["InOrder.id", "ProductInOrder.id", "Product.id"],
+    group: ["InOrder.id", "ProductInOrder.id", "Product.id", "InOrder.Location.id"],
     order: [["createdAt", "ASC"]],
   });
   const productInOrders = rawProductInOrders.map((rawInOrder) =>

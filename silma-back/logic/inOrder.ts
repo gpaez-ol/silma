@@ -12,7 +12,7 @@ const getUniqueProductItems = (productInOrders: ProductInOrderAttributes[]) => {
         title: attributes.Product.title,
         author: attributes.Product.author,
         internalCode: attributes.Product.internalCode,
-        type: attributes.Product.type,
+        entryType: attributes.entryType,
         status: attributes.Product.status,
         imageUrl: attributes.Product.imageUrl,
       });
@@ -45,6 +45,7 @@ export const getInOrderList = (
         deliveredAt: productInOrder.InOrder.deliveredAt,
         notes: productInOrder.InOrder.notes,
         internalCode: productInOrder.InOrder.internalCode,
+        location: productInOrder.InOrder.Location.title,
         products: uniqueInOrderProductItems[productInOrder.InOrderId],
         totalAmount: productInOrders.reduce(
           (sum, currentProduct) => sum + currentProduct.amount,

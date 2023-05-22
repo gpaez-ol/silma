@@ -46,6 +46,7 @@ export const ProductInOrderModel: GetModel = (sequelize: Sequelize) => {
     },
     entryType: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         customValidator: (value) => {
           if (!productEntryType.includes(value)) {
