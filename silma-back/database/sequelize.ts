@@ -1,4 +1,4 @@
-import { Sequelize, ModelDefined, Model } from "sequelize";
+import { Sequelize, ModelDefined } from "sequelize";
 import * as pg from "pg";
 import { writeToConsole } from "utils";
 import {
