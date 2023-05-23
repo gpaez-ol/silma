@@ -89,7 +89,6 @@ export type ProductUpdate = {
   title: string;
   type: ProductType;
   synopsis: string;
-  //quantity: number; //ELIMINAR
   salesPrice: number;
   imageUrl: string;
   // Atributos de libro opcionales
@@ -111,7 +110,6 @@ export const ProductUpdateSchema = Joi.object<ProductUpdate>({
   id: Joi.string().required(),
   internalCode: Joi.string().required(),
   status: Joi.string(),
-  //quantity: Joi.number().min(0), //ELIMINAR
   salesPrice: Joi.number().min(0),
   title: Joi.string(),
   type: Joi.string(),
