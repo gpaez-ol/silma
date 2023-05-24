@@ -11,9 +11,9 @@ import InOrder from "./pages/InOrder";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { createMuiTheme, createTheme, ThemeProvider } from '@mui/material';
+import {createTheme, ThemeProvider } from '@mui/material';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: [
       //'Franklin Gothic Medium Cond',
