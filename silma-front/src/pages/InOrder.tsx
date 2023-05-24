@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -15,6 +15,8 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { makeStyles, withStyles } from "@material-ui/core/styles";
 import { MDBBadge } from 'mdb-react-ui-kit';
 import './Products.css';
+import axios from 'axios';
+import { InOrderItem } from '../types/inOrder';
 
 function createData(
   order: number,
@@ -136,7 +138,34 @@ const rows = [
 ];
 
 export default function CollapsibleTable(classes: any) {
-    classes = useStyles();
+  classes = useStyles();
+
+  const API_url = "http://localhost:3000/local/";
+
+  const [ orderList , setOrderList ] = React.useState<InOrderItem[]>([]);
+
+  const mountInOrderList = async() =>{
+    try{
+      const { data } = await axios.get(API_url + '/inorder')
+      const dataUnstructured = data.data;
+      setOrderList( dataUnstructured );
+    }catch (error){
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    let ignore = false;
+
+    if (!ignore) {
+      mountInOrderList();
+    }
+    ignore = true;
+    return () => {
+      ignore = true;
+    };
+  }, []);
+  
   return(
     <>
     <div> 
