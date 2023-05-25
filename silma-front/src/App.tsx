@@ -40,6 +40,7 @@ function App() {
       />
       <ThemeProvider theme={theme}>
       <Routes>
+        
         <Route path="/login" element={<Login />} />
         <Route
           element={
@@ -54,6 +55,8 @@ function App() {
           <Route path="/storage" element={<StockMovement />} />
           <Route path="/inorder" element={<InOrder />} />
         </Route>
+        <Route
+          path="*" element={<Login />} />
       </Routes>
 
       </ThemeProvider>
