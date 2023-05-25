@@ -43,7 +43,7 @@ export default function App(classes: any) {
     ],
   });
 
-  const postData = async (formData: any) => {
+  const post = async (formData: any, reader: any) => {
     try {
       const { data } = await axios.post(API_url + 'product', {
         title: formData.title,
@@ -61,13 +61,59 @@ export default function App(classes: any) {
         weight: formData.weight,
         dimensions: formData.dimensions,
         isbn: formData.isbn,
+        quantity: 0,
         publicationYear: formData.publicationYear,
         edition: formData.edition,
-        imageUrl: 'imageURL',
+        imageUrl: reader,
         type: 'book'
       });
+
+
     } catch (error) {
       console.log(error);
+    }
+  }
+
+  const readForm = (formData: any) => {
+    
+      let reader = new FileReader();
+      reader.readAsDataURL(formData.imageUrl);
+      reader.onload = function () {
+        post(formData, reader.result);
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };      
+  }
+
+  const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      return;
+    }
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    readForm(data);
+  };
+
+  const mountBookList = async () => {
+    try{
+      /*
+        axios.get(API_url + 'product-books').then( res => {
+        const books = res.data;
+        console.log(books);
+        setValues({productList: books});
+        navigate('/product-books');
+        });
+      */
+      const books = await axios.get(API_url + 'product-books');
+      console.log(books.data);
+      setValues({productList: books.data});
+      navigate('/product-books');
+    }catch(err){
+      console.log("Loading error")
     }
   }
 
