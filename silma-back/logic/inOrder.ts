@@ -47,7 +47,7 @@ export const getInOrderList = (
         internalCode: productInOrder.InOrder.internalCode,
         location: productInOrder.InOrder.Location.title,
         products: uniqueInOrderProductItems[productInOrder.InOrderId],
-        totalAmount: productInOrders.reduce(
+        totalAmount: uniqueInOrderProductItems[productInOrder.InOrderId].reduce(
           (sum, currentProduct) => sum + currentProduct.amount,
           0
         ),
