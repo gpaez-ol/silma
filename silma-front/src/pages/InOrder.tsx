@@ -13,56 +13,21 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { makeStyles } from "@material-ui/core/styles";
-import { MDBBadge } from 'mdb-react-ui-kit';
+import { MDBBadge, MDBBtn } from 'mdb-react-ui-kit';
 import './Products.css';
 import axios from 'axios';
 import { InOrderItem } from '../types/inOrder';
-/*
-function createData(
-  order: number,
-  orderDate: string,
-  arrivalDate: string,
-  quantity: number,
-  location: string,
-) {
-  return {
-    order,
-    orderDate,
-    arrivalDate,
-    quantity,
-    location,
-    history: [
-      {
-        code: 'A1234',
-        picture: 'https://m.media-amazon.com/images/I/61ZMLiTYxDL.jpg',
-        product: 'Dracula',
-        author: 'Bram Stoker',
-        status:'Agotado',
-        amount: 3,
-        type: 'Reimpresión'
 
-      },
-      {
-        code: 'B5678',
-        picture: 'https://m.media-amazon.com/images/I/71Qe2yIBFmL.jpg',
-        product: 'Moby Dick',
-        author: 'Herman Melvill',
-        status:'Agotado',
-        amount: 1,
-        type: 'Reimpresión'
-      },
-    ],
-  };
-}
-*/
 function Row(props: {inOrder: InOrderItem}) {
   const { inOrder } = props;
   const [open, setOpen] = React.useState(false);
   
   /*
-  const formatDate = ( date: string) => {
-
-  }*/
+  const formatDate = (date: string) => {
+    const calendar = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
+    return (date.substring(8,2) + ' ' + calendar[Number(date.substring(5,2))-1] + ' ' + date.substring(0,4))
+  }
+  */
 
   return (
     <React.Fragment>
@@ -83,6 +48,11 @@ function Row(props: {inOrder: InOrderItem}) {
         <TableCell align="right">{inOrder.deliveredAt ?? "Not available"}</TableCell>
         <TableCell align="right">{inOrder.totalAmount}</TableCell>
         <TableCell align="right">{inOrder.location}</TableCell>
+        <TableCell align="right">
+          <MDBBtn color="link" rounded size="sm">
+            Editar
+          </MDBBtn>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -142,15 +112,7 @@ function Row(props: {inOrder: InOrderItem}) {
     </React.Fragment>
   );
 }
-/*
-const rows = [
-  createData(1234, '2020-01-05', '2023-01-05', 24, 'Almacen'),
-  createData(5678, '2020-01-05', '2023-01-05', 37, 'Almacen'),
-  createData(91011, '2020-01-05', '2023-01-05', 24, 'Almacen'),
-  createData(12131, '2020-01-05', '2023-01-05', 67, 'Almacen'),
-  createData(2488, '2020-01-05', '2023-01-05', 49, 'Almacen'),
-];
-*/
+
 export default function CollapsibleTable(classes: any) {
   classes = useStyles();
 
@@ -195,6 +157,7 @@ export default function CollapsibleTable(classes: any) {
             <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Fecha Llegada</TableCell>
             <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Cantidad</TableCell>
             <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Ubicación</TableCell>
+            <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
