@@ -12,12 +12,12 @@ import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { MDBBadge } from 'mdb-react-ui-kit';
 import './Products.css';
 import axios from 'axios';
 import { InOrderItem } from '../types/inOrder';
-
+/*
 function createData(
   order: number,
   orderDate: string,
@@ -54,10 +54,15 @@ function createData(
     ],
   };
 }
-
-function Row(props: { row: ReturnType<typeof createData> }) {
-  const { row } = props;
+*/
+function Row(props: {inOrder: InOrderItem}) {
+  const { inOrder } = props;
   const [open, setOpen] = React.useState(false);
+  
+  /*
+  const formatDate = ( date: string) => {
+
+  }*/
 
   return (
     <React.Fragment>
@@ -72,12 +77,12 @@ function Row(props: { row: ReturnType<typeof createData> }) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.order}
+          {inOrder.internalCode}
         </TableCell>
-        <TableCell align="right">{row.orderDate}</TableCell>
-        <TableCell align="right">{row.arrivalDate}</TableCell>
-        <TableCell align="right">{row.quantity}</TableCell>
-        <TableCell align="right">{row.location}</TableCell>
+        <TableCell align="right">{inOrder.orderedAt}</TableCell>
+        <TableCell align="right">{inOrder.deliveredAt ?? "Not available"}</TableCell>
+        <TableCell align="right">{inOrder.totalAmount}</TableCell>
+        <TableCell align="right">{inOrder.location}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -96,27 +101,36 @@ function Row(props: { row: ReturnType<typeof createData> }) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.code}>
+                {inOrder.products.map((product) => (
+                    <TableRow key={product.internalCode}>
                       <TableCell component="th" scope="row">
-                        {historyRow.code}
+                        {product.internalCode}
                       </TableCell>
                       <TableCell>
                       <div className='d-flex align-items-center'>
                         <img
-                            src={historyRow.picture} 
+                            src={product.imageUrl} 
                             alt=''
                             style={{ width: '45px', height: '45px' }}
                             className='rounded-circle'
                         />
                         <div className='ms-3'>
-                                <p className='fw-bold mb-1'>{historyRow.product}  <MDBBadge color='danger' pill> {historyRow.status} </MDBBadge> </p>
-                                <p className='text-muted mb-0'>{historyRow.author}</p>
+                                <p className='fw-bold mb-1'>{product.title} {
+                                    product.status === "activo" ? 
+                                    (<MDBBadge color='success' pill> 
+                                      Activo 
+                                    </MDBBadge>) : 
+                                    (<MDBBadge color='danger' pill> 
+                                      Inactivo 
+                                    </MDBBadge>)
+                                  }
+                                </p>
+                                <p className='text-muted mb-0'>{product.author}</p>
                         </div>
                      </div>
                      </TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right"> <MDBBadge color='info' pill>  {historyRow.type} </MDBBadge></TableCell>
+                      <TableCell align="right">{product.amount}</TableCell>
+                      <TableCell align="right"> <MDBBadge color='info' pill>  {product.entryType} </MDBBadge></TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
@@ -128,7 +142,7 @@ function Row(props: { row: ReturnType<typeof createData> }) {
     </React.Fragment>
   );
 }
-
+/*
 const rows = [
   createData(1234, '2020-01-05', '2023-01-05', 24, 'Almacen'),
   createData(5678, '2020-01-05', '2023-01-05', 37, 'Almacen'),
@@ -136,7 +150,7 @@ const rows = [
   createData(12131, '2020-01-05', '2023-01-05', 67, 'Almacen'),
   createData(2488, '2020-01-05', '2023-01-05', 49, 'Almacen'),
 ];
-
+*/
 export default function CollapsibleTable(classes: any) {
   classes = useStyles();
 
@@ -146,7 +160,7 @@ export default function CollapsibleTable(classes: any) {
 
   const mountInOrderList = async() =>{
     try{
-      const { data } = await axios.get(API_url + '/inorder')
+      const { data } = await axios.get(API_url + 'inorder')
       const dataUnstructured = data.data;
       setOrderList( dataUnstructured );
     }catch (error){
@@ -165,7 +179,7 @@ export default function CollapsibleTable(classes: any) {
       ignore = true;
     };
   }, []);
-  
+
   return(
     <>
     <div> 
@@ -184,8 +198,8 @@ export default function CollapsibleTable(classes: any) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Row key={row.order} row={row} />
+          {orderList.map((order) => (
+            <Row inOrder={order}/>
           ))}
         </TableBody>
       </Table>
