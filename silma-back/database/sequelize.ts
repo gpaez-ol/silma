@@ -124,6 +124,7 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   StockMovement.belongsTo(Product);
   StockMovement.belongsTo(Location);
   StockMovement.belongsTo(Location,{as:"PrevLocation",foreignKey:"PrevLocationId"});
+  StockMovement.belongsTo(InOrder);
 
   await sequelize.sync({ force });
   await sequelize.authenticate();
