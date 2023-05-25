@@ -31,6 +31,48 @@ export default function App(classes: any) {
     ],
   });
 
+  const post = async (formData: any, reader: any) => {
+    try {
+      const { data } = await axios.post(API_url + 'product-articles', {
+        internalCode: formData.internalCode,
+        title: formData.title,
+        synopsis: 'placeholder',
+        salesPrice: formData.salesPrice,
+        imageUrl: reader,
+        status: 'activo'
+      });
+
+
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const readForm = (formData: any) => {
+    
+    let reader = new FileReader();
+    reader.readAsDataURL(formData.imageUrl);
+    reader.onload = function () {
+      post(formData, reader.result);
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };      
+}
+
+
+  const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      return;
+    }
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    readForm(data);
+  };
+
   const mountArticleList = async () => {
     try {
       const { data } = await axios.get(API_url + "product-articles");
