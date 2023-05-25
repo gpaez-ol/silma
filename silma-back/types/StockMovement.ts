@@ -17,6 +17,15 @@ export type ProductStockMovementItem = {
     locationName:string;
   };
 
+export type CurrentProductStockItem = {
+  productId:string;
+  productName:string;
+  locationId:string;
+  bodegaTotal:number;
+  pisoTotal:number;
+  internalCode:string;
+}
+
 export const StockMovementCreateSchema = Joi.object<StockMovementCreate>({
     notes: Joi.string().optional().max(longText).label("Notes"),
     productId: Joi.string().required().label("Product Id"),

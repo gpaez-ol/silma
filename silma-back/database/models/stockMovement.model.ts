@@ -18,6 +18,8 @@ export type StockMovementAttributes = {
   PrevLocationId?: string;
   InOrderId?:string;
   InOrder?:InOrderAttributes;
+  // on certain sum(col) calls
+  total_amount?:number;
 } & EntityAttributes;
 
 export type StockMovementCreationAttributes = StockMovementAttributes;
