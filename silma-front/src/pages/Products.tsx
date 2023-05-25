@@ -8,6 +8,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { Buffer } from 'buffer';
+
 
 
 export default function App(classes: any) {
@@ -42,8 +44,9 @@ export default function App(classes: any) {
     }]
   });
 
-  const postData = async (formData: any) => {
+  const post = async (formData: any, reader: any) => {
     try {
+
       const { data } = await axios.post(API_url + 'product', {
         title: formData.title,
         author: formData.author,
@@ -61,14 +64,26 @@ export default function App(classes: any) {
         quantity: 0,
         publicationYear: formData.publicationYear,
         edition: formData.edition,
-        imageUrl: 'imageURL',
+        imageUrl: reader,
         type: 'book'
       });
 
-      console.log(data);
+
     } catch (error) {
       console.log(error);
     }
+  }
+
+  const readForm = (formData: any) => {
+    
+      let reader = new FileReader();
+      reader.readAsDataURL(formData.imageUrl);
+      reader.onload = function () {
+        post(formData, reader.result);
+      };
+      reader.onerror = function (error) {
+        console.log('Error: ', error);
+      };      
   }
 
   const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
@@ -80,8 +95,7 @@ export default function App(classes: any) {
     }
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
-    console.log(data);
-    postData(data);
+    readForm(data);
   };
 
   const mountBookList = async () => {

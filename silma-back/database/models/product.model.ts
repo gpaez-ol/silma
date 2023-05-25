@@ -192,7 +192,7 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
         defaultValue: "valid",
       },
       imageUrl: {
-        type: new DataTypes.STRING(longText),
+        type: new DataTypes.STRING(7000000),
         allowNull: false,
       },
       createdAt: DataTypes.DATE,
