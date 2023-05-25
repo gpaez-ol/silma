@@ -61,7 +61,6 @@ export default function App(classes: any) {
         weight: formData.weight,
         dimensions: formData.dimensions,
         isbn: formData.isbn,
-        quantity: 0,
         publicationYear: formData.publicationYear,
         edition: formData.edition,
         imageUrl: reader,
@@ -96,37 +95,6 @@ export default function App(classes: any) {
     const formData = new FormData(form);
     const data = Object.fromEntries(formData.entries());
     readForm(data);
-  };
-
-  const mountBookList = async () => {
-    try{
-      /*
-        axios.get(API_url + 'product-books').then( res => {
-        const books = res.data;
-        console.log(books);
-        setValues({productList: books});
-        navigate('/product-books');
-        });
-      */
-      const books = await axios.get(API_url + 'product-books');
-      console.log(books.data);
-      setValues({productList: books.data});
-      navigate('/product-books');
-    }catch(err){
-      console.log("Loading error")
-    }
-  }
-
-  const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      return;
-    }
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-    postData(data);
   };
 
   const mountBookList = async () => {
