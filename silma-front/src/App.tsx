@@ -11,7 +11,8 @@ import InOrder from "./pages/InOrder";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import {createTheme, ThemeProvider } from '@mui/material';
+import {  createTheme, ThemeProvider } from '@mui/material';
+import StockMovement from "./pages/StockMovement";
 
 const theme = createTheme({
   typography: {
@@ -50,10 +51,11 @@ function App() {
         >
           <Route path="/product-books" element={<Products />} />
           <Route path="/product-articles" element={<ProductArt />} />
-          <Route path="/storage" element={<Storage />} />
+          <Route path="/storage" element={<StockMovement />} />
           <Route path="/inorder" element={<InOrder />} />
         </Route>
       </Routes>
+
       </ThemeProvider>
     </Router>
   );
