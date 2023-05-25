@@ -2,7 +2,7 @@ import { APIGatewayEvent, APIGatewayProxyHandler } from "aws-lambda";
 import { StockMovementAttributes } from "database/models";
 import { connectToDatabase, sequelize } from "database/sequelize";
 import { SilmaAPIFunction, silmaAPIhandler } from "lib/handler/handler";
-import { getProductStockMovementList } from "logic";
+import { buildProductStockMovements, getProductStockMovementList } from "logic";
 import { badRequest, writeToConsole } from "utils";
 import { StockMovementCreate, StockMovementCreateSchema } from "types";
 
@@ -46,18 +46,26 @@ const createStockMovementFunction: SilmaAPIFunction = async (
 
 const getStockMovementsFunction: SilmaAPIFunction = async () => {
   const db = await connectToDatabase();
-  const { StockMovement } = db;
+  const { StockMovement,Product } = db;
   const rawStockMovements = await StockMovement.findAll({
     where: { deletedAt: null },
     attributes:["LocationId","ProductId",[sequelize.fn('sum', sequelize.col('amount')), 'total_amount']],
-    group: ["LocationId", "ProductId"],
-    order: ["LocationId", "ProductId"],
+    group: [ "ProductId","LocationId"],
+    order: [ "ProductId","LocationId"],
   });
+  const rawProducts = await Product.findAll({
+    attributes: ["id", "title","internalCode"],
+    where: { deletedAt: null, status: "activo" },
+  });
+  const products = rawProducts.map((rawProduct) =>
+    rawProduct.get({ plain: true })
+  );
   const stockMovements = rawStockMovements .map((rawStockMovement) =>
     rawStockMovement.get({ plain: true })
   );
+  const currentStockMovements = buildProductStockMovements(stockMovements,products);
 
-  return { data: stockMovements };
+  return { data: currentStockMovements };
 };
 
 const getProductStockMovementsFunction: SilmaAPIFunction = async (event: APIGatewayEvent) => {
