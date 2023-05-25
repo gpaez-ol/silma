@@ -3,6 +3,7 @@ import { longText, shortText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
 import { ProductAttributes } from "./product.model";
 import { LocationAttributes } from "./location.model";
+import { InOrderAttributes } from "./inOrder.model";
 
 export type StockMovementAttributes = {
   id?: string;
@@ -15,6 +16,8 @@ export type StockMovementAttributes = {
   LocationId: string;
   PrevLocation?: LocationAttributes;
   PrevLocationId?: string;
+  InOrderId?:string;
+  InOrder?:InOrderAttributes;
 } & EntityAttributes;
 
 export type StockMovementCreationAttributes = StockMovementAttributes;
