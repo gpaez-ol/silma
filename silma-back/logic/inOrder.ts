@@ -1,10 +1,5 @@
 import { ProductInOrderAttributes } from "database/models";
-import {
-  InOrderDetails,
-  InOrderItem,
-  ProductInOrderDetails,
-  ProductInOrderItem,
-} from "types";
+import { InOrderItem, ProductInOrderItem } from "types";
 
 const getUniqueProductItems = (productInOrders: ProductInOrderAttributes[]) => {
   const uniqueInOrderProductItems = productInOrders.reduce(
@@ -15,6 +10,11 @@ const getUniqueProductItems = (productInOrders: ProductInOrderAttributes[]) => {
         amount: attributes.amount,
         id: attributes.ProductId,
         title: attributes.Product.title,
+        author: attributes.Product.author,
+        internalCode: attributes.Product.internalCode,
+        entryType: attributes.entryType,
+        status: attributes.Product.status,
+        imageUrl: attributes.Product.imageUrl,
       });
       return productItems;
     },
@@ -43,55 +43,15 @@ export const getInOrderList = (
         id: productInOrder.InOrderId,
         orderedAt: productInOrder.InOrder.orderedAt,
         deliveredAt: productInOrder.InOrder.deliveredAt,
+        notes: productInOrder.InOrder.notes,
+        internalCode: productInOrder.InOrder.internalCode,
+        location: productInOrder.InOrder.Location.title,
         products: uniqueInOrderProductItems[productInOrder.InOrderId],
+        totalAmount: productInOrders.reduce(
+          (sum, currentProduct) => sum + currentProduct.amount,
+          0
+        ),
       };
     });
   return inOrderItems;
-};
-
-const getUniqueProductDetailItems = (
-  productInOrders: ProductInOrderAttributes[]
-) => {
-  const uniqueInOrderProductItems = productInOrders.reduce(
-    (productItems: ProductInOrderDetails[], attributes) => {
-      const { InOrderId } = attributes;
-      productItems[InOrderId] = productItems[InOrderId] ?? [];
-      productItems[InOrderId].push({
-        amount: attributes.amount,
-        id: attributes.ProductId,
-        title: attributes.Product.title,
-        description: attributes.Product.synopsis,
-      });
-      return productItems;
-    },
-    []
-  );
-  return uniqueInOrderProductItems;
-};
-export const mapInOrderDetails = (
-  productInOrders: ProductInOrderAttributes[]
-): InOrderDetails => {
-  // TODO: Add logic to check only one order is being brought
-  const uniqueInOrderIds = new Set();
-  const uniqueInOrderProductItems =
-    getUniqueProductDetailItems(productInOrders);
-  const inOrderItems: InOrderDetails[] = productInOrders
-    .filter((productInOrder) => {
-      const isDuplicate = uniqueInOrderIds.has(productInOrder.InOrderId);
-      uniqueInOrderIds.add(productInOrder.InOrderId);
-      if (!isDuplicate) {
-        return true;
-      }
-
-      return false;
-    })
-    .map((productInOrder) => {
-      return {
-        orderedAt: productInOrder.InOrder.orderedAt,
-        deliveredAt: productInOrder.InOrder.deliveredAt,
-        products: uniqueInOrderProductItems[productInOrder.InOrderId],
-        notes: productInOrder.InOrder.notes,
-      };
-    });
-  return inOrderItems.pop();
 };

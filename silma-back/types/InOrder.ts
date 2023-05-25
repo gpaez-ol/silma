@@ -1,9 +1,11 @@
 import Joi from "joi";
+import { ProductEntryType } from "types";
 import { longText } from "utils";
 
 export type ProductInOrder = {
   id: string;
   amount: number;
+  entryType: ProductEntryType;
 };
 export type ProductInOrderItem = {
   title: string;
@@ -19,6 +21,7 @@ export type InOrderCreate = {
   deliveredAt?: Date;
   products: ProductInOrder[];
   notes?: string;
+  locationId?: string;
 };
 
 export type InOrderItem = {
@@ -26,6 +29,7 @@ export type InOrderItem = {
   orderedAt: Date;
   deliveredAt?: Date;
   products: ProductInOrderItem[];
+  totalAmount: number;
 };
 export type InOrderDetails = {
   products: ProductInOrderDetails[];
@@ -37,4 +41,5 @@ export const InOrderCreateSchema = Joi.object<InOrderCreate>({
   orderedAt: Joi.date().required().label("Ordered At"),
   deliveredAt: Joi.date().optional().label("Delivery Date"),
   products: Joi.array().min(1).items(Joi.any()).label("Products"),
+  locationId: Joi.string().optional().label("Location"),
 });

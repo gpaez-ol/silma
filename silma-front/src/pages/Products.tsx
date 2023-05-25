@@ -1,52 +1,50 @@
-import React, {useState, FormEventHandler, ChangeEventHandler } from 'react';
+import React, { useState, FormEventHandler, ChangeEventHandler,  useEffect } from "react";
 import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
-import './Products.css';
+import "./Products.css";
 import './AddProduct.css'
-import { WhiteButton } from '../components/ButtonProduct';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { WhiteButton } from "../components/ButtonProduct";
+import axios from "axios";
+import {  useNavigate } from "react-router-dom";
 import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
-import { Buffer } from 'buffer';
-
 
 
 export default function App(classes: any) {
   classes = useStyles();
   const navigate = useNavigate();
   const API_url = "http://localhost:3000/local/";
-
   const [basicModal, setBasicModal] = useState(false);
   const toggleShow = () => setBasicModal(!basicModal);
 
   const [values, setValues] = useState({
-    productList: [{
-      internalCode:'',
-      title:'',
-      author:'',
-      synopsis:'',
-      salesPrice:0,
-      authorPrice:0,
-      genre:'',
-      language:'',
-      format:'',
-      numberPages:0,
-      suggestedAges:'',
-      weight:0,
-      dimensions:'',
-      isbn:'',
-      quantity:'',
-      publicationYear:'',
-      edition:'',
-      imageUrl:'',
-      status:''
-    }]
+    productList: [
+      {
+        internalCode: "",
+        title: "",
+        author: "",
+        synopsis: "",
+        salesPrice: 0,
+        authorPrice: 0,
+        genre: "",
+        language: "",
+        format: "",
+        numberPages: 0,
+        suggestedAges: "",
+        weight: 0,
+        dimensions: "",
+        isbn: "",
+        quantity: "",
+        publicationYear: "",
+        edition: "",
+        imageUrl: "",
+        status: "",
+      },
+    ],
   });
 
   const post = async (formData: any, reader: any) => {
     try {
-
       const { data } = await axios.post(API_url + 'product', {
         title: formData.title,
         author: formData.author,
@@ -54,7 +52,9 @@ export default function App(classes: any) {
         salesPrice: formData.salesPrice,
         authorPrice: formData.authorPrice,
         genre: (formData.genre).toLowerCase(),
+        // TODO: change for select
         language: formData.language,
+        // TODO: change for select
         format: formData.format,
         numberPages: formData.numberPages,
         suggestedAges:formData.suggestedAges,
@@ -117,22 +117,44 @@ export default function App(classes: any) {
     }
   }
 
-  const mountArticles = () =>{
-    navigate('/product-articles');
-  }
+  const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
+    event.preventDefault();
 
-  /*useEffect(()=>{
-    window.addEventListener('load',mountBookList);
-    return()=>{
-      window.removeEventListener('load',mountBookList);
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      return;
     }
-  });*/
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    postData(data);
+  };
 
-  const [internalCode, seInternalCode] = useState('');
-  const [title, setTitle] = useState('');
-  const [field, setField] = useState<string[]>([]);
-  const [items , setItems] = useState<string[]>([]);
-    
+  const mountBookList = async () => {
+    try {
+      const { data } = await axios.get(API_url + "product-books");
+      const dataUnstructured = data.data;
+      setValues({ productList: dataUnstructured });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const mountArticles = () => {
+    navigate("/product-articles");
+  };
+
+  useEffect(() => {
+    let ignore = false;
+
+    if (!ignore) {
+      mountBookList();
+    }
+    ignore = true;
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   return (
     <>
     <div>
@@ -318,8 +340,8 @@ export default function App(classes: any) {
               </div>
             </td>
             <td> {product.quantity}</td>
-            <td> {product.salesPrice} </td>
-            <td> {product.authorPrice} </td>
+            <td> ${product.salesPrice} </td>
+            <td> ${product.authorPrice} </td>
             <td> {product.genre} </td>
             <td> {product.format} </td>
             <td> {product.language} </td>
@@ -440,30 +462,15 @@ export default function App(classes: any) {
   );
 }
 
-const useStyles = makeStyles(() =>({
-  title:{
-    textAlign: 'center',
+const useStyles = makeStyles(() => ({
+  title: {
+    textAlign: "center",
     fontSize: 40,
     //fontWeight: 'bold',
-    paddingTop: '25px',
-    paddingBottom: '25px',
-    color:'rgba(223,31,38,1)0%',
-    fontfamily: 'Bebas Neue',
-  },
-  buttonContainer:{
-    justifyContent: 'space-evenly',
-    display:'flex',
-    flexDirection: 'row',
-    width: '30%',
-    margin: 'auto',
-    paddingBottom: '25px',
-    color:'rgba(223,31,38,1)0%',
-    fontfamily: 'Bebas Neue',
-  },
-  tableHead:{
-    backgroundImage: 'linear-gradient(to bottom, rgba(223,31,38,1)0%, rgba(223,31,38,1)50%, rgba(223,31,38,1)100%)',
-    color: "#202843",
-    fontWeight: "bolder",
+    paddingTop: "25px",
+    paddingBottom: "25px",
+    color: "black",
+    fontfamily: "Bebas Neue",
   },
   formContainer: {
     position: "absolute",
@@ -475,5 +482,19 @@ const useStyles = makeStyles(() =>({
     maxWidth: "200px",
     background: "rgba(16,95,158,1)100%",
     //fontWeight: 'bold',
-  }
-}))
+  },
+  buttonContainer: {
+    justifyContent: "space-evenly",
+    display: "flex",
+    flexDirection: "row",
+    width: "30%",
+    margin: "auto",
+    paddingBottom: "25px",
+  },
+  tableHead: {
+    backgroundImage:
+      "linear-gradient(to bottom, rgba(223,31,38,1)0%, rgba(223,31,38,1)50%, rgba(223,31,38,1)100%)",
+    color: "#202843",
+    fontWeight: "bolder",
+  },
+}));

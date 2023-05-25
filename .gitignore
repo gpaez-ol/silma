@@ -12,6 +12,7 @@ dist
 dist-ssr
 *.local
 
+yarn.lock
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -34,3 +35,5 @@ node_modules
 # debug
 yarn-debug.log*
 yarn-error.log*
+
+config/secrets.json

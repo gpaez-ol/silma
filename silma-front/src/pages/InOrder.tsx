@@ -1,254 +1,183 @@
-import React from 'react';
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody } from 'mdb-react-ui-kit';
-import { makeStyles } from "@material-ui/core/styles";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import { MDBBadge } from 'mdb-react-ui-kit';
 import './Products.css';
 
-export default function App(classes: any) {
-  classes = useStyles();
+function createData(
+  order: number,
+  orderDate: string,
+  arrivalDate: string,
+  quantity: number,
+  location: string,
+) {
+  return {
+    order,
+    orderDate,
+    arrivalDate,
+    quantity,
+    location,
+    history: [
+      {
+        code: 'A1234',
+        picture: 'https://m.media-amazon.com/images/I/61ZMLiTYxDL.jpg',
+        product: 'Dracula',
+        author: 'Bram Stoker',
+        status:'Agotado',
+        amount: 3,
+        type: 'Reimpresión'
+
+      },
+      {
+        code: 'B5678',
+        picture: 'https://m.media-amazon.com/images/I/71Qe2yIBFmL.jpg',
+        product: 'Moby Dick',
+        author: 'Herman Melvill',
+        status:'Agotado',
+        amount: 1,
+        type: 'Reimpresión'
+      },
+    ],
+  };
+}
+
+function Row(props: { row: ReturnType<typeof createData> }) {
+  const { row } = props;
+  const [open, setOpen] = React.useState(false);
+
   return (
-    <MDBTable align='middle'>
-      <MDBTableHead light>
-       <tr>
-          <th scope='col'>Código interno</th>
-          <th scope='col'>Producto</th>
-          <th scope='col'>Fecha pedido</th>
-          <th scope='col'>Fecha llegada</th>
-          <th scope='col'>Tipo</th>
-          <th scope='col'>Cantidad</th>
-          <th scope='col'>Ubicación</th>
-          <th scope='col'>Editar</th>
-        </tr>
-      </MDBTableHead>
-      <MDBTableBody>
-        <tr>
-          <td>A1234</td>
-          <td>
-            <div className='d-flex align-items-center'>
-              <img
-                src='https://m.media-amazon.com/images/I/61ZMLiTYxDL.jpg'
-                alt=''
-                style={{ width: '45px', height: '45px' }}
-                className='rounded-circle'
-              />
-              <div className='ms-3'>
-                <p className='fw-bold mb-1'>Dracula  <MDBBadge color='success' pill> Disponible </MDBBadge> </p>
-                <p className='text-muted mb-0'>Bram Stoker - 1897 </p>
-              </div>
-            </div>
-          </td>
-          <td> 14 Abr 23 </td>
-          <td> 04 May 23 </td>
-          <td> <MDBBadge color='info' pill> Reimpresión </MDBBadge> </td>
-          <td> 4 </td>
-          <td> 2 </td>
-          <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
-          </td>
-        </tr>
-        <tr>
-          <td>B1234</td>
-          <td>
-            <div className='d-flex align-items-center'>
-              <img
-                src='https://m.media-amazon.com/images/I/71Qe2yIBFmL.jpg'
-                alt=''
-                style={{ width: '45px', height: '45px' }}
-                className='rounded-circle'
-              />
-              <div className='ms-3'>
-                <p className='fw-bold mb-1'>Moby Dick  <MDBBadge color='danger' pill> Agotado </MDBBadge> </p>
-                <p className='text-muted mb-0'>Herman Melvill - 1900</p>
-              </div>
-            </div>
-          </td>
-          <td> 24 Sep 22 </td>
-          <td> 10 Feb 23 </td>
-          <td> <MDBBadge color='primary' pill> Resurtido </MDBBadge> </td>
-          <td> 10 </td>
-          <td> 8 </td>
-          <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
-          </td>
-        </tr>
-        <tr>
-          <td>C1234</td>
-          <td>
-            <div className='d-flex align-items-center'>
-              <img
-                src='https://imagessl2.casadellibro.com/a/l/t5/92/9788419087492.jpg'
-                alt=''
-                style={{ width: '45px', height: '45px' }}
-                className='rounded-circle'
-              />
-              <div className='ms-3'>
-                <p className='fw-bold mb-1'>El principito  <MDBBadge color='success' pill> Disponible </MDBBadge>  </p>
-                <p className='fw-normal mb-1'>Antoine de Saint-Exupéry - 1943</p>
-              </div>
-            </div>
-          </td>
-          <td> 21 Jul 22 </td>
-          <td> 22 Dec 22 </td>
-          <td> <MDBBadge color='warning' pill> Devolución </MDBBadge> </td>
-          <td> 7 </td>
-          <td> 12 </td>
-          <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
-          </td>
-        </tr>
-        <tr>
-          <td>A1234</td>
-          <td>
-            <div className='d-flex align-items-center'>
-              <img
-                src='https://m.media-amazon.com/images/I/61ZMLiTYxDL.jpg'
-                alt=''
-                style={{ width: '45px', height: '45px' }}
-                className='rounded-circle'
-              />
-              <div className='ms-3'>
-                <p className='fw-bold mb-1'>Dracula  <MDBBadge color='success' pill> Disponible </MDBBadge> </p>
-                <p className='text-muted mb-0'>Bram Stoker - 1897 </p>
-              </div>
-            </div>
-          </td>
-          <td> 11 Ago 23 </td>
-          <td> 02 Oct 23 </td>
-          <td> <MDBBadge color='info' pill> Reimpresión </MDBBadge> </td>
-          <td> 4 </td>
-          <td> 2 </td>
-          <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
-          </td>
-        </tr>
-      </MDBTableBody>
-    </MDBTable>
+    <React.Fragment>
+      <TableRow sx={{ '& > *': { borderBottom: 'unset'} }}>
+        <TableCell>
+          <IconButton
+            aria-label="expand row"
+            size="small"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>
+        <TableCell component="th" scope="row">
+          {row.order}
+        </TableCell>
+        <TableCell align="right">{row.orderDate}</TableCell>
+        <TableCell align="right">{row.arrivalDate}</TableCell>
+        <TableCell align="right">{row.quantity}</TableCell>
+        <TableCell align="right">{row.location}</TableCell>
+      </TableRow>
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box sx={{ margin: 1 }}>
+              <Typography variant="h6" gutterBottom component="div">
+                Detalles
+              </Typography>
+              <Table size="small" aria-label="purchases">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Código interno</TableCell>
+                    <TableCell>Producto</TableCell>
+                    <TableCell align="right">Cantidad</TableCell>
+                    <TableCell align="right">Tipo</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {row.history.map((historyRow) => (
+                    <TableRow key={historyRow.code}>
+                      <TableCell component="th" scope="row">
+                        {historyRow.code}
+                      </TableCell>
+                      <TableCell>
+                      <div className='d-flex align-items-center'>
+                        <img
+                            src={historyRow.picture} 
+                            alt=''
+                            style={{ width: '45px', height: '45px' }}
+                            className='rounded-circle'
+                        />
+                        <div className='ms-3'>
+                                <p className='fw-bold mb-1'>{historyRow.product}  <MDBBadge color='danger' pill> {historyRow.status} </MDBBadge> </p>
+                                <p className='text-muted mb-0'>{historyRow.author}</p>
+                        </div>
+                     </div>
+                     </TableCell>
+                      <TableCell align="right">{historyRow.amount}</TableCell>
+                      <TableCell align="right"> <MDBBadge color='info' pill>  {historyRow.type} </MDBBadge></TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
   );
 }
 
+const rows = [
+  createData(1234, '2020-01-05', '2023-01-05', 24, 'Almacen'),
+  createData(5678, '2020-01-05', '2023-01-05', 37, 'Almacen'),
+  createData(91011, '2020-01-05', '2023-01-05', 24, 'Almacen'),
+  createData(12131, '2020-01-05', '2023-01-05', 67, 'Almacen'),
+  createData(2488, '2020-01-05', '2023-01-05', 49, 'Almacen'),
+];
+
+export default function CollapsibleTable(classes: any) {
+    classes = useStyles();
+  return(
+    <>
+    <div> 
+        <Typography variant="h2" className = {classes.title}>Historial de Ordenes </Typography>
+     </div>
+    <TableContainer component={Paper}>
+      <Table aria-label="collapsible table">
+        <TableHead className={classes.tableHead}>
+          <TableRow className="shadow">
+            <TableCell />
+            <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Orden</TableCell>
+            <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Fecha Pedido</TableCell>
+            <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Fecha Llegada</TableCell>
+            <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Cantidad</TableCell>
+            <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Ubicación</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {rows.map((row) => (
+            <Row key={row.order} row={row} />
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+    </>
+    );
+}
+
 const useStyles = makeStyles(() =>({
-  backgroundContainer: {
-      minWidth: '20vw',
-      minHeight: '20vh',
-  },
-  overlay: {
-      width: '100vw',
-      height: '95vh',
-      //backgroundImage: 'linear-gradient(to bottom, rgba(249, 238, 236,1)0%, rgba(249, 238, 236,1)50%, rgba(249, 238, 236,1)100%)',
-      justifyContent: 'space-evenly',
-      margin: 'auto',
-      display: 'flex',
-      flexDirection: 'column',
-  },
-  logoImg: {
-      maxWidth: '35%',
-      height: 'auto',
-      padding: 0,
-      margin: 0,
-      transform: 'translate(20%, -10%)',
-  },
-  formContainer: {
-      position: 'absolute',
-      left: '50%',
-      margin: 'auto',
-      padding: '50px',
-      width: '30%',
-      maxWidth: '400px',
-      borderRadius: "25px",
-      boxShadow: '0 3px 5px 2px rgba(32,40,67,1)',
-      backgroundImage: 'linear-gradient(to bottom, rgba(223,31,38,1)0%, rgba(223,31,38,1)50%, rgba(223,31,38,1)100%)',
-  },
-  passwordInput: {
-      flex: '1',
-      width: '100%',
-      padding: '15px',
-      outline: 'none',
-      borderRadius: '25px',
-      border: 'none',
-      background: "none",
-      color: 'white',
-      fontSize: '18px',
-      '&::placeholder': {
-          color: 'rgba(255,255,255,0.75)'
-      }
-  },
-  userInput: {
-      width: '100%',
-      padding: '15px',
-      outline: 'none',
-      borderRadius: '25px',
-      border: 'none',
-      marginBottom: '20px',
-      background: "rgba(255,255,255,0.25)",
-      color: 'white',
-      fontSize: '18px',
-      '&::placeholder': {
-          color: 'rgba(255,255,255,0.75)'
-      }
-  },
-  passwordContainer: {
-      display: 'flex',
-      width: '100%',
-      background: 'rgba(255,255,255,0.25)',
-      borderRadius: '25px',
-      border: 'none',
-      marginBottom: '20px',
-  },
-  link: {
-      color: 'white',
-      '&:hover': {
-          color: 'white'
-      },
-      fontSize: '15px',
-  },
-  line: {
-      textAlign:'center',
-      borderTop: '1px solid white',
-  },
-  footerBlue:{
-      position: 'absolute',
-      margin: 'auto',
-      paddingBottom: '40px',
-      width: '100%',
-      maxWidth: '25vw',
-      boxShadow: '0 3px 5px 2px rgba(32,40,67,1)',
-      backgroundImage: 'linear-gradient(to bottom, rgba(16, 95, 158,1)0%, rgba(16, 95, 158,1)50%, rgba(16, 95, 158,1)100%)',
-  },
-  footerRed:{
-      position: 'absolute',
-      left: '25%',
-      margin: 'auto',
-      paddingBottom: '40px',
-      width: '100%',
-      maxWidth: '25vw',
-      boxShadow: '0 3px 5px 2px rgba(32,40,67,1)',
-      backgroundImage: 'linear-gradient(to bottom, rgba(223,31,38,1)0%, rgba(223,31,38,1)50%, rgba(223,31,38,1)100%)',
-  },
-  footerGreen:{
-      position: 'absolute',
-      left: '50%',
-      margin: 'auto',
-      paddingBottom: '40px',
-      width: '100%',
-      maxWidth: '25vw',
-      boxShadow: '0 3px 5px 2px rgba(32,40,67,1)',
-      backgroundImage: 'linear-gradient(to bottom, rgba(195, 208, 46,1)0%, rgba(195, 208, 46,1)50%, rgba(195, 208, 46,1)100%)',
-  },
-  footerPurple:{
-      position: 'absolute',
-      left: '75%',
-      margin: 'auto',
-      paddingBottom: '40px',
-      width: '100%',
-      maxWidth: '25vw',
-      boxShadow: '0 3px 5px 2px rgba(32,40,67,1)',
-      backgroundImage: 'linear-gradient(to bottom, rgba(144, 64, 213,1)0%, rgba(144, 64, 213,1)50%, rgba(144, 64, 213,1)100%)',
-  }
+    title:{
+      textAlign: 'center',
+      fontSize: 40,
+      fontWeight: 'bold',
+      paddingTop: '25px',
+      paddingBottom: '25px',
+      color:'black',
+      //fontfamily: 'Bebas Neue'
+    },
+    tableHead:{
+      backgroundImage: 'linear-gradient(to bottom, rgba(144, 64, 213,1)0%, rgba(144, 64, 213,0.8)50%, rgba(144, 64, 213,0.7)100%)',
+      //backgroundImage: "linear-gradient(to bottom, rgba(16, 95, 158,1)0%, rgba(16, 95, 158,0.8)50%, rgba(16, 95, 158,0.7)100%)",
+      //backgroundColor: 'rgba(144, 64, 213,0.3)',
+    }
 }))

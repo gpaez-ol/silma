@@ -7,7 +7,7 @@ export type LocationCreate = {
 };
 
 export type LocationItem = {
-    id: number;
+    id: string;
     title: string;
     description: string;
 };

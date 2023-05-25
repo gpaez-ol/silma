@@ -13,6 +13,7 @@ import {
 } from "types";
 import { longText, shortText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
+import { ProductInOrderAttributes } from "./productInOrder.model";
 
 export type ProductAttributes = {
   id?: string;
@@ -21,7 +22,6 @@ export type ProductAttributes = {
   synopsis: string;
   salesPrice: number;
   internalCode: string;
-  quantity: number;
   imageUrl: string;
   status: ProductStatus;
 
@@ -38,6 +38,8 @@ export type ProductAttributes = {
   format?: ProductFormat;
   genre?: ProductGenre;
   language?: ProductLanguage;
+
+  ProductInOrders?: ProductInOrderAttributes[];
 } & EntityAttributes;
 
 export type ProductCreationAttributes = Optional<
@@ -167,10 +169,6 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
       },
       internalCode: {
         type: new DataTypes.STRING(shortText),
-        allowNull: false,
-      },
-      quantity: {
-        type: new DataTypes.DOUBLE(),
         allowNull: false,
       },
       publicationYear: {

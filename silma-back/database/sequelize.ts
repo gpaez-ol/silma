@@ -1,4 +1,4 @@
-import { Sequelize, ModelDefined, Model } from "sequelize";
+import { Sequelize, ModelDefined } from "sequelize";
 import * as pg from "pg";
 import { writeToConsole } from "utils";
 import {
@@ -18,6 +18,9 @@ import {
   LocationAttributes,
   LocationCreationAttributes,
   LocationModel,
+  StockMovementModel,
+  StockMovementAttributes,
+  StockMovementCreationAttributes,
 } from "./models";
 
 // Require and initialize outside of your main handler
@@ -46,6 +49,7 @@ const Product = ProductModel(sequelize);
 const InOrder = InOrderModel(sequelize);
 const ProductInOrder = ProductInOrderModel(sequelize);
 const Location = LocationModel(sequelize);
+const StockMovement = StockMovementModel(sequelize);
 type ModelStructure = {
   User: ModelDefined<UserAttributes, UserCreationAttributes>;
   Product: ModelDefined<ProductAttributes, ProductCreationAttributes>;
@@ -55,6 +59,7 @@ type ModelStructure = {
     ProductInOrderCreationAttributes
   >;
   Location: ModelDefined<LocationAttributes, LocationCreationAttributes>;
+  StockMovement: ModelDefined<StockMovementAttributes,StockMovementCreationAttributes>
 };
 const Models: ModelStructure = {
   User,
@@ -62,6 +67,7 @@ const Models: ModelStructure = {
   InOrder,
   ProductInOrder,
   Location,
+  StockMovement
 };
 
 const connection: Connection = { isConnected: false };
@@ -109,8 +115,17 @@ export const connectToDatabase: GetPromise = async (force = false) => {
   InOrder.hasMany(ProductInOrder);
   Location.hasMany(ProductInOrder);
   ProductInOrder.belongsTo(Location);
-
   // End of Super Many-to-Many Relationship
+
+  // Location-InOrder Relationships
+  Location.hasMany(InOrder);
+  InOrder.belongsTo(Location);
+
+  StockMovement.belongsTo(Product);
+  StockMovement.belongsTo(Location);
+  StockMovement.belongsTo(Location,{as:"PrevLocation",foreignKey:"PrevLocationId"});
+  StockMovement.belongsTo(InOrder);
+
   await sequelize.sync({ force });
   await sequelize.authenticate();
   connection.isConnected = true;
@@ -138,11 +153,20 @@ export const connectToDatabase: GetPromise = async (force = false) => {
       dimensions: "4.2, 2.2, 5",
       isbn: "1111111111111", //solo numeros de 13 digitos
       internalCode: "ASD123",
-      quantity: 8,
       publicationYear: 2022,
       edition: "2",
       status: "activo",
       imageUrl: "imageUrl",
+    });
+    await Location.create({
+      id: "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e",
+      title: "Bodega",
+      description: "Ubicacion base de llegadas",
+    });
+    await Location.create({
+      id: "d8d70ad7-1e69-499b-ac2b-d68dcd3bff2e",
+      title: "Piso",
+      description: "Ubicacion base de llegadas",
     });
   }
   return Models;

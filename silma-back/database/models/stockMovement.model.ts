@@ -2,29 +2,32 @@ import { DataTypes, ModelDefined, Sequelize } from "sequelize";
 import { longText, shortText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
 import { ProductAttributes } from "./product.model";
-import { ProductInOrderAttributes } from "./productInOrder.model";
 import { LocationAttributes } from "./location.model";
+import { InOrderAttributes } from "./inOrder.model";
 
-export type InOrderAttributes = {
+export type StockMovementAttributes = {
   id?: string;
-  notes: string;
-  internalCode: string;
-  orderedAt: Date;
-  deliveredAt: Date;
-  products?: ProductAttributes[];
-  ProductInOrders?: ProductInOrderAttributes[];
+  notes?: string;
+  movedAt: Date;
+  amount:number;
+  ProductId: string;
+  Product?:ProductAttributes;
   Location?: LocationAttributes;
-  LocationId?: string;
+  LocationId: string;
+  PrevLocation?: LocationAttributes;
+  PrevLocationId?: string;
+  InOrderId?:string;
+  InOrder?:InOrderAttributes;
 } & EntityAttributes;
 
-export type InOrderCreationAttributes = InOrderAttributes;
+export type StockMovementCreationAttributes = StockMovementAttributes;
 type GetModel = (
   sequelize: Sequelize
-) => ModelDefined<InOrderAttributes, InOrderCreationAttributes>;
+) => ModelDefined<StockMovementAttributes, StockMovementCreationAttributes>;
 
-export const InOrderModel: GetModel = (sequelize: Sequelize) => {
-  const Model: ModelDefined<InOrderAttributes, InOrderCreationAttributes> =
-    sequelize.define("InOrder", {
+export const StockMovementModel: GetModel = (sequelize: Sequelize) => {
+  const Model: ModelDefined<StockMovementAttributes, StockMovementCreationAttributes> =
+    sequelize.define("StockMovement", {
       id: {
         primaryKey: true,
         type: DataTypes.UUID,
@@ -35,15 +38,14 @@ export const InOrderModel: GetModel = (sequelize: Sequelize) => {
         type: new DataTypes.STRING(longText),
         allowNull: false,
       },
-      internalCode: {
-        type: new DataTypes.STRING(shortText),
-        allowNull: false,
-      },
-      orderedAt: {
+      movedAt: {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      deliveredAt: DataTypes.DATE,
+      amount: {
+        type: DataTypes.INTEGER,
+        allowNull:false
+      },
       createdAt: DataTypes.DATE,
       updatedAt: DataTypes.DATE,
       deletedAt: {

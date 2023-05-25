@@ -9,12 +9,23 @@ import ProductArt from "./pages/ProductArt";
 import Storage from "./pages/Storage";
 import InOrder from "./pages/InOrder";
 import Navbar from "./components/Navbar";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {createTheme, ThemeProvider } from '@mui/material';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: [
+      //'Franklin Gothic Medium Cond',
+      'Bebas Neue',
+      'sans-serif',
+    ].join(','),
+  },});
 
 function App() {
   return (
     <Router>
-      <ToastContainer
+       <ToastContainer
         position="top-center"
         autoClose={1000}
         //hideProgressBar
@@ -26,6 +37,7 @@ function App() {
         pauseOnHover
         theme="dark"
       />
+      <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route
@@ -42,6 +54,7 @@ function App() {
           <Route path="/inorder" element={<InOrder />} />
         </Route>
       </Routes>
+      </ThemeProvider>
     </Router>
   );
 }

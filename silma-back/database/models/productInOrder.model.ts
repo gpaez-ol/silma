@@ -2,6 +2,7 @@ import { DataTypes, Sequelize, ModelDefined, Optional } from "sequelize";
 import { EntityAttributes } from "./base/entity.model";
 import { InOrderAttributes } from "./inOrder.model";
 import { ProductAttributes } from "./product.model";
+import { ProductEntryType, productEntryType } from "types";
 
 export type ProductInOrderAttributes = {
   id?: string;
@@ -10,6 +11,7 @@ export type ProductInOrderAttributes = {
   InOrder?: InOrderAttributes;
   Product?: ProductAttributes;
   amount: number;
+  entryType: ProductEntryType;
 } & EntityAttributes;
 
 export type ProductInOrderCreationAttributes = Optional<
@@ -38,6 +40,17 @@ export const ProductInOrderModel: GetModel = (sequelize: Sequelize) => {
         customValidator: (value) => {
           if (value < 0) {
             throw new Error("value cannot be negative");
+          }
+        },
+      },
+    },
+    entryType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        customValidator: (value) => {
+          if (!productEntryType.includes(value)) {
+            throw new Error("No es una opción válida");
           }
         },
       },

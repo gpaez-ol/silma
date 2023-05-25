@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 
 //MaterialUI
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import axios from "axios";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 //Components
 import { WhiteButton } from "../components/Button";
@@ -28,32 +27,30 @@ export default function Login(classes: any) {
 
   const { email, password, showPassword } = values;
 
-  const handleChange =
-    (name: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [name]: e.target.value });
+    const handleChange = (name: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
+        setValues({ ...values, [name]: e.target.value });
     };
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    try {
-      const { data } = await axios.put(API_URL + "login", {
-        email,
-        password,
-      });
+    const handleSubmit = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        try {
+            const { data } = await axios.put(API_URL + 'login', {
+                email,
+                password
+            });
 
-      console.log(data);
+            setValues({ email: '', password: '', showPassword: false});
+            toast.success("Login succesfully!");
+            console.log("Login succesfully!");
+            navigate('/product-books');
 
-      setValues({ email: "", password: "", showPassword: false });
-      toast.success("Login succesfully!");
-      console.log("Login succesfully!");
-      navigate("/");
-    } catch (err) {
-      console.log("Login fail!");
-      toast.error("Login fail!");
+        } catch (err) {
+            console.log("Login fail!");
+            toast.error("Login fail!");
+        }
     }
-  };
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -72,9 +69,9 @@ export default function Login(classes: any) {
             <input
               type="text"
               placeholder="Correo electrónico"
-              className={classes.userInput}
-              onChange={handleChange("email")}
               value={email}
+              onChange={handleChange("email")}
+              className={classes.userInput}
             />
           </div>
 
@@ -82,9 +79,9 @@ export default function Login(classes: any) {
             <input
               type={values.showPassword ? "text" : "password"}
               placeholder="Contraseña"
-              className={classes.passwordInput}
               onChange={handleChange("password")}
               value={password}
+              className={classes.passwordInput}
             />
             <IconButton
               aria-label="toggle password visibility"
