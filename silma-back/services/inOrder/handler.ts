@@ -1,5 +1,5 @@
 import { APIGatewayEvent, APIGatewayProxyHandler } from "aws-lambda";
-import { InOrderAttributes, ProductInOrderAttributes } from "database/models";
+import { InOrderAttributes, ProductInOrderAttributes, StockMovementAttributes } from "database/models";
 import { connectToDatabase } from "database/sequelize";
 import { SilmaAPIFunction, silmaAPIhandler } from "lib/handler/handler";
 import { getInOrderList } from "logic";
@@ -16,7 +16,7 @@ const createInOrderFunction: SilmaAPIFunction = async (
     throw badRequest(error.message);
   }
   const db = await connectToDatabase();
-  const { InOrder, ProductInOrder } = db;
+  const { InOrder, ProductInOrder,StockMovement } = db;
   let count = await InOrder.count({ where: { deletedAt: null } });
   const internalCode = `OE-${++count}`;
   const inOrderDB: InOrderAttributes = {
@@ -50,6 +50,20 @@ const createInOrderFunction: SilmaAPIFunction = async (
     }
   );
   await ProductInOrder.bulkCreate(productOrderDb, { validate: true });
+    const stockMovements:StockMovementAttributes[] = data.products.map((product) => {
+      return {
+        amount: product.amount,
+        movedAt: data.deliveredAt ?? new Date(),
+        LocationId: data.locationId ?? "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e",
+        ProductId: product.id,
+        notes: "Entrada de Inventario",
+        createdAt: new Date(),
+        InOrderId:newInOrder.get().id,
+        deletedAt:null
+      }
+    })
+    StockMovement.bulkCreate(stockMovements,{validate:true})
+
   // TODO: map to the version needed
   return { data: newInOrder };
 };
@@ -64,7 +78,7 @@ const updateInOrderFunction: SilmaAPIFunction = async (
     throw badRequest("Data was wrongly formatted");
   }
   const db = await connectToDatabase();
-  const { InOrder, ProductInOrder } = db;
+  const { InOrder, ProductInOrder,StockMovement } = db;
   const oldInOrderRaw = await InOrder.findByPk(inOrderId, {
     include: [ProductInOrder],
   });
@@ -91,7 +105,7 @@ const updateInOrderFunction: SilmaAPIFunction = async (
         return {
           amount: product.amount,
           entryType: product.entryType,
-          ProductId: newInOrder.id,
+          ProductId: product.id,
           InOrderId: oldInOrder.id,
           createdAt: productInOrder.createdAt,
           deletedAt: null,
@@ -131,6 +145,31 @@ const updateInOrderFunction: SilmaAPIFunction = async (
 
   newInOrder.ProductInOrders.concat(newProducts);
   const updatedInOrder = await oldInOrderRaw.update(newInOrder);
+  
+  const rawStockMovements = await StockMovement.findAll({where:{deletedAt:null,InOrderId:newInOrder.id}});
+  let stockMovements = rawStockMovements.map(stockMovement => stockMovement.get({plain:true}));
+
+  stockMovements = stockMovements.map(
+    (stockMovement) => {
+      const product = data.products.find(
+        (product) => product.id === stockMovement.ProductId
+      );
+      if (product !== null && product !== undefined) {
+        stockMovement.movedAt = newInOrder.deliveredAt ?? new Date();
+        // TODO: add foresight in case this makes the ccurrent count negative
+        stockMovement.amount = product.amount;
+        return stockMovement;
+      } else {
+        stockMovement.deletedAt = 
+        stockMovement.deletedAt === null 
+        ?  new Date()
+        : stockMovement.deletedAt;
+      }
+    }
+  );
+  await StockMovement.bulkCreate(stockMovements, {updateOnDuplicate:["amount","deletedAt"]})
+
+
   return { data: updatedInOrder };
 };
 

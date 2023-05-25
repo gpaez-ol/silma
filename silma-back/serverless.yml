@@ -201,6 +201,66 @@ functions:
           path: /inorder
           method: get
           cors: true
+  getStockMovements:
+      handler: services/stockMovement/handler.getStockMovements
+      vpc:
+        securityGroupIds:
+          - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+        subnetIds:
+          - Ref: ServerlessSubnetA
+          - Ref: ServerlessSubnetB
+          - Ref: ServerlessSubnetC
+      events:
+        - http:
+            path: /stock
+            method: get
+            cors: true
+
+  createStockMovement:
+    handler: services/stockMovement/handler.createStockMovement
+    vpc:
+      securityGroupIds:
+        - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+      subnetIds:
+        - Ref: ServerlessSubnetA
+        - Ref: ServerlessSubnetB
+        - Ref: ServerlessSubnetC
+    events:
+      - http:
+          path: /stock-movement
+          method: post
+          cors: true
+
+  getProductStockMovements:
+      handler: services/stockMovement/handler.getProductStockMovements
+      vpc:
+        securityGroupIds:
+          - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+        subnetIds:
+          - Ref: ServerlessSubnetA
+          - Ref: ServerlessSubnetB
+          - Ref: ServerlessSubnetC
+      events:
+        - http:
+            path: /product-history
+            method: get
+            cors: true
+
+  getProductLocationStockMovements:
+      handler: services/stockMovement/handler.getProductLocationStockMovements
+      vpc:
+        securityGroupIds:
+          - Fn::GetAtt: [ServerlessVPC, DefaultSecurityGroup]
+        subnetIds:
+          - Ref: ServerlessSubnetA
+          - Ref: ServerlessSubnetB
+          - Ref: ServerlessSubnetC
+      events:
+        - http:
+            path: /product-location-history
+            method: get
+            cors: true
+
   updateInOrder:
     handler: services/inOrder/handler.updateInOrder
     vpc:
