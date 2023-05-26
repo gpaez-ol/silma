@@ -243,7 +243,7 @@ export default function App(classes: any) {
                 <Form.Label>Imagen</Form.Label>
                 <Form.Control name='imageUrl' type="file" />
               </Form.Group>
-              <Button type='submit' onClick={toggleShow}>Guardar Cambios</Button>
+              <MDBBtn type='submit'>Guardar Cambios</MDBBtn>
               <MDBBtn color='secondary' onClick={toggleShow}> Cerrar </MDBBtn>
             </Form>
 
