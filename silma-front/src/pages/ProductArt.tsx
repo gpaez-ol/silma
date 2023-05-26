@@ -34,13 +34,12 @@ export default function App(classes: any) {
 
   const post = async (formData: any, reader: any) => {
     try {
-      const { data } = await axios.post(API_url + 'product-articles', {
-        internalCode: formData.internalCode,
+      const { data } = await axios.post(API_url + 'product', {
         title: formData.title,
-        synopsis: 'placeholder',
+        type: 'article',
+        synopsis: formData.description,
         salesPrice: formData.salesPrice,
-        imageUrl: reader,
-        status: 'activo'
+        imageUrl: reader
       });
 
 
@@ -82,19 +81,6 @@ export default function App(classes: any) {
     } catch (error) {
       console.log(error);
     }
-  };
-
-
-  const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
-    event.preventDefault();
-
-    const form = event.currentTarget;
-    if (form.checkValidity() === false) {
-      return;
-    }
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries());
-    /*readForm(data);*/
   };
 
   const mountBooks = () => {
@@ -145,9 +131,9 @@ export default function App(classes: any) {
                   <Form.Control name='title' type="text" /*placeholder="Moby Dick"*/ required />
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formAuthor">
-                  <Form.Label>Autor</Form.Label>
-                  <Form.Control name='author'type="text" /*placeholder="Herman Melville"*/ required />
+                <Form.Group as={Col} controlId="formDescription">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control name='description'type="text" /*placeholder="Herman Melville"*/ required />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formSellPrice">
@@ -159,12 +145,12 @@ export default function App(classes: any) {
                 <Form.Label>Imagen</Form.Label>
                 <Form.Control name='imageUrl' type="file" />
               </Form.Group>
+              <Button type='submit' onClick={toggleShow}>Guardar Cambios</Button>
             </Form>
     
             </MDBModalBody>
 
             <MDBModalFooter>
-              <MDBBtn type='submit'>Guardar Cambios</MDBBtn>
               <MDBBtn color='secondary' onClick={toggleShow}> Cerrar </MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
