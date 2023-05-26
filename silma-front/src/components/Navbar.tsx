@@ -55,25 +55,6 @@ function ResponsiveAppBar(classes: any) {
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Box sx={{ display: { xs: "none", md: "flex" } }}> {logoButton}</Box>
-          {/* <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />*/}
-          {/*<Typography
-            variant="h6"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Silma
-        </Typography>*/}
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -110,19 +91,19 @@ function ResponsiveAppBar(classes: any) {
               ))}*/}
               <Link to="/product-books">
                 <MenuItem>
-                  <Typography className={classes.title}>Productos</Typography>
+                  <Typography>Productos</Typography>
                 </MenuItem>
               </Link>
               <Link to="/storage">
                 <MenuItem>
-                  <Typography className={classes.title}>
+                  <Typography>
                     Surtido Interno
                   </Typography>
                 </MenuItem>
               </Link>
               <Link to="/inorder">
                 <MenuItem>
-                  <Typography className={classes.title}>Ordenes</Typography>
+                  <Typography>Ordenes</Typography>
                 </MenuItem>
               </Link>
             </Menu>

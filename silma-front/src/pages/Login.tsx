@@ -42,13 +42,13 @@ export default function Login(classes: any) {
             });
 
             setValues({ email: '', password: '', showPassword: false});
-            toast.success("Login succesfully!");
-            console.log("Login succesfully!");
+            toast.success("Iniciaste sesión");
+            console.log("Iniciaste sesión");
             navigate('/product-books');
 
         } catch (err) {
-            console.log("Login fail!");
-            toast.error("Login fail!");
+            console.log("Usuario y/o contraseña incorrecto");
+            toast.error("Usuario y/o contraseña incorrecto");
         }
     }
 

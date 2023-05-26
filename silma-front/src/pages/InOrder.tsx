@@ -17,6 +17,7 @@ import { MDBBadge } from 'mdb-react-ui-kit';
 import './Products.css';
 import axios from 'axios';
 import { InOrderItem } from '../types/inOrder';
+import PopUp from "../components/PopupInOrder";
 
 function Row(props: {inOrder: InOrderItem}) {
   const { inOrder } = props;
@@ -53,16 +54,16 @@ function Row(props: {inOrder: InOrderItem}) {
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box sx={{ margin: 1 }}>
-              <Typography variant="h6" gutterBottom component="div">
-                Detalles
+              <Typography variant="h6" gutterBottom component="div" sx={{ fontWeight: "bold" }}>
+                Detalle
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Código interno</TableCell>
-                    <TableCell>Producto</TableCell>
-                    <TableCell align="right">Cantidad</TableCell>
-                    <TableCell align="right">Tipo</TableCell>
+                    <TableCell sx={{ backgroundColor: 'rgba(144, 64, 213,0.2)',fontWeight: "bold" }}>Código interno</TableCell>
+                    <TableCell sx={{ backgroundColor: 'rgba(144, 64, 213,0.2)',fontWeight: "bold" }}>Producto</TableCell>
+                    <TableCell align="right" sx={{ backgroundColor: 'rgba(144, 64, 213,0.2)',fontWeight: "bold" }}>Cantidad</TableCell>
+                    <TableCell align="right" sx={{ backgroundColor: 'rgba(144, 64, 213,0.2)',fontWeight: "bold" }}>Tipo</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -140,7 +141,10 @@ export default function CollapsibleTable(classes: any) {
   return(
     <>
     <div> 
-        <Typography variant="h2" className = {classes.title}>Historial de Ordenes </Typography>
+        <Typography variant="h4" className = {classes.title}>Historial de Órdenes </Typography>
+     </div>
+     <div>
+      <PopUp/>
      </div>
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -168,7 +172,7 @@ export default function CollapsibleTable(classes: any) {
 const useStyles = makeStyles(() =>({
     title:{
       textAlign: 'center',
-      fontSize: 40,
+      fontSize: 30,
       fontWeight: 'bold',
       paddingTop: '25px',
       paddingBottom: '25px',
@@ -176,8 +180,12 @@ const useStyles = makeStyles(() =>({
       //fontfamily: 'Bebas Neue'
     },
     tableHead:{
-      backgroundImage: 'linear-gradient(to bottom, rgba(144, 64, 213,1)0%, rgba(144, 64, 213,0.8)50%, rgba(144, 64, 213,0.7)100%)',
+      //backgroundImage: 'linear-gradient(to bottom, rgba(144, 64, 213,1)0%, rgba(144, 64, 213,0.8)50%, rgba(144, 64, 213,0.7)100%)',
+      backgroundImage: "linear-gradient(to bottom, rgba(223,31,38,0.7)0%, rgba(223,31,38,0.8)50%, rgba(223,31,38,0.7)100%)",
       //backgroundImage: "linear-gradient(to bottom, rgba(16, 95, 158,1)0%, rgba(16, 95, 158,0.8)50%, rgba(16, 95, 158,0.7)100%)",
       //backgroundColor: 'rgba(144, 64, 213,0.3)',
-    }
+    },
+    rowBackground:{
+      backgroundColor: 'rgba(144, 64, 213,0.3)'
+    },
 }))
