@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { makeStyles } from "@material-ui/core/styles";
-import { MDBBadge, MDBBtn } from 'mdb-react-ui-kit';
+import { MDBBadge } from 'mdb-react-ui-kit';
 import './Products.css';
 import axios from 'axios';
 import { InOrderItem } from '../types/inOrder';
@@ -48,11 +48,6 @@ function Row(props: {inOrder: InOrderItem}) {
         <TableCell align="right">{inOrder.deliveredAt ?? "Not available"}</TableCell>
         <TableCell align="right">{inOrder.totalAmount}</TableCell>
         <TableCell align="right">{inOrder.location}</TableCell>
-        <TableCell align="right">
-          <MDBBtn color="link" rounded size="sm">
-            Editar
-          </MDBBtn>
-        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -157,7 +152,6 @@ export default function CollapsibleTable(classes: any) {
             <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Fecha Llegada</TableCell>
             <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Cantidad</TableCell>
             <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Ubicación</TableCell>
-            <TableCell align="right" sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
