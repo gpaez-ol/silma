@@ -1,5 +1,5 @@
 import React, { useState, FormEventHandler, ChangeEventHandler,  useEffect } from "react";
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, } from 'mdb-react-ui-kit';
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBIcon, } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import "./Products.css";
 import './AddProduct.css'
@@ -8,6 +8,7 @@ import axios from "axios";
 import {  useNavigate } from "react-router-dom";
 import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
+import { RiEdit2Line } from 'react-icons/ri';
 
 
 export default function App(classes: any) {
@@ -97,6 +98,7 @@ export default function App(classes: any) {
     readForm(data);
   };
 
+
   const mountBookList = async () => {
     try {
       const { data } = await axios.get(API_url + "product-books");
@@ -158,7 +160,7 @@ export default function App(classes: any) {
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formEdition">
-                  <Form.Label>Edicion</Form.Label>
+                  <Form.Label>Edición</Form.Label>
                   <Form.Control name='edition' type="text" /*placeholder="1"*/ required/>
                 </Form.Group>
               </Row>
@@ -178,7 +180,7 @@ export default function App(classes: any) {
 
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formGenre">
-                  <Form.Label>Genero</Form.Label>
+                  <Form.Label>Género</Form.Label>
                   <Form.Select defaultValue="Selecciona..." name='genre'>
                     <option> </option>
                     <option>Fantasía</option>
@@ -203,7 +205,7 @@ export default function App(classes: any) {
 
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formPageNum">
-                  <Form.Label>Número de paginas</Form.Label>
+                  <Form.Label>Número de páginas</Form.Label>
                   <Form.Control name='numberPages' type="text" /*placeholder="800"*//>
                 </Form.Group>
 
@@ -227,39 +229,13 @@ export default function App(classes: any) {
                 <Form.Label>Imagen</Form.Label>
                 <Form.Control name='imageUrl' type="file" />
               </Form.Group>
-              <Button type='submit'>Guardar Cambios</Button>
             </Form>
-            {/*<Form>
-              <FormGroup controlId="formInternalCode">
-                <Form.Label>Código Interno</Form.Label>
-                <Form.Control type="text" value={internalCode} onChange={(e) => seInternalCode(e.target.value)} />
-              </FormGroup>
-              <Form.Group controlId="formImage" className="mb-3">
-                <Form.Label>Imagen</Form.Label>
-                <Form.Control type="file" />
-              </Form.Group>
-              <FormGroup controlId="formTitle">
-                <Form.Label>Título</Form.Label>
-                <Form.Control type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
-              </FormGroup>
-
-              <Form.Select defaultValue="Selecciona...">
-                    <option>Fantasía</option>
-                    <option>Magia</option>
-                    <option>Aventura</option>
-                    <option>Suspenso</option>
-                    <option>Sobrenatural</option>
-                    <option>Romance</option>
-                  </Form.Select>
-              
-  </Form> */}
 
             </MDBModalBody>
 
             <MDBModalFooter>
-              <MDBBtn color='secondary' onClick={toggleShow}>
-                Cerrar
-              </MDBBtn>
+              <MDBBtn type='submit'>Guardar Cambios</MDBBtn>
+              <MDBBtn color='secondary' onClick={toggleShow}> Cerrar </MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>
@@ -278,7 +254,7 @@ export default function App(classes: any) {
           <th scope='col'>Cantidad</th>
           <th scope='col'>Precio de venta</th>
           <th scope='col'>Precio de autor</th>
-          <th scope='col'>Genero</th>
+          <th scope='col'>Género</th>
           <th scope='col'>Formato</th>
           <th scope='col'>Idioma</th>
           <th scope='col'>Edición</th>
@@ -319,9 +295,9 @@ export default function App(classes: any) {
             <td> {product.dimensions} </td>
             <td> {product.isbn} </td>
             <td>
-              <MDBBtn color='link' rounded size='sm'>
-                Edit
-              </MDBBtn>
+            <Button onClick={toggleShow} style={{backgroundColor: 'white'}} >
+              <RiEdit2Line style={{ color: 'blue' }} size={20} /> 
+            </Button>
             </td>
           </tr>
         ))}
@@ -336,7 +312,7 @@ export default function App(classes: any) {
                 className='rounded-circle'
               />
               <div className='ms-3'>
-                <p className='fw-bold mb-1'>Dracula  <MDBBadge color='success' pill> Disponible </MDBBadge> </p>
+                <p className='fw-bold mb-1'>Drácula  <MDBBadge color='success' pill> Disponible </MDBBadge> </p>
                 <p className='text-muted mb-0'>Bram Stoker - 1897 </p>
               </div>
             </div>
@@ -353,9 +329,9 @@ export default function App(classes: any) {
           <td>10x15</td>
           <td>1234567891234</td>
           <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
+          
+
+  
           </td>
         </tr>
         <tr>
@@ -386,9 +362,9 @@ export default function App(classes: any) {
           <td>10x15</td>
           <td>1234567891234</td>
           <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
+
+
+
           </td>
         </tr>
         <tr>
@@ -419,9 +395,9 @@ export default function App(classes: any) {
           <td>10x15</td>
           <td>1234567891234</td>
           <td>
-            <MDBBtn color='link' rounded size='sm'>
-              Edit
-            </MDBBtn>
+
+
+
           </td>
         </tr>
       </MDBTableBody>
@@ -442,14 +418,15 @@ const useStyles = makeStyles(() => ({
   },
   formContainer: {
     position: "absolute",
-    left: "95%",
-    top: "12%",
+    left: "90%",
+    top: "14%",
+    fontSize: 20,
     margin: "auto",
     padding: "10px",
     width: "3%",
     maxWidth: "200px",
     background: "rgba(16,95,158,1)100%",
-    //fontWeight: 'bold',
+    fontWeight: 'bold',
   },
   buttonContainer: {
     justifyContent: "space-evenly",

@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from "react";
-import {
-  MDBBadge,
-  MDBBtn,
-  MDBTable,
-  MDBTableHead,
-  MDBTableBody,
-} from "mdb-react-ui-kit";
+import React, { useState, FormEventHandler, ChangeEventHandler,  useEffect } from "react";
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBIcon, } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import "./Products.css";
+import './AddProduct.css'
 import { WhiteButton } from "../components/ButtonProduct";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
+import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
+import { useForm } from 'react-hook-form';
+import { RiEdit2Line } from 'react-icons/ri';
+
 
 export default function App(classes: any) {
   classes = useStyles();
   const navigate = useNavigate();
   const API_url = "http://localhost:3000/local/";
-
+  const [basicModal, setBasicModal] = useState(false);
+  const toggleShow = () => setBasicModal(!basicModal);
+  
   const [values, setValues] = useState({
     productList: [
       {
@@ -83,6 +84,19 @@ export default function App(classes: any) {
     }
   };
 
+
+  const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
+    event.preventDefault();
+
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      return;
+    }
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    /*readForm(data);*/
+  };
+
   const mountBooks = () => {
     navigate("/product-books");
   };
@@ -114,6 +128,51 @@ export default function App(classes: any) {
       <div>
         <h2 className={classes.title}>Productos</h2>
       </div>
+      <>
+      <MDBBtn className= {classes.formContainer}  onClick={toggleShow}>+</MDBBtn>
+      <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
+        <MDBModalDialog size='lg'>
+          <MDBModalContent>
+            <MDBModalHeader>
+              <MDBModalTitle>Agregar Artículo</MDBModalTitle>
+              <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
+            </MDBModalHeader>
+
+            <MDBModalBody>
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formTitle">
+                  <Form.Label>Título</Form.Label>
+                  <Form.Control name='title' type="text" /*placeholder="Moby Dick"*/ required />
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formAuthor">
+                  <Form.Label>Autor</Form.Label>
+                  <Form.Control name='author'type="text" /*placeholder="Herman Melville"*/ required />
+                </Form.Group>
+
+                <Form.Group as={Col} controlId="formSellPrice">
+                  <Form.Label>Precio Venta</Form.Label>
+                  <Form.Control name='salesPrice' type="text" /*placeholder="600"*//>
+                </Form.Group>
+
+              <Form.Group controlId="formImage" className="mb-3">
+                <Form.Label>Imagen</Form.Label>
+                <Form.Control name='imageUrl' type="file" />
+              </Form.Group>
+            </Form>
+    
+            </MDBModalBody>
+
+            <MDBModalFooter>
+              <MDBBtn type='submit'>Guardar Cambios</MDBBtn>
+              <MDBBtn color='secondary' onClick={toggleShow}> Cerrar </MDBBtn>
+            </MDBModalFooter>
+          </MDBModalContent>
+        </MDBModalDialog>
+      </MDBModal>
+    </>
+
+      
       <div className={classes.buttonContainer}>
         <WhiteButton onClick={mountBooks}>Libros</WhiteButton>
         <WhiteButton onClick={mountArticleList}>Artículos</WhiteButton>
@@ -159,9 +218,9 @@ export default function App(classes: any) {
               <td> {product.quantity} </td>
               <td> ${product.salesPrice} </td>
               <td>
-                <MDBBtn color="link" rounded size="sm">
-                  Edit
-                </MDBBtn>
+              <Button onClick={toggleShow} style={{backgroundColor: 'white'}} >
+                <RiEdit2Line style={{ color: 'blue' }} size={20} /> 
+              </Button>
               </td>
             </tr>
           ))}
@@ -180,6 +239,18 @@ const useStyles = makeStyles(() => ({
     paddingBottom: "25px",
     color: "black",
     fontfamily: "Bebas Neue",
+  },
+  formContainer: {
+    position: "absolute",
+    left: "90%",
+    top: "14%",
+    fontSize: 20,
+    margin: "auto",
+    padding: "10px",
+    width: "3%",
+    maxWidth: "200px",
+    background: "rgba(16,95,158,1)100%",
+    fontWeight: 'bold',
   },
   buttonContainer: {
     justifyContent: "space-evenly",
