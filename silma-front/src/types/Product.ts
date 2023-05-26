@@ -11,3 +11,16 @@ export type CurrentProductStockItem = {
 export type CurrentStockResponse = {
   data: CurrentProductStockItem[];
 }
+
+export type ProductStockMovementItem = {
+  id: string;
+  locationId:string;
+  movedAt:Date,
+  amount:number;
+  notes:string;
+  locationName:string;
+};
+
+export type ProductHistoryResponse = {
+  data:ProductStockMovementItem[];
+}
