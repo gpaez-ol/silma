@@ -9,6 +9,7 @@ import {  useNavigate } from "react-router-dom";
 import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { RiEdit2Line } from 'react-icons/ri';
+import { MultiSelect } from '@mantine/core';
 
 
 export default function App(classes: any) {
@@ -43,6 +44,15 @@ export default function App(classes: any) {
       },
     ],
   });
+
+  const gendreList = [
+    { value: 'Fantasía', label: 'Fantasía' },
+    { value: 'Magia', label: 'Magia' },
+    { value: 'Aventura', label: 'Aventura' },
+    { value: 'Suspenso', label: 'Suspenso' },
+    { value: 'Sobrenatural', label: 'Sobrenatural' },
+    { value: 'Romance', label: 'Romance' },
+  ];
 
   const post = async (formData: any, reader: any) => {
     try {
@@ -168,12 +178,12 @@ export default function App(classes: any) {
               <Row className="mb-3">
 
                 <Form.Group as={Col} controlId="formSellPrice">
-                  <Form.Label>Precio Venta</Form.Label>
+                  <Form.Label>Precio de venta</Form.Label>
                   <Form.Control name='salesPrice' type="text" /*placeholder="600"*//>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formSellAuthor">
-                  <Form.Label>Precio Autor</Form.Label>
+                  <Form.Label>Precio de autor</Form.Label>
                   <Form.Control name='authorPrice' type="text" /*placeholder="500"*//>
                 </Form.Group>
               </Row>
@@ -181,25 +191,29 @@ export default function App(classes: any) {
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formGenre">
                   <Form.Label>Género</Form.Label>
-                  <Form.Select defaultValue="Selecciona..." name='genre'>
-                    <option> </option>
-                    <option>Fantasía</option>
-                    <option>Magia</option>
-                    <option>Aventura</option>
-                    <option>Suspenso</option>
-                    <option>Sobrenatural</option>
-                    <option>Romance</option>
-                  </Form.Select>
+                  <MultiSelect
+                    data={gendreList}
+                    placeholder="Selecciona hasta 3"
+                  />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formFormat">
                   <Form.Label>Formato</Form.Label>
-                  <Form.Control name='format' type="text" /*placeholder="600"*//>
+                  <Form.Select name='format'>
+                    <option disabled ></option>
+                    <option>Pasta blanda</option>
+                    <option>Pasta dura</option>
+                    <option>Ebook</option>
+                  </Form.Select>
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formLanguage">
                   <Form.Label>Idioma</Form.Label>
-                  <Form.Control name='language' type="text" /*placeholder="500"*//>
+                  <Form.Select name='language'>
+                     <option disabled ></option>
+                    <option>Inglés</option>
+                    <option>Español</option>
+                  </Form.Select>
                 </Form.Group>
               </Row>
 
