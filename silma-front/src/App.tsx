@@ -1,18 +1,17 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { Outlet } from "react-router";
 import Login from "./pages/Login";
 import Products from "./pages/Products";
 import ProductArt from "./pages/ProductArt";
-import Storage from "./pages/Storage";
 import InOrder from "./pages/InOrder";
 import Navbar from "./components/Navbar";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {  createTheme, ThemeProvider } from '@mui/material';
 import StockMovement from "./pages/StockMovement";
+import ProductHistory from "./pages/ProductHistory";
 
 const theme = createTheme({
   typography: {
@@ -54,6 +53,10 @@ function App() {
           <Route path="/product-articles" element={<ProductArt />} />
           <Route path="/storage" element={<StockMovement />} />
           <Route path="/inorder" element={<InOrder />} />
+          <Route
+          path="/product-history/:productId/:productName"
+          element={<ProductHistory />}
+        />
         </Route>
         <Route
           path="*" element={<Login />} />
