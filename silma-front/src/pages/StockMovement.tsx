@@ -13,6 +13,7 @@ import axios from 'axios';
 import { Grid } from '@material-ui/core';
 import {  CurrentProductStockItem, CurrentStockResponse } from '../types';
 import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
 const getCurrentStock = async () => {
       const response = await axios.get<CurrentStockResponse>("stock");
       return response.data;
@@ -24,9 +25,14 @@ type RowProps= {
 
 function Row(props: RowProps) {
   const { product } = props;
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate(`/product-history/${product.productId}/${product.productName}`)
+  };
+
   return (
     <React.Fragment>
-      <TableRow sx={{ '& > *': { borderBottom: 'unset'} }}>
+      <TableRow onClick={onClick}  sx={{ '& > *': { borderBottom: 'unset'}, cursor:"pointer" }}>
         <TableCell component="th" scope="row">
         </TableCell>
         <TableCell >{product.internalCode}</TableCell>
