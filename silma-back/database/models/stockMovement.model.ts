@@ -1,5 +1,5 @@
 import { DataTypes, ModelDefined, Sequelize } from "sequelize";
-import { longText, shortText } from "utils";
+import { longText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
 import { ProductAttributes } from "./product.model";
 import { LocationAttributes } from "./location.model";
