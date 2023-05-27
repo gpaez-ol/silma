@@ -1,9 +1,10 @@
 import React, { ChangeEvent, useState } from 'react';
-import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter } from 'mdb-react-ui-kit';
+import { Form, Col, Row } from 'react-bootstrap';
+import { MDBBtn } from 'mdb-react-ui-kit';
 import { makeStyles } from '@material-ui/core/styles';
 import { FaTrashAlt } from 'react-icons/fa'
 import { GoPlus } from 'react-icons/go'
+import { ProductInOrderItem } from '../types';
 
 interface ListElement {
   title: string;
@@ -11,7 +12,7 @@ interface ListElement {
   type: string;
 }
 
-const SelectProduct: React.FC<any> = (classes: any) => {
+const SelectProduct: React.FC<any> = (classes: any, {sendProductList: any}) => {
   const [inputList, setInputList] = useState<ListElement[]>([{ title: '', qty: '', type: '' }]);
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => {

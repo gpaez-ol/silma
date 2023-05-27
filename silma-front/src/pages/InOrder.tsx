@@ -45,8 +45,8 @@ function Row(props: {inOrder: InOrderItem}) {
         <TableCell component="th" scope="row">
           {inOrder.internalCode}
         </TableCell>
-        <TableCell align="right">{inOrder.orderedAt}</TableCell>
-        <TableCell align="right">{inOrder.deliveredAt ?? "Not available"}</TableCell>
+        <TableCell align="right">{inOrder.orderedAt.toString()}</TableCell>
+        <TableCell align="right">{inOrder.deliveredAt?.toString() ?? "Not available"}</TableCell>
         <TableCell align="right">{inOrder.totalAmount}</TableCell>
         <TableCell align="right">{inOrder.location}</TableCell>
       </TableRow>

@@ -1,53 +1,88 @@
 import React, {useState} from 'react';
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, 
-    MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, 
-    MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter} from 'mdb-react-ui-kit';
-import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
+import { MDBBtn, 
+         MDBModal, 
+         MDBModalDialog, 
+         MDBModalContent, 
+         MDBModalHeader, 
+         MDBModalTitle, 
+         MDBModalBody, 
+         MDBModalFooter} from 'mdb-react-ui-kit';
+import { Form, Col, Row } from 'react-bootstrap';
 //Date Picker imports
 import dayjs, { Dayjs } from 'dayjs';
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+//import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { makeStyles } from "@material-ui/core/styles";
 import SelectProduct from "./SelectProduct"
 import { GoPlus } from 'react-icons/go'
+import axios from "axios";
 
 export default function PopupInOrder(classes: any) {
     classes = useStyles();
 
-    const [value, setValue] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
-    const [value2, setValue2] = React.useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [value, setValue] = useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [value2, setValue2] = useState<Dayjs | null>(dayjs('2022-04-17'));
 
     const [basicModal, setBasicModal] = useState(false);
     const toggleShow = () => setBasicModal(!basicModal);
+    
+    const [productList, setProductList] = useState(null);
 
-    const handleSubmit = async (e: React.MouseEvent) => {
-      e.preventDefault();
-      console.log("hola");
+    const API_url = "http://localhost:3000/local/";
+
+    const handleSubmit = async (event: { preventDefault: () => void; currentTarget: any; }) => {
+      event.preventDefault();
+
+      const form = event.currentTarget;
+      if (form.checkValidity() === false) {
+        return;
+      }
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      postInOrder(data);
       setBasicModal(!basicModal);
     }
+    /*
+      const [field, setField] = useState([]);
 
-    const [field, setField] = useState([]);
+      const option = [
+        {
+          text: "Value 1",
+          showing: true,
+        },
+        {
+          text: "Second Value",
+          showing: true,
+        },
+        {
+          text: "Third Value",
+          showing: true,
+        },
+        {
+          text: "Final Value",
+          showing: true,
+        },
+    ];
+  */
+    const postInOrder = async(formData:any) => {
+      try{
+        const { data } = await axios.post(API_url + 'inorder',{
+          orderedAt: formData.orderedAt,
+          deliveredAt: formData.deliveredAt,
+          notes: formData.notes,
+          location: formData.notes,
+          products: productList,
+        });
+      }catch(error){
+        console.log(error)
+      }
+    }
 
-    const option = [
-      {
-        text: "Value 1",
-        showing: true,
-      },
-      {
-        text: "Second Value",
-        showing: true,
-      },
-      {
-        text: "Third Value",
-        showing: true,
-      },
-      {
-        text: "Final Value",
-        showing: true,
-      },
-  ];
+    const sendProductList = (index: any) =>{
+      setProductList(index)
+    }
 
     return(
         <>
@@ -63,7 +98,7 @@ export default function PopupInOrder(classes: any) {
             </MDBModalHeader>
 
             <MDBModalBody>
-            <Form>
+            <Form onSubmit={handleSubmit}>
             <Row className="mb-3">
                 {/*Date Picker*/}
                 <Form.Group as={Col} controlId="formGridAddress1">
@@ -108,7 +143,7 @@ export default function PopupInOrder(classes: any) {
 
             <MDBModalTitle>Ingresa Productos</MDBModalTitle>
 
-            <SelectProduct/>
+            <SelectProduct sendProductList={sendProductList}/>
 
             </MDBModalBody>
 
