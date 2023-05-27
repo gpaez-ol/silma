@@ -18,8 +18,8 @@ export type ProductInOrder = {
   export type InOrderItem = {
     id: string;
     internalCode: string;
-    orderedAt: string;
-    deliveredAt?: string;
+    orderedAt: Date;
+    deliveredAt?: Date;
     products: ProductInOrderItem[];
     location: string;
     totalAmount: number;
