@@ -1,5 +1,5 @@
 import { ProductAttributes, StockMovementAttributes } from "database/models";
-import { CurrentProductStockItem, ProductStockMovementItem, StockMovementCreateSchema } from "types";
+import { CurrentProductStockItem, ProductStockMovementItem } from "types";
 
 export const getProductStockMovementList = (
     productStockMovement: StockMovementAttributes[]
