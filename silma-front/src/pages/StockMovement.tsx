@@ -11,9 +11,14 @@ import { makeStyles} from "@material-ui/core/styles";
 import { useQuery } from "@tanstack/react-query";
 import axios from 'axios';
 import { Grid } from '@material-ui/core';
-import {  CurrentProductStockItem, CurrentStockResponse } from '../types';
+import { TextField,Button } from "@material-ui/core";
 import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import {  CurrentProductStockItem, CurrentStockResponse, StockMovementCreate } from '../types';
 import { useNavigate } from 'react-router-dom';
+import CancelPresentationRoundedIcon from '@mui/icons-material/CancelPresentationRounded';
+const bodegaId = "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e";
+const pisoId = "d8d70ad7-1e69-499b-ac2b-d68dcd3bff2e";
 const getCurrentStock = async () => {
       const response = await axios.get<CurrentStockResponse>("stock");
       return response.data;
@@ -25,22 +30,104 @@ type RowProps= {
 
 function Row(props: RowProps) {
   const { product } = props;
+  const [isEditing, setIsEditing] = React.useState(false);
+  const [bodegaAmount,setBodegaAmount] = React.useState(product.bodegaTotal);
+  const [pisoAmount,setPisoAmount] = React.useState(product.pisoTotal);
   const navigate = useNavigate();
   const onClick = () => {
     navigate(`/product-history/${product.productId}/${product.productName}`)
   };
-
+  const startEditing = () => {
+    setBodegaAmount(product.bodegaTotal);
+    setPisoAmount(product.pisoTotal)
+    setIsEditing(true);
+  }
+  const editProduct = async () => {
+   //   50   20 = 30
+   //   70   50 = 20
+   const totalAmount = Number(bodegaAmount) + Number(pisoAmount);
+   if (totalAmount !== (Number(product.bodegaTotal) + Number(product.pisoTotal)))
+   {
+    console.log("The new total amount is not available");
+    return;
+   }
+   const addedBodegaStock = bodegaAmount - product.bodegaTotal;
+   if(addedBodegaStock > 0)
+   {
+    let newBodegaStockMovement:StockMovementCreate  = {
+      amount: addedBodegaStock,
+      locationId:bodegaId,
+      prevLocationId:pisoId,
+      productId:product.productId,
+      notes:"Edicion del inventario interno"
+    } ;
+    await axios.post("stock-movement", newBodegaStockMovement);
+   }
+   const addedPisoStock = pisoAmount - product.pisoTotal;
+   if(addedPisoStock > 0)
+   {
+    let newBodegaStockMovement:StockMovementCreate  = {
+      amount: addedPisoStock,
+      locationId:pisoId,
+      prevLocationId:bodegaId,
+      productId:product.productId,
+      notes:"Edicion del inventario interno"
+    } ;
+    await axios.post("stock-movement", newBodegaStockMovement);
+   }
+    
+    setIsEditing(false);
+   }
   return (
     <React.Fragment>
-      <TableRow onClick={onClick}  sx={{ '& > *': { borderBottom: 'unset'}, cursor:"pointer" }}>
+      <TableRow  sx={{ '& > *': { borderBottom: 'unset'} }}>
         <TableCell component="th" scope="row">
         </TableCell>
-        <TableCell >{product.internalCode}</TableCell>
-        <TableCell >{product.productName}</TableCell>
-        <TableCell >{product.bodegaTotal}</TableCell>
-        <TableCell >{product.pisoTotal}</TableCell>
-        <TableCell> <EditIcon/></TableCell>
+        <TableCell   >{product.internalCode}</TableCell>
+        <TableCell   >{product.productName}</TableCell>
+        <TableCell   >{!isEditing  ? product.bodegaTotal:(         
+        <TextField
+          placeholder="Bodega"
+          type='number'
+          value={bodegaAmount}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setBodegaAmount(Number(event.target.value));
+          }}
+        /> )} </TableCell>
+        <TableCell  > {!isEditing  ? product.pisoTotal:(         <TextField
+          placeholder="Piso"
+          value={pisoAmount}
+          type="number"
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+            setPisoAmount(Number(event.target.value));
+          }}
+
+        /> )} </TableCell>
+        <TableCell > <div style={{display:"flex",alignContent:"center",gap:"25px"}}>
+        {isEditing ? (
+        <>
+          <Button
+              onClick={editProduct}
+              style={{
+                cursor: "pointer",
+                backgroundImage: 'linear-gradient(to bottom, rgba(16, 95, 158,1)0%, rgba(16, 95, 158,1)50%, rgba(16, 95, 158,1)100%)',
+                fontWeight: "bold"
+              }}>
+              Done
+          </Button>
+          <div style={{paddingTop:"5px"}}>
+          <CancelPresentationRoundedIcon 
+            style={{ cursor: "pointer", color:"red" }}
+             onClick={() => setIsEditing(false)} />
+          </div>
+        </>
+        ):(
+          <><EditIcon style={{ cursor: "pointer" }} onClick={startEditing} />
+          <VisibilityIcon style={{ cursor: "pointer" }} onClick={onClick} /></>
+        ) }
+          </div></TableCell>
       </TableRow>
+
     </React.Fragment>
   );
 }
@@ -80,7 +167,7 @@ export default function StockMovement(classes: any) {
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Producto</TableCell>
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Bodega</TableCell>
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Piso</TableCell>
-            <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}> Editar </TableCell>
+            <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}> Acciones </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
