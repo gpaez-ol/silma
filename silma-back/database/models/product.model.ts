@@ -104,12 +104,10 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
         },
       },
       genre: {
-        type: DataTypes.STRING,
+        type: DataTypes.ARRAY(DataTypes.STRING(shortText)),
         validate: {
-          customValidator: (value) => {
-            if (!productGenre.includes(value)) {
-              throw new Error("No es una opción válida");
-            }
+          customValidator: (values) => {
+            values.some((value) => !productGenre.includes(value as ProductGenre))
           },
         },
       },

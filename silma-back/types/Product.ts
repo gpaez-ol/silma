@@ -25,7 +25,7 @@ export type ProductBookItem = {
   quantity: number;
   salesPrice: number;
   authorPrice: number;
-  genre: ProductGenre;
+  genre: ProductGenre[];
   language: ProductLanguage;
   format: ProductFormat;
   numberPages: number;
@@ -57,7 +57,7 @@ export type ProductCreate = {
   edition?: string;
   author?: string;
   format?: ProductFormat;
-  genre?: ProductGenre;
+  genre?: ProductGenre[];
   language?: ProductLanguage;
 };
 
@@ -78,7 +78,7 @@ export const ProductCreateSchema = Joi.object<ProductCreate>({
   edition: Joi.string().optional().allow(null),
   author: Joi.string().optional().allow(null),
   format: Joi.string().optional().allow(null),
-  genre: Joi.string().optional().allow(null),
+  genre: Joi.array().max(3).optional().allow(null),
   language: Joi.string().optional().allow(null),
 });
 
@@ -102,7 +102,7 @@ export type ProductUpdate = {
   edition?: string;
   author?: string;
   format?: ProductFormat;
-  genre?: ProductGenre;
+  genre?: ProductGenre[];
   language?: ProductLanguage;
 }
 
@@ -126,7 +126,7 @@ export const ProductUpdateSchema = Joi.object<ProductUpdate>({
   edition: Joi.string().optional().allow(null),
   author: Joi.string().optional().allow(null),
   format: Joi.string().optional().allow(null),
-  genre: Joi.string().optional().allow(null),
+  genre: Joi.array().max(3).optional().allow(null),
   language: Joi.string().optional().allow(null),
 })
 
