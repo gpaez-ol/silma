@@ -132,8 +132,8 @@ const post = async (formData: any, reader: any) => {
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formAuthor">
-                  <Form.Label>Autor</Form.Label>
-                  <Form.Control name='author'type="text" /*placeholder="Herman Melville"*/ required />
+                  <Form.Label>Descripcion</Form.Label>
+                  <Form.Control name='description'type="text" /*placeholder="Herman Melville"*/ required />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formSellPrice">
