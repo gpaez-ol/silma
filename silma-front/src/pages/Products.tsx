@@ -62,9 +62,6 @@ export default function App(classes: any) {
       genreData = [formData.genre];
     }
 
-    console.log(genreData);
-
-
     try {
       const { data } = await axios.post(API_url + 'product', {
         title: formData.title,
@@ -253,7 +250,7 @@ export default function App(classes: any) {
                     <Form.Label>Imagen</Form.Label>
                     <Form.Control name='imageUrl' type="file" />
                   </Form.Group>
-                  <MDBBtn type='submit'>Guardar Cambios</MDBBtn>
+                  <MDBBtn type='submit' onClick={toggleShow}>Guardar Cambios</MDBBtn>
                   <MDBBtn color='secondary' onClick={toggleShow}> Cerrar </MDBBtn>
                 </Form>
 
