@@ -1,4 +1,4 @@
-export const productEntryType = ["reimpresion", "resurtido", "devolucion"];
+export const productEntryType = ["reimpresión", "resurtido", "devolución"];
 export type ProductEntryType = (typeof productEntryType)[number];
 
 export type ProductInOrder = {

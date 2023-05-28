@@ -44,28 +44,7 @@ export default function PopupInOrder(classes: any) {
       postInOrder(data);
       setBasicModal(!basicModal);
     }
-    /*
-      const [field, setField] = useState([]);
 
-      const option = [
-        {
-          text: "Value 1",
-          showing: true,
-        },
-        {
-          text: "Second Value",
-          showing: true,
-        },
-        {
-          text: "Third Value",
-          showing: true,
-        },
-        {
-          text: "Final Value",
-          showing: true,
-        },
-    ];
-  */
     const postInOrder = async(formData:any) => {
       try{
         const { data } = await axios.post(API_url + 'inorder',{
