@@ -24,3 +24,11 @@ export type ProductStockMovementItem = {
 export type ProductHistoryResponse = {
   data:ProductStockMovementItem[];
 }
+
+export type ProductSelectItem = {
+  id: string;
+  title: string;
+  internalCode: string;
+  imageUrl: string;
+  type: ProductType;
+}

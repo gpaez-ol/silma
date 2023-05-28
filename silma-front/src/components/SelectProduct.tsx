@@ -4,7 +4,8 @@ import { MDBBtn } from 'mdb-react-ui-kit';
 import { makeStyles } from '@material-ui/core/styles';
 import { FaTrashAlt } from 'react-icons/fa'
 import { GoPlus } from 'react-icons/go'
-import { ProductInOrderItem } from '../types';
+import axios from 'axios';
+import { ProductInOrderItem, ProductSelectItem } from '../types';
 
 interface ListElement {
   title: string;
@@ -12,8 +13,22 @@ interface ListElement {
   type: string;
 }
 
-const SelectProduct: React.FC<any> = (classes: any, {sendProductList: any}) => {
-  const [inputList, setInputList] = useState<ListElement[]>([{ title: '', qty: '', type: '' }]);
+const SelectProduct: React.FC<any> = (classes: any, props:{sendProductList: any}) => {
+  const {sendProductList} = props;
+  const [inputList, setInputList] = useState<ListElement[]>([]);
+  const [selectList, setSelectList] = useState<ProductSelectItem[]>([]);
+
+  const API_url = "http://localhost:3000/local/";
+
+  const select = async() => {
+    try{
+      const {data} = await axios.get(API_url+'product-select');
+      const dataUnstructured = data.data;
+      setSelectList(dataUnstructured)
+    }catch(error){
+      console.log(error)
+    }
+  }  
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => {
     const { name, value } = e.target;
@@ -39,9 +54,11 @@ const SelectProduct: React.FC<any> = (classes: any, {sendProductList: any}) => {
       {inputList.map((x, i) => {
         return (
           <div className={classes.item1} key={i}>
-            <Row className="mb-3">
+            <Row className="mb-3" onChange={()=>{
+              sendProductList(inputList)
+            }}>
               <Form.Group as={Col} controlId="formGridZip">
-                <Form.Control type="text" placeholder="Título" />
+                <Form.Control type="text" placeholder="Producto" />
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridZip">
@@ -51,8 +68,9 @@ const SelectProduct: React.FC<any> = (classes: any, {sendProductList: any}) => {
               <Form.Group as={Col} controlId="formGridCity">
                 <Form.Select defaultValue="Selecciona..." onChange={(e) => handleInputChange(e, i)}>
                   <option>Selecciona Tipo</option>
-                  <option>Libro</option>
-                  <option>Artículo</option>
+                  <option>reimpresión</option>
+                  <option>resurtido</option>
+                  <option>devolución</option>
                 </Form.Select>
               </Form.Group>
 
