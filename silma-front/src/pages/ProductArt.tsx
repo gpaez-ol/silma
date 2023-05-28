@@ -145,7 +145,7 @@ const post = async (formData: any, reader: any) => {
                 <Form.Label>Imagen</Form.Label>
                 <Form.Control name='imageUrl' type="file" />
               </Form.Group>
-              <MDBBtn type='submit'>Guardar Cambios</MDBBtn>
+              <MDBBtn type='submit' onClick={toggleShow}>Guardar Cambios</MDBBtn>
               <MDBBtn color='secondary' onClick={toggleShow}> Cerrar </MDBBtn>
             </Form>
     
