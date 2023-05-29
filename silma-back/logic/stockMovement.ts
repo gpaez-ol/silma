@@ -25,11 +25,10 @@ export const buildProductStockMovements= (stockMovements:StockMovementAttributes
       
       const bodegaSMovement = stockMovements.find(sMovement => sMovement.ProductId === product.id && sMovement.LocationId === "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e" )
       const pisoSMovement = stockMovements.find(sMovement => sMovement.ProductId === product.id && sMovement.LocationId === "d8d70ad7-1e69-499b-ac2b-d68dcd3bff2e" );
-
       return  {
         productName: product.title,
         productId: product.id,
-        locationId: bodegaSMovement.LocationId,
+        locationId: bodegaSMovement ?  bodegaSMovement.LocationId : "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e" ,
         internalCode: product.internalCode,
         bodegaTotal: bodegaSMovement ? bodegaSMovement.total_amount: 0,
         pisoTotal: pisoSMovement ? pisoSMovement.total_amount : 0
