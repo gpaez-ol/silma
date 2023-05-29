@@ -4,11 +4,8 @@
   "description": "",
   "version": "0.1.0",
   "scripts": {
-    "test": "serverless-bundle test",
     "dev": "sls offline -r us-east-1 -s local",
-    "qa": "sls offline -r us-east-1 -s qa",
-    "deployQA": "sls deploy -r us-east-1 -s qa",
-    "deployUAT": "sls deploy -r us-east-1 -s uat"
+    "deploy": "sls deploy -r us-east-1 -s prod"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.61",

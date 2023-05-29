@@ -1,6 +1,0 @@
-{
-  "DB_HOST": "",
-  "DB_PORT": "",
-  "TEST_VARIABLE": "Test",
-  "AWS_BUCKET": "silma-public-assets"
-}
