@@ -53,15 +53,19 @@ const getStockMovementsFunction: SilmaAPIFunction = async () => {
     group: [ "ProductId","LocationId"],
     order: [ "ProductId","LocationId"],
   });
+  if(rawStockMovements === undefined || rawStockMovements === null || rawStockMovements.length < 1)
+  {
+    return {data:[]};
+  }
+  const stockMovements = rawStockMovements .map((rawStockMovement) =>
+  rawStockMovement.get({ plain: true })
+  );
   const rawProducts = await Product.findAll({
     attributes: ["id", "title","internalCode"],
     where: { deletedAt: null, status: "activo" },
   });
   const products = rawProducts.map((rawProduct) =>
     rawProduct.get({ plain: true })
-  );
-  const stockMovements = rawStockMovements .map((rawStockMovement) =>
-    rawStockMovement.get({ plain: true })
   );
   const currentStockMovements = buildProductStockMovements(stockMovements,products);
 
