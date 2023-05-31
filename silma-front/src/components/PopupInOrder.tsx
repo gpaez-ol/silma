@@ -18,15 +18,17 @@ import { makeStyles } from "@material-ui/core/styles";
 import SelectProduct from "./SelectProduct"
 import { GoPlus } from 'react-icons/go'
 import axios from "axios";
+import { ProductSelectItem } from '../types';
 
 export default function PopupInOrder(classes: any) {
     classes = useStyles();
 
-    const [value, setValue] = useState<Dayjs | null>(dayjs('2022-04-17'));
-    const [value2, setValue2] = useState<Dayjs | null>(dayjs('2022-04-17'));
+    const [value, setValue] = useState<Dayjs | null>(dayjs());
+    const [value2, setValue2] = useState<Dayjs | null>(dayjs());
 
     const [basicModal, setBasicModal] = useState(false);
     const toggleShow = () => setBasicModal(!basicModal);
+    
     
     const [productList, setProductList] = useState(null);
 
@@ -122,7 +124,7 @@ export default function PopupInOrder(classes: any) {
 
             <MDBModalTitle>Ingresa Productos</MDBModalTitle>
 
-            <SelectProduct sendProductList={sendProductList}/>
+            <SelectProduct/>
 
             </MDBModalBody>
 

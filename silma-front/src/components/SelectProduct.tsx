@@ -4,38 +4,58 @@ import { MDBBtn } from 'mdb-react-ui-kit';
 import { makeStyles } from '@material-ui/core/styles';
 import { FaTrashAlt } from 'react-icons/fa'
 import { GoPlus } from 'react-icons/go'
-import axios from 'axios';
 import { ProductInOrderItem, ProductSelectItem } from '../types';
+import axios from "axios";
 
 interface ListElement {
   title: string;
   qty: string;
-  type: string;
+  entrytype: string;
 }
 
-const SelectProduct: React.FC<any> = (classes: any, props:{sendProductList: any}) => {
-  const {sendProductList} = props;
-  const [inputList, setInputList] = useState<ListElement[]>([]);
+type SelectProductFieldProps = {
+  productSelect: ProductSelectItem[],
+  onDelete: ()=> void,
+}
+
+const SelectProduct: React.FC<any> = (classes: any) => {
+  const API_url = "http://localhost:3000/local/";
+  //const {fieldValue, onDelete} = props
+  const [inputList, setInputList] = useState<ListElement[]>([]); 
+  const [newSelect, setNewSelect] = useState({
+    title: "",
+    qty:"",
+    entrytype:""
+  })
+
+
   const [selectList, setSelectList] = useState<ProductSelectItem[]>([]);
 
-  const API_url = "http://localhost:3000/local/";
-
-  const select = async() => {
-    try{
-      const {data} = await axios.get(API_url+'product-select');
-      const dataUnstructured = data.data;
-      setSelectList(dataUnstructured)
-    }catch(error){
-      console.log(error)
-    }
-  }  
-
+    const select = async() => {
+      try{
+        const {data} = await axios.get(API_url+'product-select');
+        const dataUnstructured = data.data;
+        setSelectList(dataUnstructured)
+      }catch(error){
+        console.log(error)
+      }
+    } 
+/*
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => {
     const { name, value } = e.target;
     const list: ListElement[] = [...inputList];
     list[index][name as keyof ListElement] = value;
     setInputList(list);
   };
+*/
+  const handleSelectChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement >) => {
+    const {name,value} = e.target;
+    setNewSelect(prevSelect => ({
+      ...prevSelect,
+      [name]:value,
+    }))
+    
+  }
 
   const handleRemove = (index: number) => {
     const list = [...inputList];
@@ -44,29 +64,33 @@ const SelectProduct: React.FC<any> = (classes: any, props:{sendProductList: any}
   };
 
   const handleAddClick = () => {
-    setInputList([...inputList, { title: '', qty: '', type: '' }]);
+    setInputList([...inputList, { title: newSelect.title, qty: newSelect.qty, entrytype: newSelect.entrytype }]);
+    //console.log(newSelect)
+    setNewSelect({title:'',qty:'',entrytype:''})
   };
   
   classes = useStyles();
 
   return (
     <div>
-      {inputList.map((x, i) => {
-        return (
-          <div className={classes.item1} key={i}>
-            <Row className="mb-3" onChange={()=>{
-              sendProductList(inputList)
-            }}>
-              <Form.Group as={Col} controlId="formGridZip">
-                <Form.Control type="text" placeholder="Producto" />
+      <div className={classes.item1}>
+            <Row className="mb-3">
+              <Form.Group as={Col} controlId="formGridCity">
+                <Form.Select defaultValue="Producto" onChange={(e)=> handleSelectChange(e)}>
+                  <option>Producto</option>
+                  <option>reimpresión</option>
+                  <option>resurtido</option>
+                  <option>devolución</option>
+                </Form.Select>
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridZip">
-                <Form.Control type="text" placeholder="Cantidad" />
+                {/*<input type='number' placeholder='Cantidad' onChange={(e)=> handleSelectChange(e)}></input>*/}
+                <Form.Control type='number' placeholder='Cantidad'/>
               </Form.Group>
 
               <Form.Group as={Col} controlId="formGridCity">
-                <Form.Select defaultValue="Selecciona..." onChange={(e) => handleInputChange(e, i)}>
+                <Form.Select defaultValue="Selecciona..." onChange={(e)=> handleSelectChange(e)}>
                   <option>Selecciona Tipo</option>
                   <option>reimpresión</option>
                   <option>resurtido</option>
@@ -74,25 +98,40 @@ const SelectProduct: React.FC<any> = (classes: any, props:{sendProductList: any}
                 </Form.Select>
               </Form.Group>
 
-              {inputList.length - 1 === i && (
-                <Form.Group as={Col} controlId="formGridCity">
-                  <MDBBtn className={classes.button} onClick={handleAddClick}>
-                    <GoPlus style={{ color: 'white' }} size={20} />
-                  </MDBBtn>
-                </Form.Group>
-              )}
-
-            {inputList.length !== 1 && (
-                <Form.Group as={Col} controlId="formGridCity">
-                  <MDBBtn className={classes.button} onClick={() => handleRemove(i)}>
-                      <FaTrashAlt style={{ color: 'white' }} size={20} />
-                  </MDBBtn>
-                </Form.Group>
-              )}
+              <Form.Group as={Col} controlId="formGridCity">
+                <MDBBtn className={classes.button} onClick={handleAddClick}>
+                  <GoPlus style={{ color: 'white' }} size={20} />
+                </MDBBtn>
+              </Form.Group>
             </Row>
           </div>
-        );
-      })}
+          <div>
+            {inputList.map((x, i) => {
+              return (
+                <div className={classes.item1} key={i}>
+                  <Row className="mb-3">
+                    <Form.Group as={Col} controlId="formGridZip">
+                      <Form.Control type="text" placeholder={x.title} disabled={true}/>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridZip">
+                      <Form.Control type="number" placeholder={x.qty} disabled={true}/>
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridCity">
+                      <Form.Control defaultValue={x.entrytype} disabled={true} />
+                    </Form.Group>
+
+                    <Form.Group as={Col} controlId="formGridCity">
+                      <MDBBtn className={classes.button} onClick={() => handleRemove(i)}>
+                          <FaTrashAlt style={{ color: 'white' }} size={20} />
+                      </MDBBtn>
+                    </Form.Group>
+                  </Row>
+                </div>
+              );
+            })}
+          </div>
     </div>
   );
 };
