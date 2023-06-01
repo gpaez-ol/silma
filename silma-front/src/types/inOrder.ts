@@ -27,3 +27,9 @@ export type ProductInOrder = {
   export type GetInOrderResponse = {
     data: InOrderItem[];
   };
+
+  export type ProductInOrderCreate = {
+    id: string;
+    amount: number;
+    entryType: ProductEntryType;
+  };

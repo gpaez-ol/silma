@@ -28,7 +28,9 @@ export type ProductHistoryResponse = {
 export type ProductSelectItem = {
   id: string;
   title: string;
-  internalCode: string;
-  imageUrl: string;
   type: ProductType;
+}
+
+export type ProductSelectResponse = {
+  data: ProductSelectItem[];
 }
