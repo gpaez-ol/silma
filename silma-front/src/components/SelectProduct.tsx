@@ -8,7 +8,7 @@ import { GoPlus } from 'react-icons/go'
 import { ProductSelectResponse, ProductInOrderCreate } from '../types';
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-const getCurrentSelect= async () => {
+const getProductsSelect  = async () => {
   const response = await axios.get<ProductSelectResponse>("product-select");
   return response.data;
 };
@@ -21,21 +21,22 @@ interface ListElement {
 }
 
 type SelectProductFieldProps = {
-  productList: ProductInOrderCreate[],
+  onProductAdd: (productStock:ProductInOrderCreate) => void,
+  onProductRemove: (index:number) => void
 }
 
-const SelectProduct: React.FC<any> = (classes:any, props: SelectProductFieldProps) => {
+const SelectProduct: React.FC<any> = (props: SelectProductFieldProps) => {
+  let classes = useStyles();
   //const API_url = "http://localhost:3000/local/";
-  const { productList } = props
+  const { onProductAdd,onProductRemove } = props
   const [inputList, setInputList] = useState<ListElement[]>([]); 
-  const [id, setID] = useState('')
-  const [title, setTitle] = useState('')
-  const [amount, setAmount] = useState(0)
+  const [productId, setProductId] = useState('')
+  const [amount, setAmount] = useState<number>(0)
   const [entrytype, setEntryType] = useState('')
 
-  const { isLoading, data: productSelect } = useQuery(
-    ["get-products"],
-    () => getCurrentSelect(),
+  const { isLoading, data: productsSelectList } = useQuery(
+    ["get-products-select"],
+    () => getProductsSelect(),
     {
       select:(data) => data.data,
       onError: (error:any) => {
@@ -43,46 +44,32 @@ const SelectProduct: React.FC<any> = (classes:any, props: SelectProductFieldProp
         }
       }
   );
-
-  /*const [selectList, setSelectList] = useState<ProductSelectItem[]>([]);
-
-    const select = async() => {
-      try{
-        const {data} = await axios.get(API_url+'product-select');
-        const dataUnstructured = data.data;
-        setSelectList(dataUnstructured)
-      }catch(error){
-        console.log(error)
-      }
-    } 
-  */
-
   const handleRemove = (index: number) => {
     const list = [...inputList];
     list.splice(index, 1);
     setInputList(list);
-    productList.splice(index,1);
+    onProductRemove(index);
   };
 
   const handleAddClick = () => {
-    if(title.length>0 || amount>0 || entrytype.length>0){
-      setInputList([...inputList, {id: id, title: title, qty: amount, entrytype: entrytype }]);
-      const newProductInOrder : ProductInOrderCreate = {id:id,amount:amount,entryType:entrytype}
-      productList.push(newProductInOrder);
-      console.log(productList)
-      setTitle('')
+    if(productId.length>0 && amount>0 && entrytype.length>0 && productsSelectList !== null && productsSelectList !== undefined){
+      let productTitle = productsSelectList.find(product => product.id === productId)?.title;
+      setInputList([...inputList, {id: productId, title: productTitle ?? "N/A", qty: amount, entrytype: entrytype }]);
+      const newProductInOrder : ProductInOrderCreate = {id:productId,amount:amount,entryType:entrytype}
+      onProductAdd(newProductInOrder);
+      setProductId('')
       setAmount(0)
       setEntryType('')
     } 
   };
   
-  classes = useStyles();
+
 
   return (
     <>
         {isLoading || 
-         productSelect === null || 
-         productSelect === undefined ? (
+         productsSelectList === null || 
+         productsSelectList === undefined ? (
           <Grid container justifyContent="center">
             Loading
           </Grid>
@@ -91,17 +78,13 @@ const SelectProduct: React.FC<any> = (classes:any, props: SelectProductFieldProp
             <div className={classes.item}>
               <Row>
                 <Form.Group as={Col} controlId="formGridCity">
-                  <Form.Select defaultValue="Producto" value={title} onChange={(event:ChangeEvent<HTMLSelectElement>)=> {
-                    setTitle(event.target.value)
+                  <Form.Select defaultValue="Producto" value={productId} onChange={(event:ChangeEvent<HTMLSelectElement>)=> {
+                    setProductId(event.target.value)
                   }}>
                     <option>Producto</option>
-                    {/* Marca error */}
-                    {/*productSelect.map((product)=>{
-                      <option value={product.id}>{product.title}</option>
-                    })*/}
-                    <option>reimpresión</option>
-                    <option>resurtido</option>
-                    <option>devolución</option>
+                    {productsSelectList.map((product) => (
+                      <option value={product.id}> {product.title}</option>
+                    ))}
                   </Form.Select>
                 </Form.Group>
                 <Container as={Col}>

@@ -18,7 +18,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import SelectProduct from "./SelectProduct"
 import { GoPlus } from 'react-icons/go'
 import axios from "axios";
-import { ProductSelectItem } from '../types';
+import { ProductInOrderCreate } from '../types';
 
 export default function PopupInOrder(classes: any) {
     classes = useStyles();
@@ -30,7 +30,7 @@ export default function PopupInOrder(classes: any) {
     const toggleShow = () => setBasicModal(!basicModal);
     
     
-    const [productList, setProductList] = useState(null);
+    const [productList, setProductList] = useState<ProductInOrderCreate[]>([]);
 
     const API_url = "http://localhost:3000/local/";
 
@@ -49,7 +49,7 @@ export default function PopupInOrder(classes: any) {
 
     const postInOrder = async(formData:any) => {
       try{
-        const { data } = await axios.post(API_url + 'inorder',{
+        await axios.post(API_url + 'inorder',{
           orderedAt: formData.orderedAt,
           deliveredAt: formData.deliveredAt,
           notes: formData.notes,
@@ -61,8 +61,13 @@ export default function PopupInOrder(classes: any) {
       }
     }
 
-    const sendProductList = (index: any) =>{
-      setProductList(index)
+    const addProductStock = (productStock: ProductInOrderCreate) =>{
+        setProductList([...productList, productStock]);
+    };
+    const removeProductStock = (index:number) => {
+      const list = [...productList];
+      list.splice(index, 1);
+      setProductList(list);
     }
 
     return(
@@ -124,8 +129,7 @@ export default function PopupInOrder(classes: any) {
 
             <MDBModalTitle>Ingresa Productos</MDBModalTitle>
 
-            <SelectProduct/>
-
+            <SelectProduct onProductAdd={addProductStock} onProductRemove={removeProductStock}/>
             </MDBModalBody>
 
 
@@ -133,7 +137,7 @@ export default function PopupInOrder(classes: any) {
               <MDBBtn color='secondary' onClick={toggleShow}>
                 Cerrar
               </MDBBtn>
-              <MDBBtn onClick={handleSubmit}>Guardar Cambios</MDBBtn>
+              <MDBBtn onClick={(handleSubmit)}>Guardar Cambios</MDBBtn>
             </MDBModalFooter>
           </MDBModalContent>
         </MDBModalDialog>
