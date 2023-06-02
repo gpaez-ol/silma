@@ -22,14 +22,17 @@ import PopUp from "../components/PopupInOrder";
 function Row(props: {inOrder: InOrderItem}) {
   const { inOrder } = props;
   const [open, setOpen] = React.useState(false);
+
+  /*const formatDate = (pendingDate: Date | undefined | null) => {
+    if(pendingDate){
+      return pendingDate.toLocaleDateString('es-MX',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:"2-digit",minute:"2-digit" })
+    }else{
+      return "Not Available"
+    }
+  }*/
+
   let orderedAt = new Date(inOrder.orderedAt)
-  //let deliveredAt = new Date(inOrder.deliveredAt)
-  /*
-  const formatDate = (date: string) => {
-    const calendar = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"]
-    return (date.substring(8,2) + ' ' + calendar[Number(date.substring(5,2))-1] + ' ' + date.substring(0,4))
-  }
-  */
+  //let deliveredAt = formatDate(inOrder.deliveredAt)
 
   return (
     <React.Fragment>
@@ -47,7 +50,7 @@ function Row(props: {inOrder: InOrderItem}) {
           {inOrder.internalCode}
         </TableCell>
         <TableCell align="right">{inOrder.orderedAt ? orderedAt.toLocaleDateString('es-MX',{ weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:"2-digit",minute:"2-digit" }):"Not available"}</TableCell>
-        <TableCell align="right">{inOrder.deliveredAt?.toString() ?? "Not available" }</TableCell>
+        <TableCell align="right">{inOrder.deliveredAt?.toString() ?? "Not Available"}</TableCell>
         <TableCell align="right">{inOrder.totalAmount}</TableCell>
         <TableCell align="right">{inOrder.location}</TableCell>
       </TableRow>

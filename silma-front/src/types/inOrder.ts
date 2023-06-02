@@ -18,12 +18,22 @@ export type ProductInOrder = {
   export type InOrderItem = {
     id: string;
     internalCode: string;
+    notes: string;
     orderedAt: Date;
     deliveredAt?: Date;
     products: ProductInOrderItem[];
     location: string;
     totalAmount: number;
   };
+
+  export type InOrderCreate ={
+    orderedAt: Date;
+    deliveredAt?: Date;
+    notes: string,
+    locationId: string,
+    products: ProductInOrderCreate[],
+  }
+
   export type GetInOrderResponse = {
     data: InOrderItem[];
   };

@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState, useEffect } from 'react';
 import { Form, Col, Row, Container } from 'react-bootstrap';
 import { MDBBtn } from 'mdb-react-ui-kit';
 import { makeStyles } from '@material-ui/core/styles';
@@ -63,7 +63,17 @@ const SelectProduct: React.FC<any> = (props: SelectProductFieldProps) => {
     } 
   };
   
+  useEffect(() => {
+    let ignore = false;
 
+    if (!ignore) {
+      getProductsSelect();
+    }
+    ignore = true;
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   return (
     <>
@@ -92,6 +102,9 @@ const SelectProduct: React.FC<any> = (props: SelectProductFieldProps) => {
                   placeholder='Cantidad'
                   type='number'
                   value={amount}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                   onChange={(event:ChangeEvent<HTMLInputElement>)=>{
                     setAmount(Number(event.target.value))
                   }}/>
