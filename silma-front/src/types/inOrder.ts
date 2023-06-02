@@ -1,4 +1,4 @@
-export const productEntryType = ["reimpresion", "resurtido", "devolucion"];
+export const productEntryType = ["reimpresión", "resurtido", "devolución"];
 export type ProductEntryType = (typeof productEntryType)[number];
 
 export type ProductInOrder = {
@@ -18,12 +18,28 @@ export type ProductInOrder = {
   export type InOrderItem = {
     id: string;
     internalCode: string;
-    orderedAt: string;
-    deliveredAt?: string;
+    notes: string;
+    orderedAt: Date;
+    deliveredAt?: Date;
     products: ProductInOrderItem[];
     location: string;
     totalAmount: number;
   };
+
+  export type InOrderCreate ={
+    orderedAt: Date;
+    deliveredAt?: Date;
+    notes: string,
+    locationId: string,
+    products: ProductInOrderCreate[],
+  }
+
   export type GetInOrderResponse = {
     data: InOrderItem[];
+  };
+
+  export type ProductInOrderCreate = {
+    id: string;
+    amount: number;
+    entryType: ProductEntryType;
   };
