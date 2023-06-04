@@ -9,7 +9,7 @@ import {  useNavigate } from "react-router-dom";
 import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { RiEdit2Line } from 'react-icons/ri';
-
+import {toast} from 'react-toastify';
 
 export default function App(classes: any) {
   classes = useStyles();
@@ -41,10 +41,11 @@ const post = async (formData: any, reader: any) => {
         salesPrice: formData.salesPrice,
         imageUrl: reader
       });
-
-
+      toast.success("Nuevo producto registrado")
+      window.location.reload()
     } catch (error) {
       console.log(error);
+      toast.error("Algo salió mal. Revise los datos")
     }
   }
 
