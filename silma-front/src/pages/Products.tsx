@@ -10,7 +10,7 @@ import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-boot
 import { useForm } from 'react-hook-form';
 import { RiEdit2Line } from 'react-icons/ri';
 import { MultiSelect } from '@mantine/core';
-
+import { toast } from 'react-toastify';
 
 export default function App(classes: any) {
   classes = useStyles();
@@ -84,10 +84,11 @@ export default function App(classes: any) {
         imageUrl: reader,
         type: 'book'
       });
-
-
+      toast.success("Nuevo producto registrado")
+      window.location.reload()
     } catch (error) {
       console.log(error);
+      toast.error("Algo salió mal. Revise los datos")
     }
   }
 
