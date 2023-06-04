@@ -20,6 +20,7 @@ import { GoPlus } from 'react-icons/go'
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { ProductInOrderCreate, InOrderCreate, LocationResponse} from '../types';
+import {toast} from 'react-toastify';
 
 export default function PopupInOrder(classes: any) {
     classes = useStyles();
@@ -74,15 +75,17 @@ export default function PopupInOrder(classes: any) {
       try{
         await axios.post(API_url+"inorder",newInOrder)
         window.location.reload()
+        toast.success("Orden creada con exito")
+        setOrderDate(dayjs());
+        setDeliverDate(null);
+        setNotes('');
+        setLocationId('');
+        setProductList([])
+        setBasicModal(!basicModal)
       }catch(error){
         console.log(error)
+        toast.error("Algo salió mal. Vuelva a intentarlo")
       }
-      setOrderDate(dayjs());
-      setDeliverDate(dayjs());
-      setNotes('');
-      setLocationId('');
-      setProductList([])
-      setBasicModal(!basicModal)
     }
 
     const addProductStock = (productStock: ProductInOrderCreate) =>{
