@@ -25,7 +25,7 @@ export default function PopupInOrder(classes: any) {
     classes = useStyles();
 
     const [orderDate, setOrderDate] = useState<Dayjs | null>(dayjs());
-    const [deliverDate, setDeliverDate] = useState<Dayjs | null>(dayjs());
+    const [deliverDate, setDeliverDate] = useState<Dayjs | null>(null);
     const [notes, setNotes] = useState("")
     const [locationId, setLocationId] = useState("")
     const [basicModal, setBasicModal] = useState(false);
@@ -73,10 +73,10 @@ export default function PopupInOrder(classes: any) {
       console.log(newInOrder)
       try{
         await axios.post(API_url+"inorder",newInOrder)
+        window.location.reload()
       }catch(error){
         console.log(error)
       }
-      
       setOrderDate(dayjs());
       setDeliverDate(dayjs());
       setNotes('');
@@ -153,15 +153,18 @@ export default function PopupInOrder(classes: any) {
                   
                 </Form.Group>
 
-                <Form.Group as={Col} controlId="formGridZip">
-                  <Form.Label>Notas</Form.Label>
+                <Form.Group as={Col} controlId="formGridCity" >
+                  <Row><Form.Label>Notas</Form.Label></Row>
+                  <Row>
                   <textarea 
+                    className={classes.textspace}
                     rows={3}
                     value={notes}
                     onChange={(event:ChangeEvent<HTMLTextAreaElement>)=> {
                       setNotes(event.target.value)
                     }}
                     />
+                  </Row>
                 </Form.Group>
               </Row>
 
@@ -202,5 +205,9 @@ const useStyles = makeStyles(() =>({
     right: 20,
     top: 90,
     background: "rgba(16,95,158,1)100%"
+  },
+  textspace:{
+    margin: "5px",
+    width: "90%"
   },
 }))
