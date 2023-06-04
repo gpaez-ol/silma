@@ -27,7 +27,6 @@ type SelectProductFieldProps = {
 
 const SelectProduct: React.FC<any> = (props: SelectProductFieldProps) => {
   let classes = useStyles();
-  //const API_url = "http://localhost:3000/local/";
   const { onProductAdd,onProductRemove } = props
   const [inputList, setInputList] = useState<ListElement[]>([]); 
   const [productId, setProductId] = useState('')
