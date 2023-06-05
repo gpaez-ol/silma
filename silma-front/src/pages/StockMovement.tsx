@@ -77,6 +77,7 @@ function Row(props: RowProps) {
    }
     
     setIsEditing(false);
+    window.location.reload();
    }
   return (
     <React.Fragment>
