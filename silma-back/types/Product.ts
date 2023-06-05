@@ -137,12 +137,12 @@ export const productStatus = ["activo", "inactivo"] as const;
 export type ProductStatus = (typeof productStatus)[number];
 
 export const productGenre = [
-  "fantasía",
-  "magia",
-  "aventura",
-  "suspenso",
-  "sobrenatural",
-  "romance",
+  "Fantasía",
+  "Magia",
+  "Aventura",
+  "Suspenso",
+  "Sobrenatural",
+  "Romance",
   null,
 ] as const;
 export type ProductGenre = (typeof productGenre)[number];
