@@ -9,12 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
 import { useForm } from 'react-hook-form';
 import { RiEdit2Line } from 'react-icons/ri';
-import { toast } from 'react-toastify';
 import { MultiSelect, Image } from '@mantine/core';
 import { CurrentProductItem, CurrentProductResponse } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import { Grid } from '@material-ui/core';
-
+import { toast } from 'react-toastify';
 
 const getCurrentProducts = async () => {
   const response = await axios.get<CurrentProductResponse>('product-books');
@@ -360,71 +359,39 @@ export default function App(classes: any) {
     ['current-products'],
     () => getCurrentProducts(),
     {
-      internalCode: "",
-      title: "",
-      author: "",
-      synopsis: "",
-      salesPrice: 0,
-      authorPrice: 0,
-      genre: "",
-      language: "",
-      format: "",
-      numberPages: 0,
-      suggestedAges: "",
-      weight: 0,
-      dimensions: "",
-      isbn: "",
-      quantity: "",
-      publicationYear: "",
-      edition: "",
-      imageUrl: "",
-      status: "",
-    },
-    ],
-});
+      select: (data) => data.data,
+      onError: (error: any) => {
+        console.log("Something went wrong");
+      }
+    }
+  );
 
-const gendreList = [
-  { value: 'Fantasía', label: 'Fantasía' },
-  { value: 'Magia', label: 'Magia' },
-  { value: 'Aventura', label: 'Aventura' },
-  { value: 'Suspenso', label: 'Suspenso' },
-  { value: 'Sobrenatural', label: 'Sobrenatural' },
-  { value: 'Romance', label: 'Romance' },
-];
+  const mountBookList = async () => {
+    try {
+      const { data } = await axios.get(API_url + "product-books");
+      const dataUnstructured = data.data;
+      setValues({ productList: dataUnstructured });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-const post = async (formData: any, reader: any) => {
-  let genreData = [];
-  if (formData.genre.includes(',')) {
-    genreData = formData.genre.split(',');
-  } else {
-    genreData = [formData.genre];
-  }
+  const mountArticles = () => {
+    navigate("/product-articles");
+  };
 
-  try {
-    const { data } = await axios.post(API_url + 'product', {
-      title: formData.title,
-      author: formData.author,
-      synopsis: 'placeholder',
-      salesPrice: formData.salesPrice,
-      authorPrice: formData.authorPrice,
-      genre: genreData,
-      // TODO: change for select
-      language: formData.language.toLowerCase(),
-      // TODO: change for select
-      format: formData.format.toLowerCase(),
-      numberPages: formData.numberPages,
-      suggestedAges: formData.suggestedAges,
-      weight: formData.weight,
-      dimensions: formData.dimensions,
-      isbn: formData.isbn,
-      publicationYear: formData.publicationYear,
-      edition: formData.edition,
-      imageUrl: reader,
-      type: 'book'
-    });
-  } catch (error) {
-    console.log(error);
-  }
+  useEffect(() => {
+    let ignore = false;
+
+    if (!ignore) {
+      mountBookList();
+    }
+    ignore = true;
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
   return (
     <>
       <div>
@@ -586,230 +553,6 @@ const post = async (formData: any, reader: any) => {
 
     </>
   );
-}
-
-const readForm = (formData: any) => {
-  console.log(typeof (formData.genre));
-  let reader = new FileReader();
-  reader.readAsDataURL(formData.imageUrl);
-  reader.onload = function () {
-    post(formData, reader.result);
-  };
-  reader.onerror = function (error) {
-    console.log('Error: ', error);
-  };
-}
-
-const handleSubmit = (event: { preventDefault: () => void; currentTarget: any; }) => {
-  event.preventDefault();
-
-  const form = event.currentTarget;
-  if (form.checkValidity() === false) {
-    return;
-  }
-  const formData = new FormData(form);
-  const data = Object.fromEntries(formData.entries());
-  readForm(data);
-};
-
-const { isLoading, data: currentProducts } = useQuery(
-  ['current-products'],
-  () => getCurrentProducts(),
-  {
-    select: (data) => data.data,
-    onError: (error: any) => {
-      console.log("Something went wrong");
-    }
-  }
-);
-
-const mountBookList = async () => {
-  try {
-    const { data } = await axios.get(API_url + "product-books");
-    const dataUnstructured = data.data;
-    setValues({ productList: dataUnstructured });
-  } catch (error) {
-    console.log(error);
-  }
-};
-
-const mountArticles = () => {
-  navigate("/product-articles");
-};
-
-useEffect(() => {
-  let ignore = false;
-
-  if (!ignore) {
-    mountBookList();
-  }
-  ignore = true;
-  return () => {
-    ignore = true;
-  };
-}, []);
-
-return (
-  <>
-    <div>
-      <h2 className={classes.title}>Productos</h2>
-    </div>
-
-    <>
-      <MDBBtn className={classes.formContainer} onClick={toggleShow}>+</MDBBtn>
-      <MDBModal show={basicModal} setShow={setBasicModal} tabIndex='-1'>
-        <MDBModalDialog size='lg'>
-          <MDBModalContent>
-            <MDBModalHeader>
-              <MDBModalTitle>Agregar Libro</MDBModalTitle>
-              <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
-            </MDBModalHeader>
-
-            <MDBModalBody>
-              <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formTitle">
-                  <Form.Label>Título</Form.Label>
-                  <Form.Control name='title' type="text" /*placeholder="Moby Dick"*/ required />
-                </Form.Group>
-
-                <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formAuthor">
-                    <Form.Label>Autor</Form.Label>
-                    <Form.Control name='author' type="text" /*placeholder="Herman Melville"*/ required />
-                  </Form.Group>
-
-                  <Form.Group as={Col} controlId="formYear">
-                    <Form.Label>Año</Form.Label>
-                    <Form.Control name='publicationYear' type="text" /*placeholder="1900"*/ required />
-                  </Form.Group>
-
-                  <Form.Group as={Col} controlId="formEdition">
-                    <Form.Label>Edición</Form.Label>
-                    <Form.Control name='edition' type="text" /*placeholder="1"*/ required />
-                  </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-
-                  <Form.Group as={Col} controlId="formSellPrice">
-                    <Form.Label>Precio de venta</Form.Label>
-                    <Form.Control name='salesPrice' type="text" /*placeholder="600"*/ />
-                  </Form.Group>
-
-                  <Form.Group as={Col} controlId="formSellAuthor">
-                    <Form.Label>Precio de autor</Form.Label>
-                    <Form.Control name='authorPrice' type="text" /*placeholder="500"*/ />
-                  </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formGenre">
-                    <Form.Label>Género</Form.Label>
-                    <MultiSelect name='genre'
-                      data={gendreList}
-                      placeholder="Selecciona hasta 3"
-                    />
-                  </Form.Group>
-
-                  <Form.Group as={Col} controlId="formFormat">
-                    <Form.Label>Formato</Form.Label>
-                    <Form.Select name='format'>
-                      <option disabled ></option>
-                      <option>Pasta blanda</option>
-                      <option>Pasta dura</option>
-                      <option>Ebook</option>
-                    </Form.Select>
-                  </Form.Group>
-
-                  <Form.Group as={Col} controlId="formLanguage">
-                    <Form.Label>Idioma</Form.Label>
-                    <Form.Select name='language'>
-                      <option disabled ></option>
-                      <option>Inglés</option>
-                      <option>Español</option>
-                    </Form.Select>
-                  </Form.Group>
-                </Row>
-
-                <Row className="mb-3">
-                  <Form.Group as={Col} controlId="formPageNum">
-                    <Form.Label>Número de páginas</Form.Label>
-                    <Form.Control name='numberPages' type="text" /*placeholder="800"*/ />
-                  </Form.Group>
-
-                  <Form.Group as={Col} controlId="formAges">
-                    <Form.Label>Edades sugeridas</Form.Label>
-                    <Form.Control name='suggestedAges' type="text" /*placeholder="18+"*/ />
-                  </Form.Group>
-
-                  <Form.Group as={Col} controlId="formDimensions">
-                    <Form.Label>Dimensiones</Form.Label>
-                    <Form.Control name='dimensions' type="text" /*placeholder="10x15"*/ />
-                  </Form.Group>
-                </Row>
-
-                <Form.Group className="mb-3" controlId="formISBN">
-                  <Form.Label>ISBN</Form.Label>
-                  <Form.Control name='isbn' /*placeholder="1234567891234" */ />
-                </Form.Group>
-
-                <Form.Group controlId="formImage" className="mb-3">
-                  <Form.Label>Imagen</Form.Label>
-                  <Form.Control name='imageUrl' type="file" />
-                </Form.Group>
-                <MDBBtn type='submit' onClick={toggleShow}>Guardar Cambios</MDBBtn>
-                <MDBBtn color='secondary' onClick={toggleShow}> Cerrar </MDBBtn>
-              </Form>
-
-            </MDBModalBody>
-          </MDBModalContent>
-        </MDBModalDialog>
-      </MDBModal>
-    </>
-
-    <div className={classes.buttonContainer}>
-      <WhiteButton onClick={mountBookList}>Libros</WhiteButton>
-      <WhiteButton onClick={mountArticles}>Artículos</WhiteButton>
-    </div>
-    <MDBTable align='middle'>
-      {
-        isLoading ||
-          currentProducts === null ||
-          currentProducts == undefined ? (
-          <Grid container justifyContent="center">
-            Loading
-          </Grid>
-        ) : (
-          <><MDBTableHead light>
-            <tr>
-              <th scope='col'>Código interno</th>
-              <th scope='col'>Libro</th>
-              <th scope='col'>Cantidad</th>
-              <th scope='col'>Precio de venta</th>
-              <th scope='col'>Precio de autor</th>
-              <th scope='col'>Género</th>
-              <th scope='col'>Formato</th>
-              <th scope='col'>Idioma</th>
-              <th scope='col'>Edición</th>
-              <th scope='col'>Número de páginas</th>
-              <th scope='col'>Edades sugeridad</th>
-              <th scope='col'>Dimensiones</th>
-              <th scope='col'>ISBN</th>
-              <th scope='col'>Editar</th>
-            </tr>
-          </MDBTableHead>
-            <MDBTableBody>
-              {currentProducts.map((products) => (
-                <RowTable book={products} />
-              ))}
-            </MDBTableBody></>
-
-        )
-      }
-    </MDBTable >
-
-  </>
-);
 }
 
 const useStyles = makeStyles(() => ({
