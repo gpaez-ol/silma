@@ -70,6 +70,7 @@ const getProductArticlesFunction: SilmaAPIFunction = async () => {
       "internalCode",
       "imageUrl",
       "status",
+      "id"
     ],
     include: [{ model: ProductInOrder, attributes: ["amount"] }],
     where: { deletedAt: null, type: "article" },
@@ -107,6 +108,7 @@ const getProductBooksFunction: SilmaAPIFunction = async () => {
       "edition",
       "imageUrl",
       "status",
+      "id"
     ],
     include: [{ model: ProductInOrder, attributes: ["amount"] }],
     where: { deletedAt: null, type: "book" },
@@ -143,7 +145,7 @@ const updateProductFunction: SilmaAPIFunction = async(
   const { error } = ProductUpdateSchema.validate(data)
   if (error) {
     console.log(error)
-    throw badRequest("Data was wrongly formatted");
+    throw badRequest(error.message);
   }
 
   const db = await connectToDatabase();
