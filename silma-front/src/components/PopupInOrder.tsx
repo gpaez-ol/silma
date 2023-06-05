@@ -106,7 +106,7 @@ export default function PopupInOrder(classes: any) {
         <MDBModalDialog size='lg'>
           <MDBModalContent>
             <MDBModalHeader>
-              <MDBModalTitle>Nueva Órden</MDBModalTitle>
+              <MDBModalTitle>Nueva Orden</MDBModalTitle>
               <MDBBtn className='btn-close' color='none' onClick={toggleShow}></MDBBtn>
             </MDBModalHeader>
 

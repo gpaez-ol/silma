@@ -110,10 +110,10 @@ const SelectProduct: React.FC<any> = (props: SelectProductFieldProps) => {
                 </Container>
                 <Container as={Col}>
                 <Form.Group as={Col} controlId="formGridCity">
-                  <Form.Select defaultValue="Selecciona..." value={entrytype} onChange={(event:ChangeEvent<HTMLSelectElement>)=> {
+                  <Form.Select placeholder="Selecciona Tipo" defaultValue="Selecciona Tipo" value={entrytype} onChange={(event:ChangeEvent<HTMLSelectElement>)=> {
                     setEntryType(event.target.value)
                   }}>
-                    <option>Selecciona Tipo</option>
+                    <option></option>
                     <option>reimpresión</option>
                     <option>resurtido</option>
                     <option>devolución</option>
