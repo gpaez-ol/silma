@@ -32,8 +32,23 @@ export type CurrentProductItem = {
   id: string
 }
 
+export type CurrentArticleItem = {
+  title: string,
+  description: string,
+  quantity: number,
+  salesPrice: number,
+  internalCode: string,
+  imageUrl: string,
+  status: string,
+  id: string
+}
+
 export type CurrentProductResponse = {
   data: CurrentProductItem[];
+}
+
+export type CurrentArticleResponse = {
+  data: CurrentArticleItem[];
 }
 
 export type CurrentStockResponse = {
