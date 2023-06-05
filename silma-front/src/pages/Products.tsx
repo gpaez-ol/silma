@@ -132,12 +132,12 @@ function RowTable(props: RowProps) {
 
                 <Form.Group as={Col} controlId="formYear">
                   <Form.Label>Año</Form.Label>
-                  <Form.Control name='publicationYear' type="text" placeholder={book.publicationYear.toString()} />
+                  <Form.Control name='publicationYear' type="number" placeholder={book.publicationYear.toString()} />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formEdition">
                   <Form.Label>Edición</Form.Label>
-                  <Form.Control name='edition' type="text" placeholder={book.edition} />
+                  <Form.Control name='edition' type="number" placeholder={book.edition} />
                 </Form.Group>
               </Row>
 
@@ -145,12 +145,12 @@ function RowTable(props: RowProps) {
 
                 <Form.Group as={Col} controlId="formSellPrice">
                   <Form.Label>Precio de venta</Form.Label>
-                  <Form.Control name='salesPrice' type="text" placeholder={book.salesPrice.toString()} />
+                  <Form.Control name='salesPrice' type="number" step="0.1" placeholder={book.salesPrice.toString()} />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formSellAuthor">
                   <Form.Label>Precio de autor</Form.Label>
-                  <Form.Control name='authorPrice' type="text" placeholder={book.authorPrice.toString()} />
+                  <Form.Control name='authorPrice' type="number" step="0.1" placeholder={book.authorPrice.toString()} />
                 </Form.Group>
               </Row>
 
@@ -186,7 +186,7 @@ function RowTable(props: RowProps) {
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formPageNum">
                   <Form.Label>Número de páginas</Form.Label>
-                  <Form.Control name='numberPages' type="text" placeholder={book.numberPages.toString()} />
+                  <Form.Control name='numberPages' type="number" placeholder={book.numberPages.toString()} />
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formAges">
@@ -423,12 +423,12 @@ export default function App(classes: any) {
 
                     <Form.Group as={Col} controlId="formYear">
                       <Form.Label>Año</Form.Label>
-                      <Form.Control name='publicationYear' type="text" placeholder="1900" required />
+                      <Form.Control name='publicationYear' type="number" placeholder="1900" required />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formEdition">
                       <Form.Label>Edición</Form.Label>
-                      <Form.Control name='edition' type="text" placeholder="1" required />
+                      <Form.Control name='edition' type="number" placeholder="1" required />
                     </Form.Group>
                   </Row>
 
@@ -436,12 +436,12 @@ export default function App(classes: any) {
 
                     <Form.Group as={Col} controlId="formSellPrice">
                       <Form.Label>Precio de venta</Form.Label>
-                      <Form.Control name='salesPrice' type="text" placeholder="600" />
+                      <Form.Control name='salesPrice' type="number" step="0.1" placeholder="600" />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formSellAuthor">
                       <Form.Label>Precio de autor</Form.Label>
-                      <Form.Control name='authorPrice' type="text" placeholder="500" />
+                      <Form.Control name='authorPrice' type="number" step="0.1" placeholder="500" />
                     </Form.Group>
                   </Row>
 
@@ -477,7 +477,7 @@ export default function App(classes: any) {
                   <Row className="mb-3">
                     <Form.Group as={Col} controlId="formPageNum">
                       <Form.Label>Número de páginas</Form.Label>
-                      <Form.Control name='numberPages' type="text" placeholder="800" />
+                      <Form.Control name='numberPages' type="number" placeholder="800" />
                     </Form.Group>
 
                     <Form.Group as={Col} controlId="formAges">
