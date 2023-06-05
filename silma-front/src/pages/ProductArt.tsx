@@ -94,7 +94,7 @@ function RowTable(props: RowProps) {
 
                 <Form.Group as={Col} controlId="formSellPrice">
                   <Form.Label>Precio Venta</Form.Label>
-                  <Form.Control name='salesPrice' type="text" placeholder={article.salesPrice.toString()} />
+                  <Form.Control name='salesPrice' type="number" step="0.1" placeholder={article.salesPrice.toString()} />
                 </Form.Group>
 
                 <Form.Group controlId="formImage" className="mb-3">
@@ -277,7 +277,7 @@ export default function App(classes: any) {
 
                   <Form.Group as={Col} controlId="formSellPrice">
                     <Form.Label>Precio Venta</Form.Label>
-                    <Form.Control name='salesPrice' type="text" placeholder="5" />
+                    <Form.Control name='salesPrice' type="number" step="0.1" placeholder="5" />
                   </Form.Group>
 
                   <Form.Group controlId="formImage" className="mb-3">
