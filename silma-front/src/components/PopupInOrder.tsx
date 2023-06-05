@@ -157,12 +157,13 @@ export default function PopupInOrder(classes: any) {
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridCity" >
-                  <Row><Form.Label>Notas</Form.Label></Row>
+                  <Row><Form.Label>Notas (Máximo 255 carácteres)</Form.Label></Row>
                   <Row>
                   <textarea 
                     className={classes.textspace}
                     rows={3}
                     value={notes}
+                    maxLength={255}
                     onChange={(event:ChangeEvent<HTMLTextAreaElement>)=> {
                       setNotes(event.target.value)
                     }}
