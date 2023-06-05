@@ -79,7 +79,7 @@ export const ProductModel: GetModel = (sequelize: Sequelize) => {
         },
       },
       synopsis: {
-        type: new DataTypes.STRING(longText),
+        type: new DataTypes.STRING(800),
         allowNull: false,
       },
       salesPrice: {
