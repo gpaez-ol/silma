@@ -1,15 +1,14 @@
-import React, { useState, FormEventHandler, ChangeEventHandler, useEffect, MouseEventHandler } from "react";
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBIcon, } from 'mdb-react-ui-kit';
+import React, { useState, useEffect } from "react";
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import "./Products.css";
 import './AddProduct.css'
 import { WhiteButton } from "../components/ButtonProduct";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
+import { Button, Form, Col, Row } from 'react-bootstrap';
 import { RiEdit2Line } from 'react-icons/ri';
-import { MultiSelect, Image } from '@mantine/core';
+import { MultiSelect } from '@mantine/core';
 import { CurrentProductItem, CurrentProductResponse } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import { Grid } from '@material-ui/core';
@@ -518,27 +517,27 @@ export default function App(classes: any) {
         {
           isLoading ||
             currentProducts === null ||
-            currentProducts == undefined ? (
+            currentProducts === undefined ? (
             <Grid container justifyContent="center">
               Loading
             </Grid>
           ) : (
             <><MDBTableHead light>
               <tr>
-                <th scope='col'>Código interno</th>
-                <th scope='col'>Libro</th>
-                <th scope='col'>Cantidad</th>
-                <th scope='col'>Precio de venta</th>
-                <th scope='col'>Precio de autor</th>
-                <th scope='col'>Género</th>
-                <th scope='col'>Formato</th>
-                <th scope='col'>Idioma</th>
-                <th scope='col'>Edición</th>
-                <th scope='col'>Número de páginas</th>
-                <th scope='col'>Edades sugeridad</th>
-                <th scope='col'>Dimensiones</th>
-                <th scope='col'>ISBN</th>
-                <th scope='col'>Editar</th>
+                <th scope='col' className="text-center align-middle">Código interno</th>
+                <th scope='col' className="text-center align-middle">Libro</th>
+                <th scope='col' className="text-center align-middle">Cantidad</th>
+                <th scope='col' className="text-center align-middle">Precio de venta</th>
+                <th scope='col' className="text-center align-middle">Precio de autor</th>
+                <th scope='col' className="text-center align-middle">Género</th>
+                <th scope='col' className="text-center align-middle">Formato</th>
+                <th scope='col' className="text-center align-middle">Idioma</th>
+                <th scope='col' className="text-center align-middle">Edición</th>
+                <th scope='col' className="text-center align-middle"># págs</th>
+                <th scope='col' className="text-center align-middle">Edades sugeridas</th>
+                <th scope='col' className="text-center align-middle">Dimensiones</th>
+                <th scope='col' className="text-center align-middle">ISBN</th>
+                <th scope='col' className="text-center align-middle">Editar</th>
               </tr>
             </MDBTableHead>
               <MDBTableBody>

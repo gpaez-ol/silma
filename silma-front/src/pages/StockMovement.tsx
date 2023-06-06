@@ -112,7 +112,8 @@ function Row(props: RowProps) {
               style={{
                 cursor: "pointer",
                 backgroundImage: 'linear-gradient(to bottom, rgba(16, 95, 158,1)0%, rgba(16, 95, 158,1)50%, rgba(16, 95, 158,1)100%)',
-                fontWeight: "bold"
+                fontWeight: "bold",
+                color: "white"
               }}>
               Done
           </Button>
@@ -164,7 +165,7 @@ export default function StockMovement(classes: any) {
         <TableHead className={classes.tableHead}>
           <TableRow sx={{color:"blue",background:"footerBlue"}}>
             <TableCell />
-            <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Codigo Interno</TableCell>
+            <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Código Interno</TableCell>
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Producto</TableCell>
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Bodega</TableCell>
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Piso</TableCell>

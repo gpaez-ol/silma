@@ -84,7 +84,7 @@ export default function ProductHistory(classes: any) {
         <TableHead className={classes.tableHead}>
           <TableRow sx={{color:"blue",background:"red"}}>
             <TableCell />
-            <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Ubicacion</TableCell>
+            <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Ubicación</TableCell>
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Fecha</TableCell>
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Cantidad</TableCell>
             <TableCell sx={{ fontSize: 20, fontWeight: "bold", color:'white'}}>Notas</TableCell>
