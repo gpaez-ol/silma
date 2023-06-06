@@ -103,7 +103,7 @@ function ResponsiveAppBar(classes: any) {
               </Link>
               <Link to="/inorder">
                 <MenuItem>
-                  <Typography>Ordenes</Typography>
+                  <Typography>Órdenes</Typography>
                 </MenuItem>
               </Link>
             </Menu>
@@ -155,7 +155,7 @@ function ResponsiveAppBar(classes: any) {
             </Link>
             <Link to="/inorder">
               <MenuItem>
-                <Typography className={classes.title}>Ordenes</Typography>
+                <Typography className={classes.title}>Órdenes</Typography>
               </MenuItem>
             </Link>
           </Box>

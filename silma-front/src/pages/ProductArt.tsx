@@ -1,13 +1,12 @@
-import React, { useState, FormEventHandler, ChangeEventHandler, useEffect } from "react";
-import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody, MDBModalFooter, MDBIcon, } from 'mdb-react-ui-kit';
+import React, { useState, useEffect } from "react";
+import { MDBBadge, MDBBtn, MDBTable, MDBTableHead, MDBTableBody, MDBModal, MDBModalDialog, MDBModalContent, MDBModalHeader, MDBModalTitle, MDBModalBody } from 'mdb-react-ui-kit';
 import { makeStyles } from "@material-ui/core/styles";
 import "./Products.css";
 import './AddProduct.css'
 import { WhiteButton } from "../components/ButtonProduct";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Button, Modal, Form, FormGroup, Col, Row, InputGroup } from 'react-bootstrap';
-import { useForm } from 'react-hook-form';
+import { Button, Form, Col } from 'react-bootstrap';
 import { RiEdit2Line } from 'react-icons/ri';
 import { toast } from 'react-toastify';
 import { CurrentArticleItem, CurrentArticleResponse } from "../types";
@@ -88,7 +87,7 @@ function RowTable(props: RowProps) {
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formDescription">
-                  <Form.Label>Descripcion</Form.Label>
+                  <Form.Label>Descripción</Form.Label>
                   <Form.Control name='description' type="text" placeholder={article.description} />
                 </Form.Group>
 
@@ -271,7 +270,7 @@ export default function App(classes: any) {
                   </Form.Group>
 
                   <Form.Group as={Col} controlId="formDescription">
-                    <Form.Label>Descripcion</Form.Label>
+                    <Form.Label>Descripción</Form.Label>
                     <Form.Control name='description' type="text" placeholder="Separador de libros" required />
                   </Form.Group>
 
