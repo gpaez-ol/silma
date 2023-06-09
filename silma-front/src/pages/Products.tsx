@@ -13,6 +13,7 @@ import { CurrentProductItem, CurrentProductResponse } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import { Grid } from '@material-ui/core';
 import { toast } from 'react-toastify';
+import ImageNA from '../img/ImageNotAvailable.jpg';
 
 const getCurrentProducts = async () => {
   const response = await axios.get<CurrentProductResponse>('product-books');
@@ -321,7 +322,7 @@ export default function App(classes: any) {
         isbn: formData.isbn,
         publicationYear: formData.publicationYear,
         edition: formData.edition,
-        imageUrl: reader,
+        imageUrl: formData.imageUrl.name ? reader : ImageNA,
         type: 'book'
       });
       window.location.reload();

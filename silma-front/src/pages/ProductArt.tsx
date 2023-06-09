@@ -12,6 +12,8 @@ import { toast } from 'react-toastify';
 import { CurrentArticleItem, CurrentArticleResponse } from "../types";
 import { useQuery } from "@tanstack/react-query";
 import { Grid } from '@material-ui/core';
+import ImageNA from '../img/ImageNotAvailable.jpg';
+
 
 const getCurrentProducts = async () => {
   const response = await axios.get<CurrentArticleResponse>('product-articles');
@@ -175,7 +177,7 @@ export default function App(classes: any) {
         type: 'article',
         synopsis: formData.description,
         salesPrice: formData.salesPrice,
-        imageUrl: reader
+        imageUrl: formData.imageUrl.name ? reader : ImageNA
       });
       toast.success("Nuevo producto registrado")
       window.location.reload()
