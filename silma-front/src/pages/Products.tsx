@@ -528,8 +528,8 @@ export default function App(classes: any) {
                 <th scope='col' className="text-center align-middle">Código interno</th>
                 <th scope='col' className="text-center align-middle">Libro</th>
                 <th scope='col' className="text-center align-middle">Cantidad</th>
-                <th scope='col' className="text-center align-middle">Precio de venta</th>
-                <th scope='col' className="text-center align-middle">Precio de autor</th>
+                <th scope='col' className="text-center align-middle">Precio venta</th>
+                <th scope='col' className="text-center align-middle">Precio autor</th>
                 <th scope='col' className="text-center align-middle">Género</th>
                 <th scope='col' className="text-center align-middle">Formato</th>
                 <th scope='col' className="text-center align-middle">Idioma</th>
