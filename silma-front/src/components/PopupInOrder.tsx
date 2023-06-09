@@ -75,7 +75,7 @@ export default function PopupInOrder(classes: any) {
       try{
         await axios.post(API_url+"inorder",newInOrder)
         window.location.reload()
-        toast.success("Orden creada con exito")
+        toast.success("Orden creada con éxito")
         setOrderDate(dayjs());
         setDeliverDate(null);
         setNotes('');

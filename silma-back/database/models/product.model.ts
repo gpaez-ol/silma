@@ -11,7 +11,7 @@ import {
   ProductType,
   productTypes,
 } from "types";
-import { longText, shortText } from "utils";
+import { shortText } from "utils";
 import { EntityAttributes } from "./base/entity.model";
 import { ProductInOrderAttributes } from "./productInOrder.model";
 
