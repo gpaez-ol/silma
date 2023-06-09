@@ -17,6 +17,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import {  CurrentProductStockItem, CurrentStockResponse, StockMovementCreate } from '../types';
 import { useNavigate } from 'react-router-dom';
 import CancelPresentationRoundedIcon from '@mui/icons-material/CancelPresentationRounded';
+import { toast } from 'react-toastify';
 const bodegaId = "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e";
 const pisoId = "d8d70ad7-1e69-499b-ac2b-d68dcd3bff2e";
 const getCurrentStock = async () => {
@@ -45,12 +46,20 @@ function Row(props: RowProps) {
   const editProduct = async () => {
    //   50   20 = 30
    //   70   50 = 20
+   if (product.bodegaTotal === 0 && product.pisoTotal===0){
+    toast.error("El producto debe tener una orden registrada")
+    console.log("Product has no orders registered");
+    return;
+   }
+
    const totalAmount = Number(bodegaAmount) + Number(pisoAmount);
    if (totalAmount !== (Number(product.bodegaTotal) + Number(product.pisoTotal)))
    {
+    toast.error("Las cantidad total del producto no coincide.")
     console.log("The new total amount is not available");
     return;
    }
+
    const addedBodegaStock = bodegaAmount - product.bodegaTotal;
    if(addedBodegaStock > 0)
    {
@@ -63,6 +72,7 @@ function Row(props: RowProps) {
     } ;
     await axios.post("stock-movement", newBodegaStockMovement);
    }
+   
    const addedPisoStock = pisoAmount - product.pisoTotal;
    if(addedPisoStock > 0)
    {
