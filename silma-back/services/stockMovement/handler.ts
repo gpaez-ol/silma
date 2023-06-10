@@ -31,7 +31,7 @@ const createStockMovementFunction: SilmaAPIFunction = async (
     },{
         createdAt: new Date(),
         movedAt: new Date(),
-        notes: "El producto salio del lugar",
+        notes: "El producto salió del lugar",
         deletedAt: null,
         LocationId: data.prevLocationId,
         amount: data.amount * -1,

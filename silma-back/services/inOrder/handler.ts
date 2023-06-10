@@ -56,7 +56,7 @@ const createInOrderFunction: SilmaAPIFunction = async (
         movedAt: data.deliveredAt ?? new Date(),
         LocationId: data.locationId ?? "c7d70ad7-1e69-499b-ac2b-d68dcd3bff2e",
         ProductId: product.id,
-        notes: "Entrada de Inventario",
+        notes: "Entrada de inventario",
         createdAt: new Date(),
         InOrderId:newInOrder.get().id,
         deletedAt:null

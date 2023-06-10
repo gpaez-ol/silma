@@ -68,7 +68,7 @@ function Row(props: RowProps) {
       locationId:bodegaId,
       prevLocationId:pisoId,
       productId:product.productId,
-      notes:"Edicion del inventario interno"
+      notes:"Edición del inventario interno"
     } ;
     await axios.post("stock-movement", newBodegaStockMovement);
    }
@@ -81,7 +81,7 @@ function Row(props: RowProps) {
       locationId:pisoId,
       prevLocationId:bodegaId,
       productId:product.productId,
-      notes:"Edicion del inventario interno"
+      notes:"Edición del inventario interno"
     } ;
     await axios.post("stock-movement", newBodegaStockMovement);
    }
