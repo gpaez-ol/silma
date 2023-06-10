@@ -46,16 +46,17 @@ function Row(props: RowProps) {
   const editProduct = async () => {
    //   50   20 = 30
    //   70   50 = 20
-   if (product.bodegaTotal === 0 && product.pisoTotal===0){
+   if (product.bodegaTotal === 0 && product.pisoTotal === 0){
     toast.error("El producto debe tener una orden registrada")
     console.log("Product has no orders registered");
     return;
    }
 
    const totalAmount = Number(bodegaAmount) + Number(pisoAmount);
-   if (totalAmount !== (Number(product.bodegaTotal) + Number(product.pisoTotal)))
+   const totalRegistered = Number(product.bodegaTotal) + Number(product.pisoTotal)
+   if (totalAmount !== totalRegistered)
    {
-    toast.error("Las cantidad total del producto no coincide.")
+    toast.error("La cantidad total del producto no coincide. Total registrado: " + totalRegistered.toString())
     console.log("The new total amount is not available");
     return;
    }
