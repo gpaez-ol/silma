@@ -16,8 +16,6 @@ import Logo from "../img/Logo.png";
 export default function Login(classes: any) {
   classes = useStyles();
 
-  const API_URL = "http://localhost:3000/local/";
-
   //State
   const [values, setValues] = useState({
     email: "",
@@ -27,30 +25,30 @@ export default function Login(classes: any) {
 
   const { email, password, showPassword } = values;
 
-    const handleChange = (name: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
-        setValues({ ...values, [name]: e.target.value });
-    };
+  const handleChange = (name: any) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValues({ ...values, [name]: e.target.value });
+  };
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e: React.MouseEvent) => {
-        e.preventDefault();
-        try {
-            const { data } = await axios.put(API_URL + 'login', {
-                email,
-                password
-            });
+  const handleSubmit = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      const { data } = await axios.put('login', {
+        email,
+        password
+      });
 
-            setValues({ email: '', password: '', showPassword: false});
-            toast.success("Iniciaste sesión");
-            console.log("Iniciaste sesión");
-            navigate('/product-books');
+      setValues({ email: '', password: '', showPassword: false });
+      toast.success("Iniciaste sesión");
+      console.log("Iniciaste sesión");
+      navigate('/product-books');
 
-        } catch (err) {
-            console.log("Usuario y/o contraseña incorrecto");
-            toast.error("Usuario y/o contraseña incorrecto");
-        }
+    } catch (err) {
+      console.log("Usuario y/o contraseña incorrecto");
+      toast.error("Usuario y/o contraseña incorrecto");
     }
+  }
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });

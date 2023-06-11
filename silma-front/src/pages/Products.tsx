@@ -28,7 +28,6 @@ function RowTable(props: RowProps) {
   const { book } = props;
   const [basicModal, setBasicModal] = useState(false);
   const toggleShow = () => setBasicModal(!basicModal);
-  const API_url = "http://localhost:3000/local/";
 
   const gendreList = [
     { value: 'Fantasía', label: 'Fantasía' },
@@ -48,7 +47,7 @@ function RowTable(props: RowProps) {
     }
 
     try {
-      const { data } = await axios.put(API_url + 'product', {
+      const { data } = await axios.put('product', {
         id: book.id,
         internalCode: book.internalCode,
         title: formData.title ? formData.title : book.title,
@@ -255,7 +254,6 @@ function RowTable(props: RowProps) {
 export default function App(classes: any) {
   classes = useStyles();
   const navigate = useNavigate();
-  const API_url = "http://localhost:3000/local/";
   const [basicModal, setBasicModal] = useState(false);
   const toggleShow = () => setBasicModal(!basicModal);
 
@@ -304,7 +302,7 @@ export default function App(classes: any) {
     }
 
     try {
-      const { data } = await axios.post(API_url + 'product', {
+      const { data } = await axios.post('product', {
         title: formData.title,
         author: formData.author,
         synopsis: 'placeholder',
@@ -368,7 +366,7 @@ export default function App(classes: any) {
 
   const mountBookList = async () => {
     try {
-      const { data } = await axios.get(API_url + "product-books");
+      const { data } = await axios.get("product-books");
       const dataUnstructured = data.data;
       setValues({ productList: dataUnstructured });
     } catch (error) {

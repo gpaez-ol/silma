@@ -27,11 +27,10 @@ function RowTable(props: RowProps) {
   const { article } = props;
   const [basicModal, setBasicModal] = useState(false);
   const toggleShow = () => setBasicModal(!basicModal);
-  const API_url = "http://localhost:3000/local/";
 
   const put = async (formData: any, reader: any) => {
     try {
-      const { data } = await axios.put(API_url + 'product', {
+      const { data } = await axios.put('product', {
         id: article.id,
         internalCode: article.internalCode,
         title: formData.title ? formData.title : article.title,
@@ -151,7 +150,6 @@ function RowTable(props: RowProps) {
 export default function App(classes: any) {
   classes = useStyles();
   const navigate = useNavigate();
-  const API_url = "http://localhost:3000/local/";
   const [basicModal, setBasicModal] = useState(false);
   const toggleShow = () => setBasicModal(!basicModal);
 
@@ -171,7 +169,7 @@ export default function App(classes: any) {
 
   const post = async (formData: any, reader: any) => {
     try {
-      const { data } = await axios.post(API_url + 'product', {
+      const { data } = await axios.post('product', {
         title: formData.title,
         type: 'article',
         synopsis: formData.description,
@@ -213,7 +211,7 @@ export default function App(classes: any) {
 
   const mountArticleList = async () => {
     try {
-      const { data } = await axios.get(API_url + "product-articles");
+      const { data } = await axios.get("product-articles");
       const dataUnstructured = data.data;
       setValues({ productList: dataUnstructured });
     } catch (error) {

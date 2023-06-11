@@ -1,12 +1,14 @@
-import React, {useState, ChangeEvent} from 'react';
-import { MDBBtn, 
-         MDBModal, 
-         MDBModalDialog, 
-         MDBModalContent, 
-         MDBModalHeader, 
-         MDBModalTitle, 
-         MDBModalBody, 
-         MDBModalFooter} from 'mdb-react-ui-kit';
+import React, { useState, ChangeEvent } from 'react';
+import {
+  MDBBtn,
+  MDBModal,
+  MDBModalDialog,
+  MDBModalContent,
+  MDBModalHeader,
+  MDBModalTitle,
+  MDBModalBody,
+  MDBModalFooter
+} from 'mdb-react-ui-kit';
 import { Form, Col, Row } from 'react-bootstrap';
 //Date Picker imports
 import dayjs, { Dayjs } from 'dayjs';
@@ -19,90 +21,89 @@ import SelectProduct from "./SelectProduct"
 import { GoPlus } from 'react-icons/go'
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
-import { ProductInOrderCreate, InOrderCreate, LocationResponse} from '../types';
-import {toast} from 'react-toastify';
+import { ProductInOrderCreate, InOrderCreate, LocationResponse } from '../types';
+import { toast } from 'react-toastify';
 
 export default function PopupInOrder(classes: any) {
-    classes = useStyles();
+  classes = useStyles();
 
-    const [orderDate, setOrderDate] = useState<Dayjs | null>(dayjs());
-    const [deliverDate, setDeliverDate] = useState<Dayjs | null>(null);
-    const [notes, setNotes] = useState("")
-    const [locationId, setLocationId] = useState("")
-    const [basicModal, setBasicModal] = useState(false);
-    const toggleShow = () => setBasicModal(!basicModal);
-    
-    const [productList, setProductList] = useState<ProductInOrderCreate[]>([]);
+  const [orderDate, setOrderDate] = useState<Dayjs | null>(dayjs());
+  const [deliverDate, setDeliverDate] = useState<Dayjs | null>(null);
+  const [notes, setNotes] = useState("")
+  const [locationId, setLocationId] = useState("")
+  const [basicModal, setBasicModal] = useState(false);
+  const toggleShow = () => setBasicModal(!basicModal);
 
-    const API_url = "http://localhost:3000/local/";
+  const [productList, setProductList] = useState<ProductInOrderCreate[]>([]);
 
-    const getLocations  = async () => {
-      const response = await axios.get<LocationResponse>("location");
-      return response.data;
-    };
 
-    const { isLoading, data: locationList } = useQuery(
-      ["get-locations"],
-      () => getLocations(),
-      {
-        select:(data) => data.data,
-        onError: (error:any) => {
-            console.log("Something went wrong");
-          }
-        }
-    );
+  const getLocations = async () => {
+    const response = await axios.get<LocationResponse>("location");
+    return response.data;
+  };
 
-    const setConcreteDate = (pendingDate: Dayjs | null) => {
-      if(pendingDate){
-        return pendingDate.toDate();
-      }else{
-        return new Date();
+  const { isLoading, data: locationList } = useQuery(
+    ["get-locations"],
+    () => getLocations(),
+    {
+      select: (data) => data.data,
+      onError: (error: any) => {
+        console.log("Something went wrong");
       }
     }
+  );
 
-    const postInOrder = async() => {
-      const deliveredAt = deliverDate?.toDate();
-      const orderedAt = setConcreteDate(orderDate)
-      
-      let newInOrder: InOrderCreate = {
-        orderedAt: orderedAt,
-        deliveredAt: deliveredAt,
-        notes: notes,
-        locationId: locationId,
-        products: productList
-      }
-      console.log(newInOrder)
-      try{
-        await axios.post(API_url+"inorder",newInOrder)
-        window.location.reload()
-        toast.success("Orden creada con exito")
-        setOrderDate(dayjs());
-        setDeliverDate(null);
-        setNotes('');
-        setLocationId('');
-        setProductList([])
-        setBasicModal(!basicModal)
-      }catch(error){
-        console.log(error)
-        toast.error("Algo salió mal. Vuelva a intentarlo")
-      }
+  const setConcreteDate = (pendingDate: Dayjs | null) => {
+    if (pendingDate) {
+      return pendingDate.toDate();
+    } else {
+      return new Date();
     }
+  }
 
-    const addProductStock = (productStock: ProductInOrderCreate) =>{
-        setProductList([...productList, productStock]);
-    };
-    const removeProductStock = (index:number) => {
-      const list = [...productList];
-      list.splice(index, 1);
-      setProductList(list);
+  const postInOrder = async () => {
+    const deliveredAt = deliverDate?.toDate();
+    const orderedAt = setConcreteDate(orderDate)
+
+    let newInOrder: InOrderCreate = {
+      orderedAt: orderedAt,
+      deliveredAt: deliveredAt,
+      notes: notes,
+      locationId: locationId,
+      products: productList
     }
+    console.log(newInOrder)
+    try {
+      await axios.post("inorder", newInOrder)
+      window.location.reload()
+      toast.success("Orden creada con exito")
+      setOrderDate(dayjs());
+      setDeliverDate(null);
+      setNotes('');
+      setLocationId('');
+      setProductList([])
+      setBasicModal(!basicModal)
+    } catch (error) {
+      console.log(error)
+      toast.error("Algo salió mal. Vuelva a intentarlo")
+    }
+  }
 
-    return(
-        <>
-        <MDBBtn className= {classes.popUpPosition}  onClick={toggleShow}>
-          <GoPlus style={{ color: 'white' }} size={20} />
-        </MDBBtn>
-      <MDBModal className= {classes.modal} show={basicModal} setShow={setBasicModal} tabIndex='-1'>
+  const addProductStock = (productStock: ProductInOrderCreate) => {
+    setProductList([...productList, productStock]);
+  };
+  const removeProductStock = (index: number) => {
+    const list = [...productList];
+    list.splice(index, 1);
+    setProductList(list);
+  }
+
+  return (
+    <>
+      <MDBBtn className={classes.popUpPosition} onClick={toggleShow}>
+        <GoPlus style={{ color: 'white' }} size={20} />
+      </MDBBtn>
+      <MDBModal className={classes.modal} show={basicModal} setShow={setBasicModal} tabIndex='-1'>
         <MDBModalDialog size='lg'>
           <MDBModalContent>
             <MDBModalHeader>
@@ -136,44 +137,44 @@ export default function PopupInOrder(classes: any) {
               <Row className="mb-3">
                 <Form.Group as={Col} controlId="formGridCity">
                   <Form.Label>Ubicación</Form.Label>
-                  {isLoading || locationList===null || locationList === undefined ? (
+                  {isLoading || locationList === null || locationList === undefined ? (
                     <Grid container justifyContent="center">
                       Loading
                     </Grid>
-                  ):(
-                    <Form.Select 
-                      defaultValue="Selecciona..." 
+                  ) : (
+                    <Form.Select
+                      defaultValue="Selecciona..."
                       value={locationId}
-                      onChange={(event:ChangeEvent<HTMLSelectElement>)=> {
+                      onChange={(event: ChangeEvent<HTMLSelectElement>) => {
                         setLocationId(event.target.value)
                       }}>
                       <option></option>
-                      {locationList.map((location)=>(
+                      {locationList.map((location) => (
                         <option value={location.id}>{location.title}</option>
                       ))}
-                  </Form.Select>
+                    </Form.Select>
                   )}
-                  
+
                 </Form.Group>
 
                 <Form.Group as={Col} controlId="formGridCity" >
                   <Row><Form.Label>Notas (Máximo 255 carácteres)</Form.Label></Row>
                   <Row>
-                  <textarea 
-                    className={classes.textspace}
-                    rows={3}
-                    value={notes}
-                    maxLength={255}
-                    onChange={(event:ChangeEvent<HTMLTextAreaElement>)=> {
-                      setNotes(event.target.value)
-                    }}
+                    <textarea
+                      className={classes.textspace}
+                      rows={3}
+                      value={notes}
+                      maxLength={255}
+                      onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+                        setNotes(event.target.value)
+                      }}
                     />
                   </Row>
                 </Form.Group>
               </Row>
 
               <MDBModalTitle>Ingresa Productos</MDBModalTitle>
-              <SelectProduct onProductAdd={addProductStock} onProductRemove={removeProductStock}/>
+              <SelectProduct onProductAdd={addProductStock} onProductRemove={removeProductStock} />
             </MDBModalBody>
 
             <MDBModalFooter>
@@ -186,11 +187,11 @@ export default function PopupInOrder(classes: any) {
           </MDBModalContent>
         </MDBModalDialog>
       </MDBModal>
-        </>
-    );
+    </>
+  );
 }
 
-const useStyles = makeStyles(() =>({
+const useStyles = makeStyles(() => ({
   popUpPosition: {
     /*//display:"flex",
     position: "absolute",
@@ -202,7 +203,7 @@ const useStyles = makeStyles(() =>({
     width: "3%",
     maxWidth: "200px",
     background: "rgba(16,95,158,1)100%"*/
-    display:"flex",
+    display: "flex",
     position: 'absolute',
     margin: "auto",
     maxWidth: "200px",
@@ -210,7 +211,7 @@ const useStyles = makeStyles(() =>({
     top: 90,
     background: "rgba(16,95,158,1)100%"
   },
-  textspace:{
+  textspace: {
     margin: "5px",
     width: "90%"
   },
