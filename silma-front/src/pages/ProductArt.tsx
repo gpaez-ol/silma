@@ -41,9 +41,11 @@ function RowTable(props: RowProps) {
         type: 'article'
       });
       window.location.reload();
+      toast.success("Cambios en el artículo registrados");
 
     } catch (error) {
       console.log(error);
+      toast.error("Algo salió mal. Revise los datos");
     }
   }
 

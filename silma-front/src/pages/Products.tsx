@@ -70,11 +70,11 @@ function RowTable(props: RowProps) {
         imageUrl: formData.imageUrl.name ? reader : book.imageUrl,
         type: 'book'
       });
-      toast.success("Nuevo producto registrado")
+      toast.success("Cambios en el libro registrados");
       window.location.reload()
     } catch (error) {
       console.log(error);
-      toast.error("Algo salió mal. Revise los datos")
+      toast.error("Algo salió mal. Revise los datos");
     }
   }
 
@@ -324,9 +324,11 @@ export default function App(classes: any) {
         type: 'book'
       });
       window.location.reload();
+      toast.success("Producto agregado con éxito");
 
     } catch (error) {
       console.log(error);
+      toast.error("Algo salió mal. Revise los datos");
     }
   }
 
